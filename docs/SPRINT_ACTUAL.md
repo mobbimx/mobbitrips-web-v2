@@ -1,4 +1,4 @@
-# 🚀 Sprint Actual — Sprint 1.1: Design System + Home
+# 🚀 Sprint Actual — Sprint 1.2: Propiedades + Hostex
 
 > Este archivo muestra **solo el sprint activo**. Al cerrarlo, se archiva en `docs/sprints/completados/` y se crea uno nuevo.
 
@@ -6,17 +6,17 @@
 
 ## 📌 Info del sprint
 
-- **Sprint**: 1.1 — Design System + Home
+- **Sprint**: 1.2 — Propiedades + Hostex client
 - **Fase**: 1 — MVP Web
 - **Fecha inicio**: 2026-04-17
 - **Fecha objetivo**: ~2026-05-01 (calibrado para ~15h/semana)
-- **Objetivo**: Home pública impecable con Design System base. Al cerrar: `/` tiene las 9 secciones completas, Navbar y Footer funcionales, componentes UI reutilizables listos para el resto de la web.
+- **Objetivo**: Página `/propiedades` con filtros funcionales, detalle `/propiedades/[slug]` completo, cliente Hostex tipado con mocks de fallback. Al cerrar: un usuario puede buscar propiedades, ver el detalle y llegar al formulario de reserva.
 
 ---
 
 ## 📊 Progreso
 
-**0 / 15 tasks completadas (0%)**
+**0 / 14 tasks completadas (0%)**
 
 ---
 
@@ -28,148 +28,134 @@ _(ninguna aún)_
 
 ## 🔄 En progreso
 
-_(arrancamos con S1.1-1)_
+_(arrancamos con S1.2-1)_
 
 ---
 
 ## 📋 Backlog del sprint
 
-### Componentes UI base (`packages/ui`)
+### Hostex client (`packages/hostex-client`)
 
-- [ ] **S1.1-1** Button component `[2 pts]`
-  - Variantes: `primary`, `secondary`, `outline`, `ghost`.
-  - Tamaños: `sm`, `md`, `lg`.
-  - Estados: `loading` (spinner), `disabled`.
-  - Props: `asChild` (para usar con `<Link>`), `leftIcon`, `rightIcon`.
-  - Accesible: `aria-disabled`, focus ring coral.
+- [ ] **S1.2-1** Setup `packages/hostex-client` `[2 pts]`
+  - `package.json`, `tsconfig.json`, estructura de carpetas.
+  - Axios client con header `Access-Token`, timeout 10s, retries 3×.
+  - Variable de entorno: `HOSTEX_API_TOKEN`, `HOSTEX_BASE_URL`.
 
-- [ ] **S1.1-2** Badge, Input, Skeleton, StarRating `[2 pts]`
-  - **Badge**: variantes `default`, `success`, `warning`, `coral`. Pill shape.
-  - **Input**: con label, helper text, error state. Integra con React Hook Form.
-  - **Skeleton**: animación pulse coral suave. Props: `width`, `height`, `rounded`.
-  - **StarRating**: display-only (para reviews). Props: `value`, `max`, `size`.
+- [ ] **S1.2-2** Tipos e interfaces Hostex `[1 pt]`
+  - `types.ts`: `HostexProperty`, `HostexListing`, `HostexCalendar`, `HostexPricing`, `HostexReservation`, `HostexReview`.
+  - `mappers.ts`: `hostexPropertyToInternal()`, convierte al modelo interno de Mobbitrips.
 
-- [ ] **S1.1-3** AnimatedSection `[1 pt]`
-  - Wrapper Framer Motion con `fadeInUp` por defecto.
-  - Props: `delay`, `duration`, `direction` (`up`|`down`|`left`|`right`).
-  - Respeta `prefers-reduced-motion`.
-  - `viewport={{ once: true, margin: "-100px" }}`.
+- [ ] **S1.2-3** `properties.ts` — listado y detalle `[2 pts]`
+  - `getProperties()`: GET `/properties`, caché ISR 3600s.
+  - `getPropertyById(id)`: GET `/properties/{id}`, caché 1800s.
+  - `getPropertyBySlug(slug)`: deriva del listado, filtra por slug normalizado.
 
-### Layout
+- [ ] **S1.2-4** `availability.ts` + `pricing.ts` `[2 pts]`
+  - `checkAvailability(propertyId, from, to)`: GET `/calendar`.
+  - `calculateTotalPrice(propertyId, from, to, guests)`: GET `/listings/{id}/pricing`.
+  - Ambas sin caché (tiempo real).
 
-- [ ] **S1.1-4** Navbar `[3 pts]`
-  - Logo + links de navegación + CTA "Reservar".
-  - Scroll-aware: altura 72px → 64px al hacer scroll, sombra aparece.
-  - Mobile: hamburger → drawer lateral (Framer Motion, desde derecha).
-  - Links: Inicio / Propiedades / Nosotros / Servicios / Contacto.
-  - CTA coral en desktop, full-width en mobile drawer.
-  - Server Component base, Client Component solo para estado de scroll/drawer.
+- [ ] **S1.2-5** `mocks.ts` — datos de desarrollo `[1 pt]`
+  - 3 propiedades mock realistas (migrar y expandir desde `apps/web/src/lib/mocks.ts`).
+  - `getMockAvailability()`, `getMockPricing()`.
+  - Se activan cuando `HOSTEX_API_TOKEN` no está definido o en tests.
 
-- [ ] **S1.1-5** Footer `[2 pts]`
-  - 4 columnas: Logo+tagline / Navegación / Servicios / Contacto+RRSS.
-  - Logo blanco sobre fondo `brand-charcoal` (`#3D3D3D`).
-  - WhatsApp link prominente.
-  - Créditos + links legales abajo.
-  - Fully responsive (stack en mobile).
+### Página `/propiedades`
 
-- [ ] **S1.1-6** WhatsAppFloatingButton `[1 pt]`
-  - Botón circular coral fijo bottom-right.
-  - Ícono WhatsApp + texto "Escríbenos" en desktop.
-  - Pulso animado cada 3s (Framer Motion).
-  - Link a `https://wa.me/5212282525244` con mensaje pre-llenado.
-  - Se oculta cuando el footer es visible (IntersectionObserver).
-  - `aria-label="Abrir WhatsApp"`.
+- [ ] **S1.2-6** `PropertyFilters` component `[2 pts]`
+  - Filtros: huéspedes (mínimo), precio máximo, amenidades (checkboxes).
+  - Lee query params de la URL (`?guests=2&from=...&to=...`).
+  - Al cambiar filtros actualiza URL con `router.replace` (sin reload).
+  - Client component. Accesible: labels, aria-controls.
 
-### Home — secciones
+- [ ] **S1.2-7** Página `/propiedades` `[2 pts]`
+  - Server component: llama `getProperties()` al render.
+  - Aplica filtros del lado cliente con `PropertyFilters`.
+  - `PropertyGrid`: layout grid responsivo con `PropertyCard` (reutilizar del home).
+  - Estado vacío: mensaje amigable si no hay resultados.
+  - Loading: `Skeleton` grid mientras carga.
+  - SEO: `metadata` con title/description.
 
-- [ ] **S1.1-7** HeroSection `[3 pts]`
-  - Headline: "Descansa, vive y sueña como si estuvieras en casa".
-  - Subheadline: propuesta de valor directa (2 líneas).
-  - Imagen de fondo: propiedad con overlay cálido. Placeholder hasta tener foto real.
-  - Buscador básico integrado: fecha entrada / fecha salida / huéspedes → botón "Ver disponibilidad" (redirige a `/propiedades` con query params).
-  - CTA secundario: "Conoce nuestras propiedades".
-  - Animación de entrada con Framer Motion.
+### Página `/propiedades/[slug]`
 
-- [ ] **S1.1-8** FeaturedProperties `[2 pts]`
-  - Grid de 3 property cards (con mocks de `packages/hostex-client/mocks.ts`).
-  - **PropertyCard**: imagen, nombre, badges (capacidad, habitaciones), precio/noche en MXN, rating.
-  - Hover: card sube 4px, sombra coral.
-  - CTA "Ver todas las propiedades" al final.
-  - Server Component (datos en build time / ISR).
+- [ ] **S1.2-8** `PropertyGallery` component `[1 pt]`
+  - Grid de imágenes (2×2 + foto grande). Placeholder hasta tener fotos reales.
+  - Click abre lightbox simple (modal con prev/next).
+  - Accesible: aria-labels, keyboard nav.
 
-- [ ] **S1.1-9** WhyBookDirect `[1 pt]`
-  - 4 razones para reservar directo (sin OTA): precio mejor, atención directa, flexibilidad, confianza.
-  - Grid 2×2 en desktop, stack en mobile.
-  - Íconos Lucide + título + descripción corta por card.
+- [ ] **S1.2-9** `PropertyAmenities` component `[1 pt]`
+  - Grid de amenidades con íconos Lucide mapeados.
+  - Mapa de iconos: WiFi → Wifi, Piscina → Waves, etc.
+  - Máximo 8 visible, "Ver todos" expande.
 
-- [ ] **S1.1-10** StorySection `[1 pt]`
-  - Historia de Mobbitrips: quiénes somos, Xalapa, filosofía "como en casa".
-  - Layout: texto izquierda + imagen derecha (invertido en mobile).
-  - Tono cálido y personal, no corporativo.
-  - CTA "Conócenos más" → `/nosotros`.
+- [ ] **S1.2-10** `BookingWidget` — formulario de reserva `[3 pts]`
+  - Sticky en desktop (right column), accordion en mobile.
+  - Campos: fecha entrada, fecha salida, huéspedes.
+  - Llama `checkAvailability()` y `calculateTotalPrice()` en tiempo real.
+  - Desglose de precio: noche × días, limpieza, total en MXN.
+  - Botón "Solicitar reserva" → POST a `/api/reservations` (Sprint 1.3).
+  - Estado: disponible / no disponible / cargando.
 
-- [ ] **S1.1-11** TestimonialsSection `[1 pt]`
-  - 3 reseñas reales o mock con nombre, foto placeholder, texto y estrellas.
-  - Layout: 3 cards en grid desktop, scroll horizontal en mobile.
-  - StarRating component de S1.1-2.
+- [ ] **S1.2-11** Página `/propiedades/[slug]` `[2 pts]`
+  - Server component: llama `getPropertyBySlug(slug)`.
+  - `generateStaticParams()` para las 3 propiedades mock (ISR).
+  - Secciones: Gallery → Título/info → Descripción → Amenities → Reviews → BookingWidget.
+  - Breadcrumb: Inicio › Propiedades › {nombre}.
+  - SEO: title, description, og:image.
+  - 404 si slug no existe.
 
-- [ ] **S1.1-12** OwnerTeaser `[1 pt]`
-  - Mini landing B2B: "¿Tienes una propiedad en Xalapa?" + 3 beneficios clave.
-  - Background: `primary-soft` (`#FDF0EF`).
-  - CTA: "Quiero listar mi propiedad" → `/servicios`.
+### API interna
 
-- [ ] **S1.1-13** NewsletterCTA `[1 pt]`
-  - Email input + botón suscribirse.
-  - Texto: propuesta de valor del newsletter (ofertas, guías Xalapa).
-  - Validación Zod en cliente.
-  - POST a `/api/newsletter` (stub por ahora, sin Supabase aún).
-  - Estado de éxito/error inline.
+- [ ] **S1.2-12** `GET /api/properties` `[1 pt]`
+  - Proxy a Hostex con caché. Consume `getProperties()`.
+  - Headers de caché correctos para ISR.
 
-- [ ] **S1.1-14** FinalCTA + montar Home `[2 pts]`
-  - **FinalCTA**: sección final con headline grande + 2 CTAs: "Ver propiedades" y "Hablar por WhatsApp".
-  - **Montar `page.tsx`**: ensamblar todas las secciones en orden:
-    `HeroSection → FeaturedProperties → WhyBookDirect → StorySection → TestimonialsSection → OwnerTeaser → NewsletterCTA → FinalCTA`
-  - Verificar que el home carga en <3s, sin layout shift.
-  - Pasar `pnpm lint` y `pnpm type-check`.
+- [ ] **S1.2-13** `GET /api/properties/[id]/availability` `[1 pt]`
+  - Query params: `from`, `to`.
+  - Llama `checkAvailability()` + `calculateTotalPrice()`.
+  - Rate limiting básico (IP-based, 30 req/min).
+
+- [ ] **S1.2-14** Conectar newsletter a Supabase `[1 pt]`
+  - Crear migration `newsletter_subscribers` en Supabase.
+  - Actualizar `/api/newsletter/route.ts` para persistir en DB.
+  - RLS: allow insert anónimo desde API Route con service_role.
 
 ---
 
 ## 🎯 Criterios de cierre del sprint
 
-- [ ] `/` muestra las 9 secciones completas y visualmente pulidas.
-- [ ] Navbar funciona en desktop y mobile (drawer).
-- [ ] Footer completo con todos los links.
-- [ ] WhatsAppFloatingButton visible y funcional.
-- [ ] `pnpm lint` y `pnpm type-check` pasan sin warnings.
-- [ ] Mobile-first: se ve bien en 375px, 768px, 1280px.
-- [ ] No hay `console.log` sin `// eslint-disable` justificado.
-- [ ] Todos los componentes accesibles (tab-navigation, aria-labels).
-- [ ] Animaciones respetan `prefers-reduced-motion`.
+- [ ] `pnpm lint` y `pnpm type-check` pasan sin errores.
+- [ ] `/propiedades` muestra las propiedades con filtros funcionales.
+- [ ] `/propiedades/[slug]` carga el detalle con galería, amenidades y booking widget.
+- [ ] `BookingWidget` muestra precio desglosado en MXN en tiempo real.
+- [ ] Fallback a mocks cuando `HOSTEX_API_TOKEN` no está disponible.
+- [ ] API routes con rate limiting básico.
+- [ ] Newsletter persiste en Supabase (requiere proyecto Supabase activo).
 
 ---
 
 ## 🚨 Bloqueos
 
-- Imágenes reales de propiedades: usar placeholders (`/images/placeholder-property.jpg`) mientras Emilio las provee.
-- Copy final: usar texto provisional coherente con el tono de marca.
+- **Supabase**: S1.2-14 requiere proyecto Supabase creado y URL/keys en `.env.local`.
+- **Imágenes reales**: PropertyGallery usará placeholders hasta que Emilio las provea.
 
 ---
 
 ## 📝 Notas del sprint
 
-- Los mocks de propiedades van en `apps/web/src/lib/mocks.ts` por ahora (no en packages todavía, eso es Sprint 1.2).
-- `packages/ui` se crea en este sprint con los componentes básicos.
-- Instalar `pnpm add framer-motion` solo si no está ya en `apps/web`.
+- El token Hostex ya está en `apps/web/.env.local` — testearlo con una llamada real en S1.2-3.
+- `packages/hostex-client` se instala en `apps/web` como `workspace:*`.
+- Si la API de Hostex devuelve propiedades reales, descartar los mocks del home y usar datos live.
 
 ---
 
 ## 🔗 Próximo sprint
 
-**Sprint 1.2 — Propiedades + Hostex client** (~2 semanas)
+**Sprint 1.3 — Reservas + Flujo de pago**
 
-Objetivo: Página `/propiedades` con filtros, página detalle `/propiedades/[slug]`, integración real con Hostex API (con credenciales), BookingWidget básico.
+Objetivo: Formulario de solicitud de reserva, integración con Hostex para crear reservas, flujo básico hacia Stripe/PayU.
 
 ---
 
-**Sprint anterior**: 1.0 — `docs/sprints/completados/sprint-1.0.md`
+**Sprint anterior**: 1.1 — `docs/sprints/completados/sprint-1.1.md`
 **Ver todos los sprints completados**: `docs/sprints/completados/`
