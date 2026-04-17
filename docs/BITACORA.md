@@ -99,6 +99,28 @@ INSTRUCCIONES:
 - Si hubo emergencia o hotfix en producción, marcar con 🚨 al inicio del título.
 -->
 
+## 2026-04-17 · Sesión 2 (jueves)
+
+**Sprint**: 1.1 · **Trabajé con**: Emilio
+**Tasks cerradas**: S1.1-1 (Button), S1.1-2 (Badge/Input/Skeleton/StarRating), S1.1-3 (AnimatedSection), S1.1-4 (Navbar), S1.1-5 (Footer), S1.1-6 (WhatsAppFloatingButton), S1.1-7 (HeroSection), S1.1-8 (FeaturedProperties), S1.1-9 (WhyBookDirect), S1.1-10 (StorySection), S1.1-11 (TestimonialsSection), S1.1-12 (OwnerTeaser), S1.1-13 (NewsletterCTA), S1.1-14 (FinalCTA + montar home)
+**Tasks en progreso**: ninguna — Sprint 1.1 completo
+**Commits**:
+
+- `e773ca1` feat(ui): add design system base and layout components
+- `bf986dc` feat(web): add HeroSection with search widget (S1.1-7)
+- `6c262e6` feat(web): complete home page with all 8 sections (S1.1-8 to S1.1-14)
+  **Preview deploy**: pendiente (Vercel no conectado aún)
+  **Decisiones tomadas**:
+- `packages/ui` creado como workspace package con `transpilePackages` en next.config.mjs.
+- Tailwind content incluye `../../packages/ui/src/**` para que las clases del design system no se purguen.
+- PropertyCard usa CSS hover (`hover:-translate-y-1`) en lugar de Framer Motion para evitar client component innecesario.
+- `/api/newsletter` es stub — integración con Supabase queda para Sprint 1.2.
+- Mocks en `apps/web/src/lib/mocks.ts` (no en packages todavía).
+- Fondos de propiedades con gradientes CSS hasta tener fotos reales.
+  **Bloqueos**: Imágenes reales de propiedades pendientes. Emilio debe proveerlas.
+  **Próximo paso**: Sprint 1.2 — página `/propiedades` con filtros + página detalle `/propiedades/[slug]` + integración Hostex (requiere credenciales).
+  **Notas**: Home completo visible en http://localhost:3000. El comando para levantar es `pnpm dev --filter=@mobbitrips/web`. Sprint 1.1 cerrado al 100%.
+
 ## 2026-04-17 · Sesión 1 (jueves)
 
 **Sprint**: 1.0 · **Trabajé con**: Emilio
