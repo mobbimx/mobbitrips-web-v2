@@ -6,9 +6,13 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main id="main-content" className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-4xl font-comfortaa text-brand-charcoal">Inicio — Mobbitrips</h1>
-      <p className="mt-4 text-brand-gray">Sprint 1.0 — Setup completo ✓</p>
-    </main>
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-4">
+      <h1 className="text-4xl font-comfortaa font-bold text-brand-charcoal">
+        Bienvenido a <span className="text-primary">Mobbitrips</span>
+      </h1>
+      <p className="text-brand-gray">
+        Sprint 1.1 en construcción — secciones del home llegando pronto.
+      </p>
+    </div>
   );
 }

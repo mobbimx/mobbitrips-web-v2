@@ -9,6 +9,7 @@
 
 ```markdown
 ## YYYY-MM-DD · Sesión N (día HH:MM-HH:MM)
+
 **Sprint**: X.Y · **Trabajé con**: [nombre]
 **Tasks cerradas**: [IDs]
 **Tasks en progreso**: [IDs]
@@ -29,54 +30,60 @@
 
 ```markdown
 ## 2026-04-20 · Sesión 1 (lunes 10:00-12:30)
+
 **Sprint**: 1.0 · **Trabajé con**: Daniel
 **Tasks cerradas**: S1.0-1, S1.0-2, S1.0-3
 **Tasks en progreso**: S1.0-4 (config next/font)
 **Commits**:
+
 - `a1b2c3d` chore: init turborepo with pnpm workspaces
 - `e4f5g6h` chore: setup next.js 14 with typescript strict
 - `i7j8k9l` chore: configure tailwind with mobbitrips palette
-**Preview deploy**: https://mobbitrips.vercel.app (setup inicial, solo healthcheck)
-**Decisiones tomadas**: Ninguna nueva, seguimos master.
-**Bloqueos**: Ninguno.
-**Próximo paso**: S1.0-4 configurar next/font con Comfortaa+Inter. Después S1.0-5 ESLint+Prettier+Husky.
-**Notas**: El warning de Tailwind v3 sobre "content" array era falso positivo, ya tiene paths correctos. Vercel connected al repo con preview deploys automáticos en PRs.
+  **Preview deploy**: https://mobbitrips.vercel.app (setup inicial, solo healthcheck)
+  **Decisiones tomadas**: Ninguna nueva, seguimos master.
+  **Bloqueos**: Ninguno.
+  **Próximo paso**: S1.0-4 configurar next/font con Comfortaa+Inter. Después S1.0-5 ESLint+Prettier+Husky.
+  **Notas**: El warning de Tailwind v3 sobre "content" array era falso positivo, ya tiene paths correctos. Vercel connected al repo con preview deploys automáticos en PRs.
 ```
 
 ### Ejemplo 2 — Sesión productiva
 
 ```markdown
 ## 2026-04-22 · Sesión 3 (miércoles 09:00-13:00)
+
 **Sprint**: 1.1 · **Trabajé con**: Daniel
 **Tasks cerradas**: S1.1-4 (Navbar), S1.1-5 (Footer), S1.1-6 (WhatsAppFloatingButton)
 **Commits**:
+
 - `m1n2o3p` feat(web): add scroll-aware navbar with mobile drawer
 - `q4r5s6t` feat(web): add footer with 4 columns and newsletter stub
 - `u7v8w9x` feat(web): add floating whatsapp button with pulse animation
-**Preview deploy**: https://mobbitrips-pr-12.vercel.app
-**Métricas**: Lighthouse 92/98/100/100 en /
-**Decisiones tomadas**:
+  **Preview deploy**: https://mobbitrips-pr-12.vercel.app
+  **Métricas**: Lighthouse 92/98/100/100 en /
+  **Decisiones tomadas**:
 - Usamos altura 72px → 64px al scroll (no 80→64 como el prompt original), se veía más proporcionado.
 - El drawer mobile usa `x: 100% → 0` con duration 300ms (Framer Motion default cubic bezier).
-**Bloqueos**: Ninguno.
-**Próximo paso**: S1.1-7 HeroSection con buscador integrado. Es la task más grande del sprint (5 story points), probablemente toma toda una sesión.
-**Notas**: El logo-white.png todavía no está en public/, usamos un filtro CSS `brightness(0) invert(1)` mientras tanto en el footer. Daniel va a subir el PNG definitivo.
+  **Bloqueos**: Ninguno.
+  **Próximo paso**: S1.1-7 HeroSection con buscador integrado. Es la task más grande del sprint (5 story points), probablemente toma toda una sesión.
+  **Notas**: El logo-white.png todavía no está en public/, usamos un filtro CSS `brightness(0) invert(1)` mientras tanto en el footer. Daniel va a subir el PNG definitivo.
 ```
 
 ### Ejemplo 3 — Sesión con bloqueo
 
 ```markdown
 ## 2026-04-28 · Sesión 8 (lunes 14:00-15:30)
+
 **Sprint**: 1.2 · **Trabajé con**: Daniel
 **Tasks cerradas**: Ninguna (sesión bloqueada).
 **Tasks en progreso**: S1.2-1 (cliente Hostex)
 **Commits**: Ninguno.
 **Decisiones tomadas**: Ninguna.
 **Bloqueos**:
+
 - El token HOSTEX_API_TOKEN está inválido, devuelve 401. Daniel va a regenerar en el panel de Hostex.
 - Sin token no podemos avanzar con tasks S1.2-1 a S1.2-7.
-**Próximo paso**: Daniel regenera token, lo guarda en .env.local y en Vercel env vars, siguiente sesión retomamos S1.2-1.
-**Notas**: Mientras tanto avancé con mocks.ts (S1.2-5) de forma especulativa, no commiteado. Está en WIP local.
+  **Próximo paso**: Daniel regenera token, lo guarda en .env.local y en Vercel env vars, siguiente sesión retomamos S1.2-1.
+  **Notas**: Mientras tanto avancé con mocks.ts (S1.2-5) de forma especulativa, no commiteado. Está en WIP local.
 ```
 
 ---
@@ -91,6 +98,25 @@ INSTRUCCIONES:
 - Si la sesión fue muy corta (<30min) o solo fue revisión, puedes anotarla como "check-in" sin tasks.
 - Si hubo emergencia o hotfix en producción, marcar con 🚨 al inicio del título.
 -->
+
+## 2026-04-17 · Sesión 1 (jueves)
+
+**Sprint**: 1.0 · **Trabajé con**: Emilio
+**Tasks cerradas**: S1.0-1 (monorepo), S1.0-2 (Next.js + TS), S1.0-3 (Tailwind), S1.0-4 (next/font), S1.0-5 (ESLint+Prettier+Husky), S1.0-9 (GTM stub), S1.0-12 (.env.example), S1.0-13 (Lenis), S1.0-14 (páginas esqueleto)
+**Tasks en progreso**: S1.0-6 (Supabase), S1.0-7 (RLS), S1.0-8 (Sentry), S1.0-11 (Vercel), S1.0-15 (README)
+**Commits**:
+
+- `7ff2146` chore: initial project structure
+- `91f0bb7` chore: add full Sprint 1.0 scaffolding and fix tooling
+  **Preview deploy**: pendiente (Vercel no conectado aún)
+  **Decisiones tomadas**:
+- `next.config.ts` renombrado a `next.config.mjs` — Next.js 14.2 no soporta `.ts`.
+- ESLint root config requiere `"plugins": ["@typescript-eslint"]` explícito en monorepo pnpm (no queda en PATH sin esto).
+- lint-staged usa `pnpm exec eslint` para compatibilidad con Windows PATH.
+- `eslint-config-next` + `@typescript-eslint` instalados en root para que lint-staged los resuelva.
+  **Bloqueos**: Ninguno activo.
+  **Próximo paso**: S1.0-6 crear proyecto Supabase + migraciones iniciales. S1.0-11 conectar repo a Vercel.
+  **Notas**: El servidor corre en `http://localhost:3000`. Comando correcto: `pnpm dev --filter=@mobbitrips/web` (el paquete se llama `@mobbitrips/web`, no `web`).
 
 <!-- Primera entrada real irá aquí cuando arranques Sprint 1.0 -->
 

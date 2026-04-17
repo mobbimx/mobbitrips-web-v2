@@ -5,6 +5,9 @@ import {
   GoogleTagManagerNoscript,
 } from '@/components/analytics/GoogleTagManager';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
+import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -31,7 +34,7 @@ const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${comfortaa.variable} ${inter.variable}`}>
-      <body>
+      <body className="bg-brand-cream text-brand-charcoal antialiased">
         {gtmId && <GoogleTagManagerScript gtmId={gtmId} />}
         {gtmId && <GoogleTagManagerNoscript gtmId={gtmId} />}
         <a
@@ -40,7 +43,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Ir al contenido principal
         </a>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          <Navbar />
+          <main id="main-content" className="pt-[72px]">
+            {children}
+          </main>
+          <Footer />
+          <WhatsAppFloatingButton />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
