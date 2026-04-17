@@ -15,6 +15,9 @@ dist/
 # Production
 *.log
 
+# Claude Code
+.claude/
+
 # Misc
 .DS_Store
 *.pem
