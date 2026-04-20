@@ -5,6 +5,35 @@
 
 ---
 
+## 2026-04-21 · Sesión 2 (lunes)
+
+**Sprint**: 1.2 · **Trabajé con**: Emilio
+**Tasks cerradas**: S1.2-1, S1.2-2, S1.2-3, S1.2-4, S1.2-5, S1.2-6, S1.2-7, S1.2-8, S1.2-9, S1.2-10, S1.2-11, S1.2-12, S1.2-13
+**Tasks en progreso**: S1.2-14 (requiere Supabase)
+**Commits**:
+
+- `cc46e16` feat(web): S1.2-1→13 hostex-client + páginas propiedades completas
+
+**Decisiones tomadas**:
+
+- Auth de Hostex es `Authorization: Bearer` (no `Access-Token` como decía la doc inicial).
+- Pricing calculado desde catálogo estático (`catalog.ts`) — Hostex no expone endpoint de precios.
+- Availability derivada de `GET /reservations?property_id=X&status=accepted` + detección de overlap local.
+- Colina Estacionamiento (id 12155811) marcada `isVisible: false` — no es unidad habitable.
+- 8 propiedades visibles en total (9 en Hostex, una oculta).
+- `hostex-client` usa mocks automáticamente cuando `HOSTEX_API_TOKEN` no está definido.
+
+**Bloqueos**:
+
+- S1.2-14 (newsletter → Supabase): requiere `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` en `.env.local`. Emilio lo está configurando.
+- PropertyCard en `/propiedades` no tiene rating real aún (Hostex no expone reviews vía API activa). Muestra "Nuevo" por ahora.
+- Imágenes de galería: solo la cover por unidad. La galería múltiple requiere fotos adicionales del propietario.
+- Metadatos de propiedades (bedrooms, bathrooms, maxGuests, precio) son estimados en `catalog.ts` — deben ser verificados con el propietario.
+
+**Próximo paso**: S1.2-14 en cuanto Emilio tenga las keys de Supabase. Después arrancar Sprint 1.3 (reservas + pagos).
+
+---
+
 ## 📋 Formato de entrada
 
 ```markdown
