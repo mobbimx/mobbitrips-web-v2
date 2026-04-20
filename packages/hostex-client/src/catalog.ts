@@ -12,11 +12,11 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12081652: {
     isVisible: true,
     slug: 'colina-14',
-    name: 'Colinas del Café — Unidad 14',
+    name: 'Colina 14',
     shortDescription:
       'Amplio departamento en complejo privado con vista al jardín y acceso a zona BBQ.',
     description:
-      'Descansa en esta espaciosa unidad del complejo Colinas del Café, ubicado en la tranquila colonia Aguacatal de Xalapa. Disfruta de habitaciones luminosas, cocina completamente equipada y acceso al jardín compartido. A pocos minutos del centro histórico, museos y los mejores cafés de la ciudad.',
+      'Descansa en esta espaciosa unidad del complejo Colina, ubicado en la tranquila colonia Aguacatal de Xalapa. Disfruta de habitaciones luminosas, cocina completamente equipada y acceso al jardín compartido. A pocos minutos del centro histórico, museos y los mejores cafés de la ciudad.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_100,
@@ -32,10 +32,10 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12155808: {
     isVisible: true,
     slug: 'colina-4',
-    name: 'Colinas del Café — Unidad 4',
+    name: 'Colina 4',
     shortDescription: 'Acogedor departamento en zona residencial, cerca de todo en Xalapa.',
     description:
-      'La Unidad 4 de Colinas del Café te ofrece todo lo necesario para una estadía perfecta. Ubicada en la colonia Aguacatal, rodeada de vegetación y con el clima fresco característico de Xalapa. Ideal para parejas o viajeros que buscan tranquilidad sin alejarse de la ciudad.',
+      'La Unidad 4 de Colina te ofrece todo lo necesario para una estadía perfecta. Ubicada en la colonia Aguacatal, rodeada de vegetación y con el clima fresco característico de Xalapa. Ideal para parejas o viajeros que buscan tranquilidad sin alejarse de la ciudad.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_000,
@@ -51,10 +51,10 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12155809: {
     isVisible: true,
     slug: 'colina-2',
-    name: 'Colinas del Café — Unidad 2',
+    name: 'Colina 2',
     shortDescription: 'Departamento luminoso con acceso a jardín privado en zona cafetalera.',
     description:
-      'La Unidad 2 de Colinas del Café es perfecta para quienes buscan el equilibrio entre comodidad y naturaleza. Rodeada de jardines y con vistas al área verde del complejo. A pocos minutos del Parque Natura, el Museo de Antropología y el centro de Xalapa.',
+      'La Unidad 2 de Colina es perfecta para quienes buscan el equilibrio entre comodidad y naturaleza. Rodeada de jardines y con vistas al área verde del complejo. A pocos minutos del Parque Natura, el Museo de Antropología y el centro de Xalapa.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_000,
@@ -70,10 +70,10 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12155810: {
     isVisible: true,
     slug: 'colina-6a',
-    name: 'Colinas del Café — Unidad 6A',
+    name: 'Colina 6A',
     shortDescription: 'La unidad más grande del complejo, ideal para grupos y familias de hasta 6.',
     description:
-      'La Unidad 6A es la opción perfecta para familias o grupos que viajan juntos. Con tres habitaciones cómodas, dos baños completos, amplia sala-comedor y cocina totalmente equipada. El complejo Colinas del Café cuenta con jardín, zona de asadores y estacionamiento privado.',
+      'La Unidad 6A es la opción perfecta para familias o grupos que viajan juntos. Con tres habitaciones cómodas, dos baños completos, amplia sala-comedor y cocina totalmente equipada. El complejo Colina cuenta con jardín, zona de asadores y estacionamiento privado.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_400,
@@ -97,7 +97,7 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12155811: {
     isVisible: false,
     slug: 'colina-estacionamiento',
-    name: 'Colinas del Café — Estacionamiento',
+    name: 'Colina Estacionamiento',
     shortDescription: '',
     description: '',
     neighborhood: 'Aguacatal',
@@ -115,11 +115,11 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12298217: {
     isVisible: true,
     slug: 'colina-9',
-    name: 'Colinas del Café — Unidad 9',
+    name: 'Colina 9',
     shortDescription:
       'Cómodo departamento con estacionamiento incluido y vistas al jardín del complejo.',
     description:
-      'La Unidad 9 forma parte del querido complejo Colinas del Café en la colonia Aguacatal. Disfruta del clima perfecto de Xalapa desde un espacio acogedor, bien equipado y con todo lo que necesitas para sentirte como en casa. Perfecto para escapadas de fin de semana.',
+      'La Unidad 9 forma parte del querido complejo Colina en la colonia Aguacatal. Disfruta del clima perfecto de Xalapa desde un espacio acogedor, bien equipado y con todo lo que necesitas para sentirte como en casa. Perfecto para escapadas de fin de semana.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_050,
@@ -135,10 +135,10 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12298218: {
     isVisible: true,
     slug: 'colina-7',
-    name: 'Colinas del Café — Unidad 7',
+    name: 'Colina 7',
     shortDescription: 'Departamento tranquilo en complejo privado, a minutos del centro de Xalapa.',
     description:
-      'La Unidad 7 de Colinas del Café es ideal para quienes buscan privacidad y tranquilidad. Con un ambiente relajado, decoración cálida y todos los servicios básicos. A 10 minutos del centro histórico, parques y restaurantes. El café con leche de Xalapa te espera cada mañana.',
+      'La Unidad 7 de Colina es ideal para quienes buscan privacidad y tranquilidad. Con un ambiente relajado, decoración cálida y todos los servicios básicos. A 10 minutos del centro histórico, parques y restaurantes. El café con leche de Xalapa te espera cada mañana.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_000,
@@ -174,11 +174,11 @@ export const PROPERTY_CATALOG: Record<number, CatalogEntry> = {
   12454379: {
     isVisible: true,
     slug: 'colina-5',
-    name: 'Colinas del Café — Unidad 5',
+    name: 'Colina 5',
     shortDescription:
       'Encantadora unidad con jardín, ambiente cafetalero y vista al cerro de Macuiltépetl.',
     description:
-      'La Unidad 5 de Colinas del Café combina comodidad y naturaleza en perfecta armonía. Con acceso al jardín del complejo, decoración cálida y vistas a la zona arbolada, esta unidad es perfecta para parejas o pequeñas familias. A pocos minutos del Parque Macuiltépetl y los mejores cafés de Xalapa.',
+      'La Unidad 5 de Colina combina comodidad y naturaleza en perfecta armonía. Con acceso al jardín del complejo, decoración cálida y vistas a la zona arbolada, esta unidad es perfecta para parejas o pequeñas familias. A pocos minutos del Parque Macuiltépetl y los mejores cafés de Xalapa.',
     neighborhood: 'Aguacatal',
     location: 'Aguacatal, Xalapa',
     pricePerNight: 1_100,

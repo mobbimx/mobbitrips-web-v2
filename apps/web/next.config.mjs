@@ -7,6 +7,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '*.supabase.co' },
       { protocol: 'https', hostname: '*.hostex.io' },
+      { protocol: 'https', hostname: '*.muscache.cn' },
+      { protocol: 'https', hostname: '*.airbnb.com' },
     ],
   },
   async headers() {

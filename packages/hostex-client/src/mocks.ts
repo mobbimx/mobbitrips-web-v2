@@ -33,7 +33,7 @@ export const MOCK_PROPERTIES: InternalProperty[] = [
   {
     id: 12155810,
     slug: 'colina-6a',
-    name: 'Colinas del Café — Unidad 6A',
+    name: 'Colina — Unidad 6A',
     shortDescription: 'La unidad más grande del complejo, ideal para grupos y familias de hasta 6.',
     description: PROPERTY_CATALOG[12155810]?.description ?? '',
     neighborhood: 'Aguacatal',
@@ -66,7 +66,7 @@ export const MOCK_PROPERTIES: InternalProperty[] = [
   {
     id: 12081652,
     slug: 'colina-14',
-    name: 'Colinas del Café — Unidad 14',
+    name: 'Colina — Unidad 14',
     shortDescription:
       'Amplio departamento en complejo privado con vista al jardín y acceso a zona BBQ.',
     description: PROPERTY_CATALOG[12081652]?.description ?? '',
