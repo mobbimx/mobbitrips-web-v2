@@ -61,7 +61,7 @@ export function NewsletterCTA() {
             ofertas?
           </h2>
           <p className="mt-4 text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            Suscríbete y sé el primero en conocer disponibilidades especiales, guías de Xalapa y
+            Suscríbete y sé el primero en conocer disponibilidades especiales, guías de destino y
             descuentos para reservas directas.
           </p>
         </AnimatedSection>

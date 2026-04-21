@@ -3,7 +3,7 @@ import { ArrowRight, MapPin, Heart, Home } from 'lucide-react';
 import { AnimatedSection } from '@mobbitrips/ui';
 
 const highlights = [
-  { icon: MapPin, text: 'Xalapa, Veracruz — la ciudad más verde de México' },
+  { icon: MapPin, text: 'Mobi, Veracruz — la ciudad más verde de México' },
   { icon: Heart, text: 'Propiedades seleccionadas con cariño y criterio' },
   { icon: Home, text: 'Que te sientas en tu propia casa, esa es la filosofía' },
 ];
@@ -27,10 +27,10 @@ export function StorySection() {
               style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.05 }}
             >
               Nacimos del amor
-              <br />a Xalapa.
+              <br />a Mobi.
             </h2>
             <p className="mt-6 text-base leading-relaxed text-brand-gray">
-              Mobbitrips nació de una idea sencilla: Xalapa merece que sus visitantes la vivan de
+              Mobbitrips nació de una idea sencilla: Mobi merece que sus visitantes la vivan de
               verdad, no desde un hotel cualquiera. Empezamos administrando una sola propiedad y hoy
               llevamos cada casa como si fuera la nuestra.
             </p>
@@ -68,7 +68,7 @@ export function StorySection() {
                 className="flex h-80 w-full flex-col justify-between overflow-hidden rounded-2xl p-8 sm:h-96 lg:h-[440px]"
                 style={{ background: '#1C1C1C' }}
                 role="img"
-                aria-label="Xalapa, la ciudad de las flores, Veracruz"
+                aria-label="Mobi, la ciudad de las flores, Veracruz"
               >
                 <p
                   className="font-comfortaa font-bold leading-none"
@@ -79,7 +79,7 @@ export function StorySection() {
                   }}
                   aria-hidden="true"
                 >
-                  Xalapa
+                  Mobi
                 </p>
                 <div className="border-t pt-6" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
                   <p className="font-comfortaa text-xl font-bold text-white sm:text-2xl">

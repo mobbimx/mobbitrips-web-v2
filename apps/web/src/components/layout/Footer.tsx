@@ -8,7 +8,7 @@ const navLinks = [
   { href: '/propiedades', label: 'Propiedades' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/blog', label: 'Blog' },
-  { href: '/experiencias', label: 'Experiencias en Xalapa' },
+  { href: '/experiencias', label: 'Experiencias' },
 ];
 
 const serviceLinks = [
@@ -42,9 +42,7 @@ export function Footer() {
             <p className="text-sm leading-relaxed text-brand-light">
               Descansa, vive y sueña como si estuvieras en casa.
             </p>
-            <p className="text-xs text-brand-light">
-              Propiedades vacacionales en Xalapa, Veracruz.
-            </p>
+            <p className="text-xs text-brand-light">Propiedades vacacionales en México.</p>
           </div>
 
           {/* Columna 2 — Navegación */}
@@ -114,7 +112,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2 text-sm text-white/80">
                 <MapPin size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-                Xalapa, Veracruz, México
+                México
               </li>
             </ul>
 

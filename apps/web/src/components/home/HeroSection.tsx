@@ -30,7 +30,7 @@ export function HeroSection() {
           <div className="mb-8 flex items-center gap-3">
             <div className="h-px w-10 bg-primary" aria-hidden="true" />
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Xalapa, Veracruz · Rentas vacacionales
+              Propiedades vacacionales en México
             </span>
           </div>
         </AnimatedSection>

@@ -5,7 +5,7 @@ import { PropertiesView } from '@/components/properties/PropertiesView';
 export const metadata: Metadata = {
   title: 'Propiedades — Mobbitrips',
   description:
-    'Explora nuestras propiedades vacacionales en Xalapa, Veracruz. Departamentos y casas para todos los grupos, con reserva directa y los mejores precios.',
+    'Explora nuestras propiedades vacacionales en México. Departamentos y casas para todos los grupos, con reserva directa y los mejores precios.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +19,7 @@ export default async function PropiedadesPage() {
       <div className="bg-white border-b border-brand-border">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <p className="mb-1 text-sm font-semibold uppercase tracking-widest text-primary">
-            Xalapa, Veracruz
+            Propiedades vacacionales
           </p>
           <h1 className="font-comfortaa text-3xl font-bold text-brand-charcoal sm:text-4xl">
             Nuestras propiedades

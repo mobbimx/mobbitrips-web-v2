@@ -40,11 +40,11 @@ export function OwnerTeaser() {
             >
               ¿Tienes una propiedad
               <br />
-              en Xalapa?
+              vacacional?
             </h2>
             <p className="mt-5 text-base leading-relaxed text-brand-gray">
               Únete a la red de propietarios Mobbitrips y convierte tu propiedad en una fuente de
-              ingresos sin complicaciones. Nosotros gestionamos todo, tú cobras.
+              ingresos sin complicaciones. Nosotros gestionamos todo, tú descansas y cobras.
             </p>
             <Link
               href="/servicios"

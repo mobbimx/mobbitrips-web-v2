@@ -15,9 +15,14 @@ export const metadata: Metadata = {
     default: 'Mobbitrips — Descansa, vive y sueña como si estuvieras en casa',
     template: '%s | Mobbitrips',
   },
-  description:
-    'Propiedades vacacionales en Xalapa, Veracruz. Reserva directo y sin intermediarios.',
-  keywords: ['rentas vacacionales', 'Xalapa', 'Veracruz', 'alojamiento', 'casas vacacionales'],
+  description: 'Propiedades vacacionales en México. Reserva directo y sin intermediarios.',
+  keywords: [
+    'rentas vacacionales',
+    'propiedades vacacionales',
+    'México',
+    'alojamiento',
+    'casas vacacionales',
+  ],
   authors: [{ name: 'Mobbitrips' }],
   creator: 'Mobbitrips',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mobbitrips.com'),
