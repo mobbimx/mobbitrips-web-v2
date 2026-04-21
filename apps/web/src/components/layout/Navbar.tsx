@@ -61,7 +61,7 @@ export function Navbar() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-brand-gray transition-colors hover:bg-brand-cream hover:text-brand-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+                  className="px-3 py-2 text-sm font-medium text-brand-gray transition-colors hover:text-brand-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:rounded-lg"
                 >
                   {label}
                 </Link>

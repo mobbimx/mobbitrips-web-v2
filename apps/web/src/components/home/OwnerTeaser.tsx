@@ -22,19 +22,25 @@ const benefits = [
 
 export function OwnerTeaser() {
   return (
-    <section className="bg-primary-soft py-20 sm:py-28" aria-labelledby="owner-heading">
+    <section className="bg-brand-cream py-20 sm:py-28" aria-labelledby="owner-heading">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-          {/* Texto */}
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left: Text */}
           <AnimatedSection direction="right">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Para propietarios
-            </p>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="h-px w-8 bg-primary" aria-hidden="true" />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                Para propietarios
+              </p>
+            </div>
             <h2
               id="owner-heading"
-              className="font-comfortaa text-3xl font-bold text-brand-charcoal sm:text-4xl"
+              className="font-comfortaa font-bold text-brand-charcoal"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.05 }}
             >
-              ¿Tienes una propiedad en Xalapa?
+              ¿Tienes una propiedad
+              <br />
+              en Xalapa?
             </h2>
             <p className="mt-5 text-base leading-relaxed text-brand-gray">
               Únete a la red de propietarios Mobbitrips y convierte tu propiedad en una fuente de
@@ -42,23 +48,23 @@ export function OwnerTeaser() {
             </p>
             <Link
               href="/servicios"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               Quiero listar mi propiedad
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </AnimatedSection>
 
-          {/* Beneficios */}
-          <div className="flex flex-col gap-4">
+          {/* Right: Benefits list */}
+          <div className="flex flex-col divide-y divide-brand-border">
             {benefits.map(({ icon: Icon, title, description }, i) => (
-              <AnimatedSection key={title} direction="left" delay={i * 0.1}>
-                <div className="flex gap-4 rounded-2xl bg-white p-5 shadow-sm">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft">
-                    <Icon size={22} className="text-primary" aria-hidden="true" />
+              <AnimatedSection key={title} direction="left" delay={i * 0.08}>
+                <div className="flex gap-5 py-6 first:pt-0 last:pb-0">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
+                    <Icon size={18} className="text-primary" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="font-comfortaa text-sm font-semibold text-brand-charcoal">
+                    <h3 className="font-comfortaa text-sm font-bold text-brand-charcoal">
                       {title}
                     </h3>
                     <p className="mt-1 text-sm leading-relaxed text-brand-gray">{description}</p>

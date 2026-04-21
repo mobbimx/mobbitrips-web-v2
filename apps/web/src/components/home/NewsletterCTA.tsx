@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { z } from 'zod';
-import { Mail, CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Button, Input, AnimatedSection } from '@mobbitrips/ui';
 
 const emailSchema = z.string().email('Por favor ingresa un correo válido.');
@@ -40,32 +40,43 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section className="bg-white py-20 sm:py-28" aria-labelledby="newsletter-heading">
-      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection direction="up" className="text-center">
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-soft">
-            <Mail size={26} className="text-primary" aria-hidden="true" />
+    <section
+      className="py-20 sm:py-28"
+      style={{ background: '#1C1C1C' }}
+      aria-labelledby="newsletter-heading"
+    >
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <AnimatedSection direction="up">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="h-px w-8 bg-primary" aria-hidden="true" />
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Newsletter</p>
           </div>
           <h2
             id="newsletter-heading"
-            className="font-comfortaa text-3xl font-bold text-brand-charcoal sm:text-4xl"
+            className="font-comfortaa font-bold text-white"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05 }}
           >
-            ¿Quieres las mejores ofertas?
+            ¿Quieres las mejores
+            <br />
+            ofertas?
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-brand-gray">
+          <p className="mt-4 text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Suscríbete y sé el primero en conocer disponibilidades especiales, guías de Xalapa y
-            descuentos exclusivos para reservas directas.
+            descuentos para reservas directas.
           </p>
         </AnimatedSection>
 
         <AnimatedSection direction="up" delay={0.15} className="mt-8">
           {status === 'success' ? (
-            <div className="flex flex-col items-center gap-3 rounded-2xl bg-green-50 p-8 text-center">
-              <CheckCircle2 size={36} className="text-status-success" aria-hidden="true" />
-              <p className="font-comfortaa text-lg font-semibold text-brand-charcoal">
+            <div
+              className="flex flex-col gap-3 rounded-2xl p-8"
+              style={{ background: 'rgba(255,255,255,0.05)' }}
+            >
+              <CheckCircle2 size={28} className="text-primary" aria-hidden="true" />
+              <p className="font-comfortaa text-lg font-semibold text-white">
                 ¡Listo, ya estás suscrito!
               </p>
-              <p className="text-sm text-brand-gray">
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 Pronto recibirás noticias y ofertas en tu correo.
               </p>
             </div>
@@ -94,16 +105,13 @@ export function NewsletterCTA() {
           )}
 
           {status === 'error' && (
-            <p
-              className="mt-3 flex items-center justify-center gap-1.5 text-sm text-status-error"
-              role="alert"
-            >
+            <p className="mt-3 flex items-center gap-1.5 text-sm text-status-error" role="alert">
               <AlertCircle size={14} aria-hidden="true" />
               Ocurrió un error. Por favor intenta de nuevo.
             </p>
           )}
 
-          <p className="mt-4 text-center text-xs text-brand-light">
+          <p className="mt-4 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
             Sin spam. Puedes darte de baja cuando quieras.
           </p>
         </AnimatedSection>

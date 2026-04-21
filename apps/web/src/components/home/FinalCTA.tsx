@@ -10,36 +10,44 @@ const WA_MESSAGE = encodeURIComponent(
 export function FinalCTA() {
   return (
     <section
-      className="relative overflow-hidden py-24 sm:py-32"
+      className="relative overflow-hidden py-24 sm:py-36"
       aria-labelledby="final-cta-heading"
+      style={{ background: 'linear-gradient(135deg, #ED6864 0%, #C94540 100%)' }}
     >
-      {/* Fondo */}
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-br from-primary via-[#E05C58] to-[#D4504C]"
+        className="absolute inset-0 opacity-[0.035]"
         aria-hidden="true"
-      />
-      {/* Círculo decorativo */}
-      <div
-        className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white opacity-5"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white opacity-5"
-        aria-hidden="true"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 20L20 0L40 20L20 40z'/%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundSize: '80px 80px',
+        }}
       />
 
-      <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
         <AnimatedSection direction="up">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-white/70">
+          <p
+            className="mb-5 text-xs font-bold uppercase tracking-[0.25em]"
+            style={{ color: 'rgba(255,255,255,0.55)' }}
+          >
             ¿Listo para tu próxima escapada?
           </p>
           <h2
             id="final-cta-heading"
-            className="font-comfortaa text-4xl font-bold text-white sm:text-5xl lg:text-6xl"
+            className="font-comfortaa font-bold text-white"
+            style={{
+              fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+              lineHeight: 0.95,
+              letterSpacing: '-0.02em',
+            }}
           >
-            Tu hogar lejos de casa te espera en Xalapa
+            Tu hogar lejos
+            <br />
+            de casa te espera.
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/80">
+          <p
+            className="mx-auto mt-6 max-w-md text-base leading-relaxed"
+            style={{ color: 'rgba(255,255,255,0.7)' }}
+          >
             Reserva hoy y empieza a contar los días. Sin complicaciones, sin intermediarios, con
             toda la calidez de Mobbitrips.
           </p>
@@ -52,19 +60,20 @@ export function FinalCTA() {
         >
           <Link
             href="/propiedades"
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-semibold text-primary shadow-lg transition-all duration-200 hover:bg-brand-cream hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-primary shadow-xl transition-all duration-200 hover:bg-brand-cream hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
           >
             <Search size={18} aria-hidden="true" />
-            Ver propiedades disponibles
+            Ver propiedades
           </Link>
           <a
             href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl border-2 border-white/60 px-8 py-4 text-base font-semibold text-white transition-all duration-200 hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            className="inline-flex items-center gap-2 rounded-xl border-2 px-8 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+            style={{ borderColor: 'rgba(255,255,255,0.45)' }}
           >
             <MessageCircle size={18} aria-hidden="true" />
-            Hablar por WhatsApp
+            WhatsApp
           </a>
         </AnimatedSection>
       </div>
