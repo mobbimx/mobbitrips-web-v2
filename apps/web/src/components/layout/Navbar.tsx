@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@mobbitrips/ui';
 import { cn } from '@mobbitrips/ui';
+import { MobbitripsLogo } from './MobbitripsLogo';
 
 const links = [
   { href: '/', label: 'Inicio' },
@@ -48,8 +49,9 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
+            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
           >
+            <MobbitripsLogo size={36} />
             <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
               mobbi<span className="text-primary">trips</span>
             </span>
@@ -116,9 +118,12 @@ export function Navbar() {
               className="fixed right-0 top-0 z-50 flex h-full w-72 flex-col bg-white shadow-xl"
             >
               <div className="flex items-center justify-between border-b border-brand-border px-6 py-5">
-                <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
-                  mobbi<span className="text-primary">trips</span>
-                </span>
+                <div className="flex items-center gap-2.5">
+                  <MobbitripsLogo size={32} />
+                  <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
+                    mobbi<span className="text-primary">trips</span>
+                  </span>
+                </div>
                 <button
                   onClick={() => setOpen(false)}
                   className="rounded-lg p-2 text-brand-gray hover:bg-brand-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
