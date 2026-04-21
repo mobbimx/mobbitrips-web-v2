@@ -5,6 +5,49 @@
 
 ---
 
+## 2026-04-20 · Sesión 3
+
+**Sprint**: 1.3 + 1.4 · **Trabajé con**: Emilio
+
+**Tasks cerradas**:
+
+- Catálogo actualizado con datos reales del CSV (precios, capacidades, descripciones, amenidades)
+- Sprint 1.3 completo: reservas, leads, eventos, Stripe, Resend, contacto
+- Deploy en Vercel (rootDirectory: apps/web, pnpm monorepo)
+- FeaturedProperties home usa datos reales de Hostex (no mocks)
+- DNS configurado en Hostinger → dominio mobbitrips.com apunta a Vercel
+
+**Commits**:
+
+- `9838df4` feat(catalog): update all properties with real data from CSV
+- `6a5fa5e` fix(web): force-dynamic on property detail page
+- `bf428dc` fix(web): trim API token + force-dynamic on propiedades pages
+- `213da93` feat(home): FeaturedProperties usa datos reales de Hostex
+- `544bd0f` chore: update gitignore files from Vercel link
+
+**Decisiones tomadas**:
+
+- Colina Estacionamiento cambiada a isVisible: true — sí es unidad habitable
+- extraGuestFeePerNight corregido a $50 (era $150 incorrecto)
+- Páginas de propiedades como force-dynamic (no static) para evitar calls a Hostex en build time
+- Deploy desde apps/web como rootDirectory, install desde raíz del monorepo
+- DNS: registro A @ → 76.76.21.21, CNAME www → cname.vercel-dns.com
+
+**URLs producción**:
+
+- https://mobbitrips-web.vercel.app (alias permanente)
+- https://mobbitrips.com (DNS propagando, puede tardar hasta 1h)
+
+**Bloqueos activos**:
+
+- STRIPE_WEBHOOK_SECRET vacío — pagos procesan pero reserva no pasa a "paid" automáticamente
+- Resend: dominio mobbitrips.com necesita verificación para enviar emails desde reservas@mobbitrips.com
+- Emilio traerá CSV actualizado mañana con más info de propiedades
+
+**Próximo paso sugerido**: verificar que mobbitrips.com carga v2, luego configurar Stripe webhook en dashboard de Stripe para cerrar el flujo de pagos.
+
+---
+
 ## 2026-04-21 · Sesión 2 (lunes)
 
 **Sprint**: 1.2 · **Trabajé con**: Emilio
