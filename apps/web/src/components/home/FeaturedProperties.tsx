@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { Users, BedDouble, Star, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { Users, BedDouble, ArrowRight, Home } from 'lucide-react';
 import { Badge, AnimatedSection } from '@mobbitrips/ui';
-import { MOCK_PROPERTIES, type MockProperty } from '@/lib/mocks';
+import { getProperties, type InternalProperty } from '@mobbitrips/hostex-client';
 
-function PropertyCard({ property }: { property: MockProperty }) {
+function PropertyCard({ property }: { property: InternalProperty }) {
   const {
     slug,
     name,
@@ -12,9 +13,7 @@ function PropertyCard({ property }: { property: MockProperty }) {
     pricePerNight,
     maxGuests,
     bedrooms,
-    rating,
-    reviewCount,
-    gradient,
+    coverImageUrl,
   } = property;
 
   return (
@@ -23,14 +22,26 @@ function PropertyCard({ property }: { property: MockProperty }) {
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       aria-label={`Ver ${name}`}
     >
-      {/* Imagen placeholder */}
-      <div className={`relative h-52 bg-gradient-to-br ${gradient} overflow-hidden`}>
+      {/* Imagen */}
+      <div className="relative h-52 overflow-hidden bg-brand-border">
+        {coverImageUrl ? (
+          <Image
+            src={coverImageUrl}
+            alt={name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary-soft to-brand-cream">
+            <Home size={40} className="text-primary-light" aria-hidden="true" />
+          </div>
+        )}
         <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/40 to-transparent p-4">
           <Badge variant="coral" className="text-xs">
             Disponible
           </Badge>
         </div>
-        {/* Precio flotante */}
         <div className="absolute right-4 top-4 rounded-xl bg-white/95 px-3 py-1.5 shadow-sm backdrop-blur-sm">
           <span className="text-xs text-brand-gray">desde</span>
           <p className="text-sm font-bold text-brand-charcoal">
@@ -43,7 +54,7 @@ function PropertyCard({ property }: { property: MockProperty }) {
       {/* Contenido */}
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div>
-          <h3 className="font-comfortaa text-lg font-semibold text-brand-charcoal group-hover:text-primary transition-colors duration-200">
+          <h3 className="font-comfortaa text-lg font-semibold text-brand-charcoal transition-colors duration-200 group-hover:text-primary">
             {name}
           </h3>
           <p className="mt-0.5 text-xs text-brand-light">{location}</p>
@@ -51,7 +62,6 @@ function PropertyCard({ property }: { property: MockProperty }) {
 
         <p className="flex-1 text-sm leading-relaxed text-brand-gray">{shortDescription}</p>
 
-        {/* Atributos */}
         <div className="flex items-center gap-4 border-t border-brand-border pt-3 text-xs text-brand-gray">
           <span className="flex items-center gap-1">
             <Users size={13} aria-hidden="true" />
@@ -61,21 +71,18 @@ function PropertyCard({ property }: { property: MockProperty }) {
             <BedDouble size={13} aria-hidden="true" />
             {bedrooms} hab.
           </span>
-          <span className="ml-auto flex items-center gap-1 font-semibold text-brand-charcoal">
-            <Star
-              size={13}
-              className="fill-status-warning text-status-warning"
-              aria-hidden="true"
-            />
-            {rating} ({reviewCount})
-          </span>
         </div>
       </div>
     </Link>
   );
 }
 
-export function FeaturedProperties() {
+export async function FeaturedProperties() {
+  const allProperties = await getProperties().catch(() => []);
+  const properties = allProperties.slice(0, 3);
+
+  if (properties.length === 0) return null;
+
   return (
     <section className="bg-white py-20 sm:py-28" aria-labelledby="featured-heading">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -96,7 +103,7 @@ export function FeaturedProperties() {
         </AnimatedSection>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {MOCK_PROPERTIES.map((property, i) => (
+          {properties.map((property, i) => (
             <AnimatedSection key={property.id} direction="up" delay={i * 0.1}>
               <PropertyCard property={property} />
             </AnimatedSection>

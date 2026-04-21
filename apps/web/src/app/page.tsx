@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 import { HeroSection } from '@/components/home/HeroSection';
 import { FeaturedProperties } from '@/components/home/FeaturedProperties';
 import { WhyBookDirect } from '@/components/home/WhyBookDirect';
