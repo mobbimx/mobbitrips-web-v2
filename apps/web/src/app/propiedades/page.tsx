@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     'Explora nuestras propiedades vacacionales en Xalapa, Veracruz. Departamentos y casas para todos los grupos, con reserva directa y los mejores precios.',
 };
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function PropiedadesPage() {
   const properties = await getProperties();

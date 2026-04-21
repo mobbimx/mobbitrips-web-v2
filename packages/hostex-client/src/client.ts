@@ -9,7 +9,7 @@ function createHostexClient(): AxiosInstance {
     baseURL: process.env.HOSTEX_BASE_URL ?? 'https://api.hostex.io/v3',
     timeout: 10_000,
     headers: {
-      Authorization: `Bearer ${process.env.HOSTEX_API_TOKEN ?? ''}`,
+      Authorization: `Bearer ${(process.env.HOSTEX_API_TOKEN ?? '').trim()}`,
       'Content-Type': 'application/json',
     },
   });
