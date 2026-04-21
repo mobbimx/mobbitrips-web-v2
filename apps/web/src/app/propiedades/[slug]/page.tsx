@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronRight, MapPin, Clock, BedDouble, Bath, Users } from 'lucide-react';
-import { getPropertyBySlug, getProperties } from '@mobbitrips/hostex-client';
+import { getPropertyBySlug } from '@mobbitrips/hostex-client';
 import { PropertyGallery } from '@/components/properties/PropertyGallery';
 import { PropertyAmenities } from '@/components/properties/PropertyAmenities';
 import { BookingWidget } from '@/components/properties/BookingWidget';
@@ -11,12 +11,7 @@ interface PageProps {
   params: { slug: string };
 }
 
-export const revalidate = 1800;
-
-export async function generateStaticParams() {
-  const properties = await getProperties();
-  return properties.map((p) => ({ slug: p.slug }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const property = await getPropertyBySlug(params.slug);
