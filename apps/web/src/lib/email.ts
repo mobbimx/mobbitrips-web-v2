@@ -35,7 +35,7 @@ export async function sendReservationConfirmation(reservation: Reservation, prop
       <div style="margin:28px 0;text-align:center">
         <a href="https://wa.me/${WA}?text=${waMsg}" style="display:inline-block;background:#ED6864;color:#fff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px">Escríbenos por WhatsApp</a>
       </div>
-      <p style="color:#A8A8A8;font-size:13px;text-align:center;margin:0">Folio: ${id.slice(0, 8).toUpperCase()} · Mobbitrips, Xalapa, Ver.</p>
+      <p style="color:#A8A8A8;font-size:13px;text-align:center;margin:0">Folio: ${id.slice(0, 8).toUpperCase()} · Mobbitrips · México</p>
     </div>
   </div>
 </body>

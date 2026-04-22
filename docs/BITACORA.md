@@ -5,6 +5,36 @@
 
 ---
 
+## 2026-04-22 · Sesión 4
+
+**Sprint**: 1.5 (apertura) · **Trabajé con**: Emilio
+
+**Tasks cerradas**:
+
+- Revisión completa del estado del repo (código, APIs, migraciones, componentes)
+- Bug fix: `lib/email.ts` — footer decía "Mobbitrips, Xalapa, Ver." → corregido a "Mobbitrips · México" (consistente con rebrand del último commit)
+- Sprint 1.3+1.4 archivado en `docs/sprints/completados/sprint-1.3-1.4.md`
+- Sprint 1.5 abierto en `SPRINT_ACTUAL.md` con 10 tasks definidas
+
+**Commits**: pendiente al cerrar sesión
+
+**Decisiones tomadas**:
+
+- Sprint 1.3 y 1.4 se consideran **100% completados en código**. Los únicos criterios de cierre pendientes son los dos bloqueadores de configuración externa (Stripe webhook secret + Resend).
+- Sprint 1.5 combina SEO/Performance (original Sprint 1.4) + cierre de bloqueadores (S1.5-1, S1.5-2).
+- Rate limiting in-memory (`ratelimit.ts`) se mantiene para MVP — aceptable con bajo tráfico. Se migrará a Upstash/Redis en Fase 2 si el tráfico lo requiere.
+
+**Bloqueos activos**:
+
+- `STRIPE_WEBHOOK_SECRET` sin configurar → reservas no cambian a "paid" automáticamente
+  - Fix: Stripe Dashboard → Webhooks → endpoint `https://mobbitrips.com/api/webhooks/stripe` → evento `checkout.session.completed` → copiar secret → Vercel env vars → redeploy
+- Resend dominio sin verificar → emails no salen desde `reservas@mobbitrips.com`
+  - Fix: Resend → Domains → mobbitrips.com → agregar registros DNS en Hostinger → verificar → `RESEND_API_KEY` + `RESEND_FROM_EMAIL` en Vercel → redeploy
+
+**Próximo paso sugerido**: S1.5-1 y S1.5-2 (Emilio en dashboards de Stripe + Resend, ~30 min en total). Luego S1.5-3 sitemap.xml y S1.5-4 robots.txt (código puro, sin dependencias externas).
+
+---
+
 ## 2026-04-20 · Sesión 3
 
 **Sprint**: 1.3 + 1.4 · **Trabajé con**: Emilio

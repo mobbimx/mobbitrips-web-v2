@@ -1,4 +1,4 @@
-# 🚀 Sprint Actual — Sprint 1.3: Reservas + Flujo de solicitud
+# 🚀 Sprint Actual — Sprint 1.5: SEO + Performance + Stripe Config
 
 > Este archivo muestra **solo el sprint activo**. Al cerrarlo, se archiva en `docs/sprints/completados/` y se crea uno nuevo.
 
@@ -6,17 +6,17 @@
 
 ## 📌 Info del sprint
 
-- **Sprint**: 1.3 — Reservas + Flujo de solicitud
+- **Sprint**: 1.5 — SEO + Performance + Stripe Config
 - **Fase**: 1 — MVP Web
-- **Fecha inicio**: 2026-04-21
-- **Fecha objetivo**: ~2026-05-05 (calibrado para ~15h/semana)
-- **Objetivo**: Un usuario puede solicitar una reserva desde el BookingWidget, llenar sus datos, y el equipo recibe la solicitud por WhatsApp/email. La reserva queda registrada en Supabase. No hay cobro aún (eso es Sprint 2.x).
+- **Fecha inicio**: 2026-04-22
+- **Fecha objetivo**: ~2026-05-06 (~15h/semana)
+- **Objetivo**: Cerrar los bloqueadores del flujo de pagos y emails. Llevar Lighthouse ≥ 90. Dejar el MVP listo para recibir reservas reales con confirmación automática.
 
 ---
 
 ## 📊 Progreso
 
-**0 / 12 tasks completadas (0%)**
+**0 / 10 tasks completadas (0%)**
 
 ---
 
@@ -28,124 +28,116 @@ _(ninguna aún)_
 
 ## 🔄 En progreso
 
-_(arrancamos con S1.3-1)_
+_(empezamos con S1.5-1 — configuración Stripe)_
 
 ---
 
 ## 📋 Backlog del sprint
 
-### Supabase — tablas
+### 🔧 Cerrar bloqueadores (prioridad máxima)
 
-- [ ] **S1.3-1** Migration `reservations` table `[2 pts]`
-  - Campos: id, property_id (hostex int), property_slug, guest_name, guest_email, guest_phone, check_in_date, check_out_date, guests, status (`pending`|`confirmed`|`cancelled`), total_mxn, notes, created_at.
-  - RLS: solo service_role puede leer/escribir.
-  - Índices: property_id, status, check_in_date.
+- [ ] **S1.5-1** Configurar Stripe webhook en producción `[1 pt]`
+  - En Stripe Dashboard → Developers → Webhooks → Add endpoint
+  - URL: `https://mobbitrips.com/api/webhooks/stripe`
+  - Evento: `checkout.session.completed`
+  - Copiar el signing secret (`whsec_...`)
+  - En Vercel → Settings → Environment Variables → agregar `STRIPE_WEBHOOK_SECRET`
+  - Redeploy y verificar con `stripe trigger checkout.session.completed`
+  - **Criterio**: reserva creada con Stripe pasa a status `paid` automáticamente
 
-- [ ] **S1.3-2** Migration `leads` table `[1 pt]`
-  - Campos: id, name, email, phone, message, source (`contact_form`|`owner_form`|`whatsapp`), created_at.
-  - RLS: solo service_role.
+- [ ] **S1.5-2** Configurar Resend + verificar dominio `[2 pts]`
+  - En Resend → API Keys → crear key → guardar en Vercel como `RESEND_API_KEY`
+  - En Resend → Domains → Add Domain → `mobbitrips.com`
+  - Agregar registros DNS en Hostinger (TXT para SPF + DKIM)
+  - Verificar dominio en Resend
+  - En Vercel: agregar `RESEND_FROM_EMAIL=reservas@mobbitrips.com`
+  - Redeploy y hacer reserva de prueba
+  - **Criterio**: huésped recibe email de confirmación al solicitar reserva
 
-### Formulario de solicitud de reserva
+### 📈 SEO
 
-- [ ] **S1.3-3** Página `/reserva/nueva` `[3 pts]`
-  - Recibe query params: `property`, `from`, `to`, `guests`.
-  - Formulario: nombre completo, email, teléfono (México +52), notas opcionales.
-  - Muestra resumen: propiedad, fechas, huéspedes, desglose de precio.
-  - Validación React Hook Form + Zod.
-  - Submit → POST `/api/reservations`.
-  - Estados: idle / submitting / success / error.
-  - En success: redirige a `/reserva/[id]/exito`.
+- [ ] **S1.5-3** `sitemap.xml` dinámico `[2 pts]`
+  - `apps/web/src/app/sitemap.ts` — Next.js genera automáticamente
+  - Incluir: `/`, `/propiedades`, `/propiedades/[slug]` (todas las propiedades), `/nosotros`, `/servicios`, `/contacto`, `/blog`
+  - Excluir: `/reserva/*`, `/api/*`
+  - Prioridades: home=1.0, propiedades=0.9, detalle=0.8, info=0.6
 
-- [ ] **S1.3-4** `POST /api/reservations` `[3 pts]`
-  - Valida body con Zod.
-  - Verifica disponibilidad de nuevo (checkAvailability) antes de insertar.
-  - Inserta en tabla `reservations` con status `pending`.
-  - Dispara evento `reservation.requested` en tabla `events`.
-  - Rate limiting: 5 req/min por IP.
-  - Responde con `{ id, ok: true }`.
+- [ ] **S1.5-4** `robots.txt` `[0.5 pts]`
+  - `apps/web/src/app/robots.ts`
+  - Bloquear: `/api/*`, `/reserva/*`
+  - Allow: todo lo demás
+  - Sitemap pointer
 
-- [ ] **S1.3-5** Página `/reserva/[id]/exito` `[1 pt]`
-  - Muestra confirmación: "Tu solicitud fue recibida".
-  - Datos del resumen de la reserva (fetch desde `/api/reservations/[id]`).
-  - CTA: "Escríbenos por WhatsApp" → wa.me con mensaje pre-armado.
+- [ ] **S1.5-5** Meta tags completos en todas las páginas `[2 pts]`
+  - Revisar que cada `page.tsx` tenga `metadata` con `title`, `description`, `openGraph`
+  - Prioridad: home, /propiedades, /propiedades/[slug]
+  - OG image: usar la cover photo de cada propiedad para el slug
+  - Verificar en https://opengraph.xyz
 
-### Tabla `events` de Supabase (audit trail)
+### ⚡ Performance
 
-- [ ] **S1.3-6** Migration `events` table `[1 pt]`
-  - Campos: id, event_type (text), payload (jsonb), created_at.
-  - RLS: solo service_role.
-  - Esta tabla es el bus de eventos que consumirá n8n en Sprint 2.
+- [ ] **S1.5-6** Auditoría Lighthouse y correcciones `[2 pts]`
+  - Correr Lighthouse en `/`, `/propiedades`, `/propiedades/[slug]`
+  - Objetivo: ≥ 90 en Performance, ≥ 95 en Accessibility, SEO, Best Practices
+  - Issues comunes: `priority` en above-fold images, LCP, alt texts
+  - Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
 
-### Notificaciones básicas
+- [ ] **S1.5-7** Optimizar imágenes de propiedades `[1 pt]`
+  - Verificar que todas las `<Image>` de Hostex usen `sizes` correcto
+  - Agregar `priority` a la primera imagen del detalle de propiedad
+  - Lazy loading en galería
 
-- [ ] **S1.3-7** Email de confirmación al huésped `[2 pts]`
-  - Instalar y configurar Resend (`RESEND_API_KEY` en .env.local).
-  - Template simple: nombre, propiedad, fechas, total, botón WhatsApp.
-  - Enviado desde `/api/reservations` al crear la reserva.
-  - From: `reservas@mobbitrips.com` (o el dominio que esté configurado en Resend).
+### 🎨 UX rápido
 
-- [ ] **S1.3-8** Notificación interna por WhatsApp `[1 pt]`
-  - Mensaje wa.me (link) en la página de éxito con datos pre-llenados.
-  - No requiere WhatsApp Cloud API aún (eso es Sprint 2.2).
+- [ ] **S1.5-8** Error 404 personalizado `[1 pt]`
+  - `apps/web/src/app/not-found.tsx`
+  - Mensaje amigable con CTA a `/propiedades`
+  - Misma identidad visual
 
-### Página de contacto
+- [ ] **S1.5-9** Loading states globales `[0.5 pts]`
+  - Revisar que `/propiedades` y `/propiedades/[slug]` tengan `loading.tsx`
+  - Skeletons con forma de la UI real
 
-- [ ] **S1.3-9** Formulario `/contacto` funcional `[2 pts]`
-  - Actualmente es placeholder. Implementar con React Hook Form + Zod.
-  - Campos: nombre, email, teléfono, mensaje.
-  - Submit → POST `/api/leads` → inserta en tabla `leads`.
-  - Confirmación inline, no redirige.
-
-- [ ] **S1.3-10** `POST /api/leads` `[1 pt]`
-  - Valida body.
-  - Inserta en `leads`.
-  - Dispara evento `lead.created` en `events`.
-
-### Mejoras menores
-
-- [ ] **S1.3-11** Actualizar `FeaturedProperties` del home para usar datos reales `[1 pt]`
-  - Cambiar de `MOCK_PROPERTIES` a `getProperties()` (Server Component).
-  - Mostrar cover image real de Hostex en lugar de gradiente.
-
-- [ ] **S1.3-12** Página de propiedades — estado `[slug]` mejorado `[1 pt]`
-  - Mostrar badge de disponibilidad real en PropertyCard (llamada rápida por propiedad).
-  - O simplemente quitar el badge "Disponible" hardcodeado si no hay dato real.
+- [ ] **S1.5-10** Verificar flujo completo end-to-end en producción `[1 pt]`
+  - Crear reserva real con tarjeta de prueba Stripe (`4242 4242 4242 4242`)
+  - Verificar: email llega → reserva en Supabase cambia a "paid" → evento en `events`
+  - Documentar resultado en BITACORA
 
 ---
 
 ## 🎯 Criterios de cierre del sprint
 
-- [ ] `pnpm lint` y `pnpm type-check` pasan.
-- [ ] Un usuario puede completar el flujo: ver propiedad → seleccionar fechas → llenar datos → recibir confirmación.
-- [ ] La reserva aparece en tabla `reservations` de Supabase con status `pending`.
-- [ ] El huésped recibe email de confirmación.
-- [ ] El evento `reservation.requested` queda en tabla `events`.
-- [ ] Formulario de contacto guarda leads en Supabase.
+- [ ] `STRIPE_WEBHOOK_SECRET` configurado y verificado en producción
+- [ ] Emails de confirmación funcionando desde `reservas@mobbitrips.com`
+- [ ] Lighthouse ≥ 90/95/95/95 en home
+- [ ] `sitemap.xml` y `robots.txt` accesibles en producción
+- [ ] Flujo end-to-end probado con tarjeta real de prueba
+- [ ] `pnpm lint` y `pnpm type-check` pasan
 
 ---
 
-## 🚨 Bloqueos
+## 🚨 Bloqueos activos
 
-- **Resend**: necesita cuenta y `RESEND_API_KEY`. Si no está disponible, S1.3-7 se omite.
-- **Dominio de email**: `reservas@mobbitrips.com` requiere dominio verificado en Resend. Alternativa: usar el email de sandbox de Resend temporalmente.
+- **S1.5-1**: Requiere acceso a Stripe Dashboard (Emilio) + copiar secret a Vercel
+- **S1.5-2**: Requiere acceso a Resend + acceso al DNS en Hostinger para agregar registros
 
 ---
 
 ## 📝 Notas del sprint
 
-- El flujo de pago real (Stripe/PayU) se implementa en Sprint 2.x. Por ahora la reserva queda `pending` y el equipo la confirma manualmente.
-- La tabla `events` es el corazón del sistema de automatización. Cada evento que insertemos aquí será consumido por n8n en Sprint 2.1.
-- `packages/supabase-client` se puede crear en este sprint o en el siguiente, dependiendo del tiempo. Por ahora usamos `apps/web/src/lib/supabase.ts` directamente.
+- S1.5-1 y S1.5-2 son tasks de configuración pura (no código) — pueden hacerse en 30 min combinados
+- Una vez cerrados esos dos, el MVP de reservas está 100% funcional
+- SEO con Next.js App Router es muy sencillo (`sitemap.ts`, `robots.ts`, `metadata` en cada page)
+- No implementar GA4/Meta Pixel aún — eso es Sprint 2.x
 
 ---
 
-## 🔗 Próximo sprint
+## 🔗 Sprints
 
-**Sprint 1.4 — SEO + Performance + Deploy**
-
-Objetivo: Lighthouse ≥ 90, sitemap, robots.txt, meta tags completos, deploy en Vercel con variables de entorno configuradas.
+**Sprint anterior**: 1.3 + 1.4 — `docs/sprints/completados/sprint-1.3-1.4.md`
+**Próximo sprint previsto**: 2.1 — n8n + automatización de reservas
 
 ---
 
-**Sprint anterior**: 1.2 — `docs/sprints/completados/sprint-1.2.md`
+**Sprint anterior**: 1.3 + 1.4 · `docs/sprints/completados/sprint-1.3-1.4.md`
 **Ver todos los sprints completados**: `docs/sprints/completados/`
