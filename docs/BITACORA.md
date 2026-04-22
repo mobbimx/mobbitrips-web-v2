@@ -5,6 +5,42 @@
 
 ---
 
+## 2026-04-22 · Sesión 5 (en pausa)
+
+**Sprint**: 1.5 · **Trabajé con**: Emilio
+
+**Tasks cerradas**:
+
+- docs ✅ Sprint 1.5 actualizado: 7/10 tasks marcadas como completadas (estaba en 0/10 por error)
+
+**Avance de configuración Stripe (incompleto, retomar aquí)**:
+
+- ✅ Cuenta Stripe nueva creada (separada de la cuenta comprometida por Lodgify)
+- ✅ Webhook creado en Stripe Workbench → Webhooks → `Mobbitrips Producción`
+  - URL: `https://mobbitrips.com/api/webhooks/stripe`
+  - Evento: `checkout.session.completed`
+  - Modo: **test** (Entorno de prueba)
+- ⏳ `STRIPE_WEBHOOK_SECRET` obtenido (`whsec_...`) — **pendiente agregar en Vercel**
+- ⏳ `STRIPE_SECRET_KEY` pendiente — obtener desde Stripe → Claves de API (`sk_test_...`)
+
+**Commits**:
+
+- `(ninguno esta sesión — solo docs)`
+
+**Próximo paso al retomar** (exactamente aquí se quedó):
+
+1. Ir a Vercel → Settings → Environment Variables → agregar `STRIPE_WEBHOOK_SECRET`
+2. Ir a Stripe Workbench → Claves de API → copiar `sk_test_...` → agregar en Vercel como `STRIPE_SECRET_KEY`
+3. Redeploy en Vercel
+4. Probar end-to-end con tarjeta `4242 4242 4242 4242`
+
+**Bloqueos activos**:
+
+- S1.5-1: Stripe webhook creado pero falta agregar secrets en Vercel
+- S1.5-10: Depende de que estén los secrets en Vercel
+
+---
+
 ## 2026-04-22 · Sesión 4 (completa)
 
 **Sprint**: 1.5 · **Trabajé con**: Emilio
@@ -44,12 +80,7 @@
 **Próximo paso sugerido**:
 
 1. Actualizar `RESEND_FROM_EMAIL` en Vercel → hacer reserva de prueba y verificar que llegue el email
-2. Crear cuenta Stripe nueva → actualizar `STRIPE_SECRET_KEY` → configurar webhook → probar pago end-to-end
-
-- Resend dominio sin verificar → emails no salen desde `reservas@mobbitrips.com`
-  - Fix: Resend → Domains → mobbitrips.com → agregar registros DNS en Hostinger → verificar → `RESEND_API_KEY` + `RESEND_FROM_EMAIL` en Vercel → redeploy
-
-**Próximo paso sugerido**: S1.5-1 y S1.5-2 (Emilio en dashboards de Stripe + Resend, ~30 min en total). Luego S1.5-3 sitemap.xml y S1.5-4 robots.txt (código puro, sin dependencias externas).
+2. Crear cuenta Stripe nueva (sin Lodgify) → actualizar `STRIPE_SECRET_KEY` → configurar webhook → probar pago end-to-end
 
 ---
 

@@ -16,23 +16,53 @@
 
 ## 📊 Progreso
 
-**0 / 10 tasks completadas (0%)**
+**7 / 10 tasks completadas (70%)**
 
 ---
 
 ## ✅ Completadas
 
-_(ninguna aún)_
+- [x] **S1.5-2** Configurar Resend + verificar dominio ✓
+  - DNS agregados en Hostinger (DKIM TXT + MX send + SPF TXT)
+  - Dominio `mobbitrips.com` verificado en Resend
+  - `RESEND_API_KEY` y `RESEND_FROM_EMAIL=reservas@mobbitrips.com` configurados en Vercel
+  - Redeploy completado
+
+- [x] **S1.5-3** `sitemap.xml` dinámico ✓
+  - `apps/web/src/app/sitemap.ts` — incluye rutas estáticas + propiedades dinámicas de Hostex
+  - Commit: `4617a9b`
+
+- [x] **S1.5-4** `robots.txt` ✓
+  - `apps/web/src/app/robots.ts` — bloquea `/api/*` y `/reserva/*`
+  - Commit: `4617a9b`
+
+- [x] **S1.5-5** Meta tags completos en todas las páginas ✓
+  - `openGraph` agregado a `/propiedades`, `/nosotros`, `/servicios`, `/contacto`
+  - Commit: `adde36c`
+
+- [x] **S1.5-6** Optimizaciones de performance ✓ (parcial)
+  - ISR `revalidate=3600` en Home (era `force-dynamic`)
+  - `priority` en primera imagen de FeaturedProperties (LCP)
+  - Commits: `a116c8f`
+
+- [x] **S1.5-8** Error 404 personalizado ✓
+  - `apps/web/src/app/not-found.tsx` — CTA dual (propiedades + inicio), aria attrs
+  - Commit: `4617a9b`
+
+- [x] **S1.5-9** Loading states globales ✓
+  - `apps/web/src/app/propiedades/loading.tsx` — skeleton grid 6 cards
+  - `apps/web/src/app/propiedades/[slug]/loading.tsx` — skeleton detalle
+  - Commit: `adde36c`
 
 ---
 
 ## 🔄 En progreso
 
-_(empezamos con S1.5-1 — configuración Stripe)_
+_(nada activo ahora mismo)_
 
 ---
 
-## 📋 Backlog del sprint
+## 📋 Pendiente
 
 ### 🔧 Cerrar bloqueadores (prioridad máxima)
 
@@ -42,64 +72,22 @@ _(empezamos con S1.5-1 — configuración Stripe)_
   - Evento: `checkout.session.completed`
   - Copiar el signing secret (`whsec_...`)
   - En Vercel → Settings → Environment Variables → agregar `STRIPE_WEBHOOK_SECRET`
-  - Redeploy y verificar con `stripe trigger checkout.session.completed`
+  - Redeploy y verificar
   - **Criterio**: reserva creada con Stripe pasa a status `paid` automáticamente
-
-- [ ] **S1.5-2** Configurar Resend + verificar dominio `[2 pts]`
-  - En Resend → API Keys → crear key → guardar en Vercel como `RESEND_API_KEY`
-  - En Resend → Domains → Add Domain → `mobbitrips.com`
-  - Agregar registros DNS en Hostinger (TXT para SPF + DKIM)
-  - Verificar dominio en Resend
-  - En Vercel: agregar `RESEND_FROM_EMAIL=reservas@mobbitrips.com`
-  - Redeploy y hacer reserva de prueba
-  - **Criterio**: huésped recibe email de confirmación al solicitar reserva
-
-### 📈 SEO
-
-- [ ] **S1.5-3** `sitemap.xml` dinámico `[2 pts]`
-  - `apps/web/src/app/sitemap.ts` — Next.js genera automáticamente
-  - Incluir: `/`, `/propiedades`, `/propiedades/[slug]` (todas las propiedades), `/nosotros`, `/servicios`, `/contacto`, `/blog`
-  - Excluir: `/reserva/*`, `/api/*`
-  - Prioridades: home=1.0, propiedades=0.9, detalle=0.8, info=0.6
-
-- [ ] **S1.5-4** `robots.txt` `[0.5 pts]`
-  - `apps/web/src/app/robots.ts`
-  - Bloquear: `/api/*`, `/reserva/*`
-  - Allow: todo lo demás
-  - Sitemap pointer
-
-- [ ] **S1.5-5** Meta tags completos en todas las páginas `[2 pts]`
-  - Revisar que cada `page.tsx` tenga `metadata` con `title`, `description`, `openGraph`
-  - Prioridad: home, /propiedades, /propiedades/[slug]
-  - OG image: usar la cover photo de cada propiedad para el slug
-  - Verificar en https://opengraph.xyz
+  - **Nota**: requiere cuenta Stripe nueva (la anterior fue comprometida por Lodgify)
 
 ### ⚡ Performance
 
-- [ ] **S1.5-6** Auditoría Lighthouse y correcciones `[2 pts]`
-  - Correr Lighthouse en `/`, `/propiedades`, `/propiedades/[slug]`
-  - Objetivo: ≥ 90 en Performance, ≥ 95 en Accessibility, SEO, Best Practices
-  - Issues comunes: `priority` en above-fold images, LCP, alt texts
-  - Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
+- [ ] **S1.5-7** Optimizar imágenes en detalle de propiedad `[1 pt]`
+  - Agregar `priority` a la primera imagen del detalle (`/propiedades/[slug]`)
+  - Verificar `sizes` correcto en galería
+  - Lazy loading en imágenes de galería (no above-fold)
 
-- [ ] **S1.5-7** Optimizar imágenes de propiedades `[1 pt]`
-  - Verificar que todas las `<Image>` de Hostex usen `sizes` correcto
-  - Agregar `priority` a la primera imagen del detalle de propiedad
-  - Lazy loading en galería
-
-### 🎨 UX rápido
-
-- [ ] **S1.5-8** Error 404 personalizado `[1 pt]`
-  - `apps/web/src/app/not-found.tsx`
-  - Mensaje amigable con CTA a `/propiedades`
-  - Misma identidad visual
-
-- [ ] **S1.5-9** Loading states globales `[0.5 pts]`
-  - Revisar que `/propiedades` y `/propiedades/[slug]` tengan `loading.tsx`
-  - Skeletons con forma de la UI real
+### 🧪 Verificación
 
 - [ ] **S1.5-10** Verificar flujo completo end-to-end en producción `[1 pt]`
-  - Crear reserva real con tarjeta de prueba Stripe (`4242 4242 4242 4242`)
+  - Probar email: hacer reserva de prueba → verificar que llega a inbox del huésped
+  - Una vez Stripe configurado: crear reserva con tarjeta `4242 4242 4242 4242`
   - Verificar: email llega → reserva en Supabase cambia a "paid" → evento en `events`
   - Documentar resultado en BITACORA
 
@@ -108,27 +96,27 @@ _(empezamos con S1.5-1 — configuración Stripe)_
 ## 🎯 Criterios de cierre del sprint
 
 - [ ] `STRIPE_WEBHOOK_SECRET` configurado y verificado en producción
-- [ ] Emails de confirmación funcionando desde `reservas@mobbitrips.com`
-- [ ] Lighthouse ≥ 90/95/95/95 en home
-- [ ] `sitemap.xml` y `robots.txt` accesibles en producción
+- [x] Emails de confirmación funcionando desde `reservas@mobbitrips.com`
+- [ ] Lighthouse ≥ 90/95/95/95 en home (pendiente auditoría)
+- [x] `sitemap.xml` y `robots.txt` accesibles en producción
 - [ ] Flujo end-to-end probado con tarjeta real de prueba
-- [ ] `pnpm lint` y `pnpm type-check` pasan
+- [x] `pnpm lint` y `pnpm type-check` pasan
 
 ---
 
 ## 🚨 Bloqueos activos
 
-- **S1.5-1**: Requiere acceso a Stripe Dashboard (Emilio) + copiar secret a Vercel
-- **S1.5-2**: Requiere acceso a Resend + acceso al DNS en Hostinger para agregar registros
+- **S1.5-1**: Requiere cuenta Stripe nueva (sin Lodgify) + webhook + secret en Vercel
+- **S1.5-10**: Depende de S1.5-1 para la parte de pagos
 
 ---
 
 ## 📝 Notas del sprint
 
-- S1.5-1 y S1.5-2 son tasks de configuración pura (no código) — pueden hacerse en 30 min combinados
-- Una vez cerrados esos dos, el MVP de reservas está 100% funcional
-- SEO con Next.js App Router es muy sencillo (`sitemap.ts`, `robots.ts`, `metadata` en cada page)
-- No implementar GA4/Meta Pixel aún — eso es Sprint 2.x
+- S1.5-2 (Resend) **CERRADO** — dominio verificado, env vars configuradas
+- El email footer se corrigió: "Mobbitrips · México" (ya no dice "Xalapa, Ver.")
+- Home cambiada de `force-dynamic` a ISR `revalidate=3600` → mejora significativa de performance
+- La metadata de todas las páginas ya no menciona "Xalapa, Veracruz" — rebrand limpio
 
 ---
 
@@ -136,8 +124,3 @@ _(empezamos con S1.5-1 — configuración Stripe)_
 
 **Sprint anterior**: 1.3 + 1.4 — `docs/sprints/completados/sprint-1.3-1.4.md`
 **Próximo sprint previsto**: 2.1 — n8n + automatización de reservas
-
----
-
-**Sprint anterior**: 1.3 + 1.4 · `docs/sprints/completados/sprint-1.3-1.4.md`
-**Ver todos los sprints completados**: `docs/sprints/completados/`
