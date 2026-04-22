@@ -4,7 +4,13 @@ import { Users, BedDouble, Home, ArrowRight } from 'lucide-react';
 import { AnimatedSection } from '@mobbitrips/ui';
 import { getProperties, type InternalProperty } from '@mobbitrips/hostex-client';
 
-function PropertyCard({ property }: { property: InternalProperty }) {
+function PropertyCard({
+  property,
+  priority = false,
+}: {
+  property: InternalProperty;
+  priority?: boolean;
+}) {
   const {
     slug,
     name,
@@ -30,6 +36,7 @@ function PropertyCard({ property }: { property: InternalProperty }) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            priority={priority}
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary-soft to-brand-cream">
@@ -111,7 +118,7 @@ export async function FeaturedProperties() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {properties.map((property, i) => (
             <AnimatedSection key={property.id} direction="up" delay={i * 0.1}>
-              <PropertyCard property={property} />
+              <PropertyCard property={property} priority={i === 0} />
             </AnimatedSection>
           ))}
         </div>
