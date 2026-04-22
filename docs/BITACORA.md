@@ -5,29 +5,47 @@
 
 ---
 
-## 2026-04-22 · Sesión 4
+## 2026-04-22 · Sesión 4 (completa)
 
-**Sprint**: 1.5 (apertura) · **Trabajé con**: Emilio
+**Sprint**: 1.5 · **Trabajé con**: Emilio
 
 **Tasks cerradas**:
 
-- Revisión completa del estado del repo (código, APIs, migraciones, componentes)
-- Bug fix: `lib/email.ts` — footer decía "Mobbitrips, Xalapa, Ver." → corregido a "Mobbitrips · México" (consistente con rebrand del último commit)
-- Sprint 1.3+1.4 archivado en `docs/sprints/completados/sprint-1.3-1.4.md`
-- Sprint 1.5 abierto en `SPRINT_ACTUAL.md` con 10 tasks definidas
+- S1.5-2 ✅ Resend configurado y dominio `mobbitrips.com` verificado — emails desde `reservas@mobbitrips.com` funcionando
+- S1.5-3 ✅ `sitemap.ts` dinámico (rutas estáticas + slugs de propiedades desde Hostex)
+- S1.5-4 ✅ `robots.ts` (bloquea /api/_ y /reserva/_)
+- S1.5-5 ✅ OG tags completos en home, /propiedades, /nosotros, /servicios, /contacto
+- S1.5-8 ✅ `not-found.tsx` mejorado con CTA doble y aria attrs
+- S1.5-9 ✅ `loading.tsx` en /propiedades y /propiedades/[slug] con skeletons animados
+- fix ✅ `email.ts` footer "Xalapa, Ver." → "México"
+- fix ✅ Home `description` metadata "Xalapa, Veracruz" → "México"
+- perf ✅ Home cambiada de `force-dynamic` a ISR `revalidate=3600` (caché 1h, no llama Hostex en cada visita)
+- perf ✅ Primera imagen de FeaturedProperties con `priority` (mejora LCP)
+- docs ✅ Sprint 1.3+1.4 archivado, Sprint 1.5 abierto
 
-**Commits**: pendiente al cerrar sesión
+**Commits**:
+
+- `4617a9b` feat(web): SEO sitemap + robots + 404 mejorado + fix email rebrand
+- `adde36c` feat(web): loading skeletons + OG tags en páginas estáticas
+- `a116c8f` perf(home): ISR revalidate 1h + fix metadata rebrand + LCP priority image
 
 **Decisiones tomadas**:
 
-- Sprint 1.3 y 1.4 se consideran **100% completados en código**. Los únicos criterios de cierre pendientes son los dos bloqueadores de configuración externa (Stripe webhook secret + Resend).
-- Sprint 1.5 combina SEO/Performance (original Sprint 1.4) + cierre de bloqueadores (S1.5-1, S1.5-2).
-- Rate limiting in-memory (`ratelimit.ts`) se mantiene para MVP — aceptable con bajo tráfico. Se migrará a Upstash/Redis en Fase 2 si el tráfico lo requiere.
+- Stripe: cuenta actual comprometida por Lodgify (se pusieron como admins). Emilio necesita cuenta nueva — el código no requiere ningún cambio, solo actualizar `STRIPE_SECRET_KEY` y configurar webhook.
+- Resend: dominio verificado usando la cuenta `mobbimx` que ya existía. Key nueva creada por Emilio (`re_GScGreq...`). Valores placeholder `YOUR_SECRET_VALUE_GOES_HERE` reemplazados en Vercel.
+- Rate limiting in-memory se mantiene para MVP.
 
 **Bloqueos activos**:
 
-- `STRIPE_WEBHOOK_SECRET` sin configurar → reservas no cambian a "paid" automáticamente
-  - Fix: Stripe Dashboard → Webhooks → endpoint `https://mobbitrips.com/api/webhooks/stripe` → evento `checkout.session.completed` → copiar secret → Vercel env vars → redeploy
+- `STRIPE_WEBHOOK_SECRET` sin configurar → reservas no pasan a "paid" automáticamente
+  - Requiere cuenta Stripe nueva (sin Lodgify como admin) → nuevo `STRIPE_SECRET_KEY` + webhook configurado
+- `RESEND_FROM_EMAIL` en Vercel aún con valor placeholder → actualizar a `reservas@mobbitrips.com`
+
+**Próximo paso sugerido**:
+
+1. Actualizar `RESEND_FROM_EMAIL` en Vercel → hacer reserva de prueba y verificar que llegue el email
+2. Crear cuenta Stripe nueva → actualizar `STRIPE_SECRET_KEY` → configurar webhook → probar pago end-to-end
+
 - Resend dominio sin verificar → emails no salen desde `reservas@mobbitrips.com`
   - Fix: Resend → Domains → mobbitrips.com → agregar registros DNS en Hostinger → verificar → `RESEND_API_KEY` + `RESEND_FROM_EMAIL` en Vercel → redeploy
 
