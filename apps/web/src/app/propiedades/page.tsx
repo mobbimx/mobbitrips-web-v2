@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: 'Propiedades — Mobbitrips',
   description:
     'Explora nuestras propiedades vacacionales en México. Departamentos y casas para todos los grupos, con reserva directa y los mejores precios.',
+  openGraph: {
+    title: 'Propiedades vacacionales — Mobbitrips',
+    description:
+      'Departamentos y casas en México. Reserva directo, sin intermediarios, y paga menos.',
+    url: '/propiedades',
+  },
 };
 
 export const dynamic = 'force-dynamic';

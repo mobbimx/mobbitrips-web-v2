@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: 'Nosotros — Mobbitrips',
   description:
     'Conoce la historia y el equipo detrás de Mobbitrips. Hacemos que cada viaje se sienta como en casa.',
+  openGraph: {
+    title: 'Nosotros — Mobbitrips',
+    description:
+      'Conoce la historia y el equipo detrás de Mobbitrips. Hacemos que cada viaje se sienta como en casa.',
+    url: '/nosotros',
+  },
 };
 
 const values = [
