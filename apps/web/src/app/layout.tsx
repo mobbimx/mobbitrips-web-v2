@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { comfortaa, inter } from '@/lib/fonts';
+import { comfortaa, inter, caveat } from '@/lib/fonts';
 import {
   GoogleTagManagerScript,
   GoogleTagManagerNoscript,
@@ -38,7 +38,7 @@ const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${comfortaa.variable} ${inter.variable}`}>
+    <html lang="es" className={`${comfortaa.variable} ${inter.variable} ${caveat.variable}`}>
       <body className="bg-brand-cream text-brand-charcoal antialiased">
         {gtmId && <GoogleTagManagerScript gtmId={gtmId} />}
         {gtmId && <GoogleTagManagerNoscript gtmId={gtmId} />}

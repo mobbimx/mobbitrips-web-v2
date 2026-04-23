@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,10 +18,28 @@ const links = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const lastYRef = useRef(0);
+  const accDownRef = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 80);
+      const delta = y - lastYRef.current;
+      if (y < 80) {
+        setHidden(false);
+        accDownRef.current = 0;
+      } else if (delta > 0) {
+        accDownRef.current += delta;
+        if (accDownRef.current > 80) setHidden(true);
+      } else if (delta < 0) {
+        setHidden(false);
+        accDownRef.current = 0;
+      }
+      lastYRef.current = y;
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -38,9 +56,21 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
-          scrolled ? 'h-16 bg-white/95 shadow-sm backdrop-blur-sm' : 'h-[72px] bg-white',
+          'fixed top-0 left-0 right-0 z-40 transition-all duration-[400ms]',
+          scrolled
+            ? 'h-16 border-b border-white/50 shadow-sm'
+            : 'h-[72px] bg-transparent',
+          hidden && !open ? '-translate-y-full' : 'translate-y-0',
         )}
+        style={
+          scrolled
+            ? {
+                background: 'rgba(250,247,242,0.82)',
+                backdropFilter: 'blur(24px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              }
+            : undefined
+        }
       >
         <nav
           className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"

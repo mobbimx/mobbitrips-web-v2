@@ -82,7 +82,7 @@ export async function FeaturedProperties() {
   if (properties.length === 0) return null;
 
   return (
-    <section className="bg-white py-20 sm:py-28" aria-labelledby="featured-heading">
+    <section id="featured-properties" className="bg-white py-20 sm:py-28" aria-labelledby="featured-heading">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection direction="up" className="mb-12">
           <div className="mb-4 flex items-center gap-3">
