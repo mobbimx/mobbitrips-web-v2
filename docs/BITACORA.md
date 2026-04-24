@@ -5,6 +5,48 @@
 
 ---
 
+## 2026-04-23 · Sesión 6 — Diseño Hero (continúa mañana en oficina)
+
+**Sprint**: 1.5 · Trabajé con: Emilio
+
+**Foco de la sesión**: Metodología Claude Design → Claude Code + refinamiento Hero standalone
+
+**Tasks cerradas**:
+
+- chore ✅ Metodología de trabajo formalizada: Claude Design genera secciones grandes → Claude Code afina detalles en browser → HTML final sube de vuelta como contexto a Claude Design
+- chore ✅ `design/WORKFLOW.md` documentado con flujo completo + convenciones de naming
+- chore ✅ `design/exports/hero-v1-editable.html` creado: HTML standalone extraído del bundle de Claude Design, con fuentes locales, logo base64 embebido, CSS design tokens inline
+- chore ✅ `apps/web/src/components/sections/` creada (`.gitkeep`) — carpeta destino de secciones convertidas
+- chore ✅ `apps/web/CLAUDE.md` actualizado: flujo Claude Design, carpeta sections/, design tokens
+
+**Ajustes aplicados al Hero (hero-v1-editable.html)**:
+- ✅ Animaciones ~20% más rápidas: eyebrow 800→640ms, words 900→720ms, script 1200→950ms, lede 700→560ms, search 1000→800ms, CTAs 600→480ms, scroll indicator 800→640ms
+- ✅ Navbar: liquid glass→sólido ahora dispara a 40px scroll (era 80px) con 180ms de transición (era 400ms)
+- ✅ Espaciado redistribuido: menos aire arriba (padding hero 96→72px, content padding-top 50→16px), más respiración entre elementos (headline 12→20px, lede 12→28px, search 16→32px, CTAs 16→24px)
+- ✅ Search pill: padding horizontal 14→10px por sección + overflow:hidden en sección → fix truncado de texto en viewports 768-900px
+- ✅ Placeholder texts acortados: "¿A dónde quieres ir?" → "Xalapa, México", "Agrega" → "Añade"
+
+**Pendiente (continuar mañana en la oficina)**:
+- 🔲 Verificar en browser que search pill ya no trunca texto en viewports ~768-900px
+- 🔲 Aprobar visualmente el Hero completo en mobile (375px) y desktop (1440px)
+- 🔲 Una vez aprobado el Hero → convertir a `apps/web/src/components/sections/HeroSection.tsx`
+- 🔲 Continuar con la siguiente sección (abrir Claude Design con hero-v1-editable.html como contexto)
+
+**Archivo principal de trabajo**:
+```
+design/exports/hero-v1-editable.html
+```
+Abrir este archivo en el browser y verificar el search pill antes de seguir.
+
+**Commits**:
+- `47ae98f` chore(design): hero editable standalone listo para afinar
+- `(esta sesión)` chore(design): ajustes Hero — animaciones, navbar, espaciado, search pill
+
+**Bloqueos**:
+- Search pill text cutoff: aplicado fix (padding 10px + overflow hidden), pendiente verificar en browser mañana
+
+---
+
 ## 2026-04-22 · Sesión 5 (en pausa)
 
 **Sprint**: 1.5 · **Trabajé con**: Emilio
