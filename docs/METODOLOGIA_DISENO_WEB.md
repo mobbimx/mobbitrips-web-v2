@@ -11,7 +11,7 @@
 **Antes de cualquier filosofía, una regla operativa dura:**
 
 ```bash
-pnpm dev --filter=web            # (o el comando equivalente del framework del cliente)
+pnpm dev                         # (o el comando equivalente del framework del cliente)
 # Abrir: http://localhost:3000
 ```
 

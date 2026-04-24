@@ -14,8 +14,15 @@
 **SIEMPRE se usa este y SOLO este visualizador:**
 
 ```bash
-pnpm dev --filter=web
+# Desde la raíz del repo
+pnpm dev
 # Abrir en navegador: http://localhost:3000
+```
+
+Comando alternativo (equivalente, solo el app web):
+
+```bash
+pnpm --filter @mobbitrips/web dev
 ```
 
 - Esta máquina (escritorio Emilio): `http://localhost:3000`
@@ -32,8 +39,8 @@ pnpm dev --filter=web
 
 ### ✅ Permitido
 
-- ✅ Dev server de Next.js: `pnpm dev --filter=web` → `http://localhost:3000`.
-- ✅ Puerto alternativo SOLO si 3000 está ocupado: `pnpm dev --filter=web -- -p 3001` → `http://localhost:3001`. Avisar si eso pasa.
+- ✅ Dev server de Next.js: `pnpm dev` desde la raíz → `http://localhost:3000`.
+- ✅ Puerto alternativo SOLO si 3000 está ocupado: Next.js sugerirá otro puerto automáticamente. Avisar si eso pasa.
 - ✅ Preview de Vercel (URLs `*.vercel.app`) SOLO para revisar ramas ya pusheadas — NO para trabajo activo.
 - ✅ Abrir el HTML de `design/exports/` en navegador SOLO como referencia puntual ("¿cómo era este detalle del diseño de Claude Design?"), **nunca como visualizador de trabajo en curso**.
 

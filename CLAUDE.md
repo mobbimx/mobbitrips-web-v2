@@ -11,7 +11,7 @@
 1. **Visualizador canónico ÚNICO** en cualquier máquina (escritorio, casa, Medusssa):
 
    ```bash
-   pnpm dev --filter=web          # luego abrir http://localhost:3000
+   pnpm dev          # desde la raíz → abrir http://localhost:3000
    ```
 
    **NUNCA** abrir `design/exports/*.html` con `file:///` como visualizador.

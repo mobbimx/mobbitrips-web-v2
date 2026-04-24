@@ -8,7 +8,7 @@
 ## 🖥️ Visualizador canónico (ÚNICO, idéntico en toda máquina)
 
 ```bash
-pnpm dev --filter=web
+pnpm dev      # desde la raíz del repo
 # Abrir: http://localhost:3000
 ```
 
