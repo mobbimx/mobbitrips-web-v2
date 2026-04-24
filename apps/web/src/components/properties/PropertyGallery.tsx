@@ -83,7 +83,7 @@ export function PropertyGallery({ images, propertyName }: PropertyGalleryProps) 
               src={src}
               alt={`${propertyName} — foto ${i + 2}`}
               fill
-              sizes="25vw"
+              sizes="(max-width: 640px) 50vw, 25vw"
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
             {i === 3 && images.length > 5 && (
