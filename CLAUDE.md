@@ -4,18 +4,54 @@
 
 ---
 
+## 🔒 REGLAS INMUTABLES (leer ANTES de cualquier otra cosa)
+
+**Ver `docs/REGLAS_INMUTABLES.md` para el detalle completo.** Resumen crítico:
+
+1. **Visualizador canónico ÚNICO** en cualquier máquina (escritorio, casa, Medusssa):
+
+   ```bash
+   pnpm dev --filter=web          # luego abrir http://localhost:3000
+   ```
+
+   **NUNCA** abrir `design/exports/*.html` con `file:///` como visualizador.
+   **NUNCA** usar Live Server, http-server, serve, o cualquier otro preview.
+
+2. **Preflight obligatorio** al iniciar sesión (cualquier máquina):
+
+   ```bash
+   git fetch --all && git status && git pull --rebase origin main && git log --oneline -5
+   ```
+
+3. **Push obligatorio** al cerrar sesión (aunque sea WIP):
+
+   ```bash
+   git add -A && git commit -m "..." && git push -u origin <rama>
+   ```
+
+4. **Nunca editar `main` directo.** Siempre rama: `design/*`, `content/*`, `fix/*`.
+
+5. **División de herramientas:** Claude Design genera secciones → Claude Code pule detalles. No al revés.
+
+6. **Exports versionados:** `design/exports/<seccion>-v<n>.html`, nunca sobreescribir.
+
+Si cualquiera de estas reglas no se puede cumplir en una sesión → **parar y avisar a Emilio antes de editar**.
+
+---
+
 ## 🎯 Qué estamos construyendo
 
 **Mobbitrips** es una plataforma operativa completa para una empresa administradora de propiedades vacacionales en **Xalapa, Veracruz, México**.
 
 No es solo un sitio web. Es un ecosistema de 5 capas:
+
 1. **Captación**: Web Next.js + WhatsApp Biz + Blog + Ads
 2. **Operación**: Hostex (PMS) + Supabase + Stripe + PayU
 3. **Negocio**: Zoho One (CRM + Books + Desk + Analytics + Sign)
 4. **Orquestación**: n8n workflows
 5. **Inteligencia**: Brindon 2.0 (Claude) + Agentes Claude Code autohospedados
 
-**Tagline**: *"Descansa, vive y sueña como si estuvieras en casa."*
+**Tagline**: _"Descansa, vive y sueña como si estuvieras en casa."_
 
 Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, consulta **`docs/MASTER.md`**.
 
@@ -25,10 +61,12 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 
 ### Al iniciar cualquier sesión
 
-1. Lee este archivo (`CLAUDE.md`).
-2. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
-3. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
-4. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
+1. **Ejecutar preflight** (ver REGLA 2 arriba): `git fetch && git status && git pull --rebase && git log --oneline -5`.
+2. Lee este archivo (`CLAUDE.md`).
+3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
+4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
+5. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
+6. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
 
 ### Durante la sesión
 
@@ -40,6 +78,7 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 ### Al cerrar la sesión
 
 Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que contenga:
+
 - Fecha y hora.
 - Tasks cerradas.
 - Commits hechos (hashes cortos).
@@ -52,24 +91,24 @@ Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que con
 
 ## 🧱 Stack técnico
 
-| Capa | Tecnología |
-|---|---|
-| Framework | Next.js 14 (App Router, Server Components) |
-| Lenguaje | TypeScript estricto |
-| Estilos | Tailwind CSS (sin CSS-in-JS) |
-| Animación | Framer Motion (solo en client components) |
-| Smooth scroll | Lenis |
-| Íconos | Lucide React |
-| HTTP | Axios (clientes tipados en `packages/*-client/`) |
-| Forms | React Hook Form + Zod |
-| Fechas | date-fns + react-day-picker |
-| Fuentes | next/font (Comfortaa + Inter) |
-| Pagos | Stripe Elements + PayU Hosted Page |
-| DB | Supabase (Postgres + Auth + Storage + pgvector) |
-| Email | Resend |
-| Deploy | Vercel |
-| Monitoreo | Sentry |
-| Monorepo | Turborepo + pnpm workspaces |
+| Capa          | Tecnología                                       |
+| ------------- | ------------------------------------------------ |
+| Framework     | Next.js 14 (App Router, Server Components)       |
+| Lenguaje      | TypeScript estricto                              |
+| Estilos       | Tailwind CSS (sin CSS-in-JS)                     |
+| Animación     | Framer Motion (solo en client components)        |
+| Smooth scroll | Lenis                                            |
+| Íconos        | Lucide React                                     |
+| HTTP          | Axios (clientes tipados en `packages/*-client/`) |
+| Forms         | React Hook Form + Zod                            |
+| Fechas        | date-fns + react-day-picker                      |
+| Fuentes       | next/font (Comfortaa + Inter)                    |
+| Pagos         | Stripe Elements + PayU Hosted Page               |
+| DB            | Supabase (Postgres + Auth + Storage + pgvector)  |
+| Email         | Resend                                           |
+| Deploy        | Vercel                                           |
+| Monitoreo     | Sentry                                           |
+| Monorepo      | Turborepo + pnpm workspaces                      |
 
 ---
 
@@ -149,18 +188,18 @@ mobbitrips/
 
 Eventos publicados en tabla `events` de Supabase + consumidos por n8n:
 
-| Evento | Origen | Consumidores principales |
-|---|---|---|
-| `lead.created` | Web | Zoho CRM, Brindon, GA4, Meta CAPI |
-| `reservation.requested` | Web | Hostex, Zoho CRM |
-| `reservation.confirmed` | Hostex | Zoho Books, WhatsApp |
+| Evento                     | Origen         | Consumidores principales            |
+| -------------------------- | -------------- | ----------------------------------- |
+| `lead.created`             | Web            | Zoho CRM, Brindon, GA4, Meta CAPI   |
+| `reservation.requested`    | Web            | Hostex, Zoho CRM                    |
+| `reservation.confirmed`    | Hostex         | Zoho Books, WhatsApp                |
 | `payment.stripe.succeeded` | Stripe webhook | Hostex, Zoho Books (CFDI), WhatsApp |
-| `payment.payu.succeeded` | PayU webhook | Hostex, Zoho Books, WhatsApp |
-| `payment.oxxo.pending` | PayU webhook | WhatsApp (voucher) |
-| `payment.oxxo.expired` | Cron | Cancelar reserva, liberar fechas |
-| `guest.checked_out` | Hostex | WhatsApp (review), Campaigns |
-| `owner_lead.created` | Web B2B | Zoho CRM, WhatsApp, Slack |
-| `property.created` | Hostex | Supabase cache, revalidate ISR |
+| `payment.payu.succeeded`   | PayU webhook   | Hostex, Zoho Books, WhatsApp        |
+| `payment.oxxo.pending`     | PayU webhook   | WhatsApp (voucher)                  |
+| `payment.oxxo.expired`     | Cron           | Cancelar reserva, liberar fechas    |
+| `guest.checked_out`        | Hostex         | WhatsApp (review), Campaigns        |
+| `owner_lead.created`       | Web B2B        | Zoho CRM, WhatsApp, Slack           |
+| `property.created`         | Hostex         | Supabase cache, revalidate ISR      |
 
 Detalle completo en `docs/MASTER.md` sección 3.
 
@@ -197,13 +236,13 @@ cd n8n && ./export-workflows.sh
 
 ## 🗺️ Plan de fases
 
-| Fase | Semanas | Foco |
-|---|---|---|
-| **Fase 1 — MVP Web** | 1-6 | Web pública con reservas directas + WA básico |
-| **Fase 2 — Automatización + Pagos** | 7-11 | n8n + Zoho CRM + WA Cloud API + Stripe + PayU |
-| **Fase 3 — Contabilidad y Brindon** | 12-16 | Zoho Books + PAC + CFDI + Brindon 2.0 |
-| **Fase 4 — Agentes y portal** | 17-20 | Agentes Claude + MCP Zoho + Portal propietarios |
-| **Fase 5** | Continua | Optimización, SEO, iteración |
+| Fase                                | Semanas  | Foco                                            |
+| ----------------------------------- | -------- | ----------------------------------------------- |
+| **Fase 1 — MVP Web**                | 1-6      | Web pública con reservas directas + WA básico   |
+| **Fase 2 — Automatización + Pagos** | 7-11     | n8n + Zoho CRM + WA Cloud API + Stripe + PayU   |
+| **Fase 3 — Contabilidad y Brindon** | 12-16    | Zoho Books + PAC + CFDI + Brindon 2.0           |
+| **Fase 4 — Agentes y portal**       | 17-20    | Agentes Claude + MCP Zoho + Portal propietarios |
+| **Fase 5**                          | Continua | Optimización, SEO, iteración                    |
 
 Timeline está calibrado para ~15h/semana de trabajo. Cada sprint de 1 semana de Fase 1 equivale a ~2 semanas reales.
 

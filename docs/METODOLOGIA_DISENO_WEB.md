@@ -6,6 +6,38 @@
 
 ---
 
+## 🖥️ Visualizador canónico (ÚNICO, idéntico en toda máquina)
+
+**Antes de cualquier filosofía, una regla operativa dura:**
+
+```bash
+pnpm dev --filter=web            # (o el comando equivalente del framework del cliente)
+# Abrir: http://localhost:3000
+```
+
+Este es el ÚNICO visualizador del proyecto. Misma máquina del operador, máquina
+de su casa, máquina de cualquier colaborador → `http://localhost:3000`.
+
+**Prohibido:**
+
+- ❌ Abrir archivos `.html` del repo con `file:///...` como forma de "ver el diseño".
+- ❌ Live Server de VS Code, `http-server`, `serve`, `npx serve`, o cualquier otro
+  servidor estático apuntando al repo.
+- ❌ "Preview" de IDE, extensión o herramienta de terceros.
+- ❌ Cualquier URL distinta del dev server oficial para ver trabajo en curso.
+
+**Permitido:**
+
+- ✅ Puerto alternativo si 3000 está ocupado (`-p 3001`), avisando al equipo.
+- ✅ Preview de Vercel (URLs `*.vercel.app`) para revisión de ramas ya pusheadas,
+  NUNCA para trabajo activo.
+- ✅ Abrir `design/exports/*.html` SOLO como referencia puntual de diseño
+  (no como visualizador de trabajo).
+
+Ver el archivo de reglas inmutables del proyecto (`docs/REGLAS_INMUTABLES.md`) para el detalle.
+
+---
+
 ## 0. Filosofía
 
 Dos herramientas, dos roles, un source of truth.

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '--- Mobbitrips Web v2 ---' && echo 'Branch:' && git branch --show-current && echo 'Estado local:' && git status --short && echo '---' && git fetch --all --quiet 2>/dev/null; AHEAD=$(git rev-list --count HEAD..@{u} 2>/dev/null); BEHIND=$(git rev-list --count @{u}..HEAD 2>/dev/null); if [ \"$AHEAD\" != \"\" ] && [ \"$AHEAD\" -gt 0 ]; then echo \"AVISO: estas $AHEAD commits DETRAS de origin. Considera: git pull --rebase\"; fi; if [ \"$BEHIND\" != \"\" ] && [ \"$BEHIND\" -gt 0 ]; then echo \"Tienes $BEHIND commits sin pushear.\"; fi; echo '--- Ultimos commits ---' && git log --oneline -5"
+            "command": "echo ''; echo '========================================================'; echo '  MOBBITRIPS WEB V2 — Preflight'; echo '========================================================'; echo ''; echo 'REGLAS INMUTABLES (ver docs/REGLAS_INMUTABLES.md):'; echo '  1. Visualizador UNICO: pnpm dev --filter=web  ->  http://localhost:3000'; echo '     (NUNCA file:/// del HTML en design/exports/)'; echo '  2. Preflight al iniciar: git fetch && git pull --rebase'; echo '  3. Push obligatorio al cerrar (aunque sea WIP)'; echo '  4. Nunca editar main directo — siempre rama design/*|content/*|fix/*'; echo ''; echo '--- Estado del repo ---'; echo 'Branch actual:'; git branch --show-current; echo ''; echo 'Cambios locales:'; git status --short; git fetch --all --quiet 2>/dev/null; AHEAD=$(git rev-list --count HEAD..@{u} 2>/dev/null); BEHIND=$(git rev-list --count @{u}..HEAD 2>/dev/null); if [ \"$AHEAD\" != \"\" ] && [ \"$AHEAD\" -gt 0 ]; then echo ''; echo \"  AVISO: estas $AHEAD commits DETRAS de origin. Haz: git pull --rebase\"; fi; if [ \"$BEHIND\" != \"\" ] && [ \"$BEHIND\" -gt 0 ]; then echo \"  AVISO: tienes $BEHIND commits sin pushear.\"; fi; echo ''; echo '--- Ultimos 5 commits ---'; git log --oneline -5; echo '========================================================'"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$(git status --porcelain)\" ]; then echo ''; echo '========================================================'; echo 'AVISO: hay cambios sin commitear en esta rama.'; echo 'Antes de cerrar: git add -A && git commit -m ... && git push'; echo 'Aunque sea WIP, pushealo para que la otra maquina lo tenga.'; echo '========================================================'; fi; UP=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null); if [ \"$UP\" = \"\" ]; then echo 'AVISO: esta rama no tiene upstream. Haz: git push -u origin HEAD'; fi"
+            "command": "if [ -n \"$(git status --porcelain)\" ]; then echo ''; echo '========================================================'; echo '  AVISO: hay cambios sin commitear en esta rama.'; echo '  Antes de cerrar:'; echo '    git add -A && git commit -m \"...\" && git push'; echo '  Aunque sea WIP, pushealo — la otra maquina lo necesita.'; echo '========================================================'; fi; UP=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null); if [ \"$UP\" = \"\" ]; then echo ''; echo '  AVISO: esta rama no tiene upstream. Haz: git push -u origin HEAD'; fi; LOCAL_AHEAD=$(git rev-list --count @{u}..HEAD 2>/dev/null); if [ \"$LOCAL_AHEAD\" != \"\" ] && [ \"$LOCAL_AHEAD\" -gt 0 ]; then echo ''; echo \"  AVISO: tienes $LOCAL_AHEAD commits locales sin pushear. Haz: git push\"; fi"
           }
         ]
       }
@@ -32,7 +32,8 @@
       "Bash(git rev-list:*)",
       "Bash(git rev-parse:*)",
       "Bash(pnpm lint:*)",
-      "Bash(pnpm type-check:*)"
+      "Bash(pnpm type-check:*)",
+      "Bash(pnpm dev:*)"
     ]
   }
 }

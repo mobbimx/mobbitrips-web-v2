@@ -5,6 +5,25 @@
 
 ---
 
+## 🖥️ Visualizador canónico (ÚNICO, idéntico en toda máquina)
+
+```bash
+pnpm dev --filter=web
+# Abrir: http://localhost:3000
+```
+
+Este es el ÚNICO visualizador del proyecto. Misma máquina, misma casa, Medusssa, cualquier lugar → `http://localhost:3000`.
+
+**Prohibido:**
+
+- ❌ Abrir `design/exports/*.html` con `file:///C:/...` como forma de "ver el diseño en curso".
+- ❌ Live Server de VS Code, http-server, serve, o cualquier otro servidor estático.
+- ❌ Cualquier URL distinta de `http://localhost:3000` para ver trabajo en curso.
+
+Ver `docs/REGLAS_INMUTABLES.md` sección 1 para el detalle.
+
+---
+
 ## 🛫 Preflight checklist (al iniciar sesión en cualquier máquina)
 
 ```bash
