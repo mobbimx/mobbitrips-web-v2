@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '--- Mobbitrips Web v2 ---' && echo 'Branch:' && git branch --show-current && echo 'Estado local:' && git status --short && echo '---' && git fetch --all --quiet 2>/dev/null; AHEAD=$(git rev-list --count HEAD..@{u} 2>/dev/null); BEHIND=$(git rev-list --count @{u}..HEAD 2>/dev/null); if [ \"$AHEAD\" != \"\" ] && [ \"$AHEAD\" -gt 0 ]; then echo \"AVISO: estas $AHEAD commits DETRAS de origin. Considera: git pull --rebase\"; fi; if [ \"$BEHIND\" != \"\" ] && [ \"$BEHIND\" -gt 0 ]; then echo \"Tienes $BEHIND commits sin pushear.\"; fi; echo '--- Ultimos commits ---' && git log --oneline -5"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$(git status --porcelain)\" ]; then echo ''; echo '========================================================'; echo 'AVISO: hay cambios sin commitear en esta rama.'; echo 'Antes de cerrar: git add -A && git commit -m ... && git push'; echo 'Aunque sea WIP, pushealo para que la otra maquina lo tenga.'; echo '========================================================'; fi; UP=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null); if [ \"$UP\" = \"\" ]; then echo 'AVISO: esta rama no tiene upstream. Haz: git push -u origin HEAD'; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git rev-list:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm type-check:*)"
+    ]
+  }
+}
