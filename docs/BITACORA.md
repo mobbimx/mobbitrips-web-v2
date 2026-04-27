@@ -5,6 +5,40 @@
 
 ---
 
+## 2026-04-27 · Sesión 9 — 6 secciones restantes del Home
+
+**Sprint**: design/hero-polish (mergeado en main) · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Implementación completa de WhyBookDirect, StorySection, TestimonialsSection, OwnerTeaser, NewsletterCTA, FinalCTA
+
+**Commits:**
+
+- `e36168c` — feat(home): implementa 6 secciones restantes con sistema CSS de clases
+
+**Lo que se hizo:**
+
+- 6 secciones convertidas al sistema CSS de clases (igual que Hero y FeaturedProperties)
+- Transiciones graduales entre secciones (cream→dark y dark→cream vía `::before`)
+- Caveat script inline en h2 de cada sección (`.script-inline`)
+- Blobs animados en secciones oscuras y cream con opacidad sutil
+- FinalCTA: sunset gradient `#1f1f1f → #c14744 → #ed6864 → #f08884`
+- tailwind.config.ts: agregada `font-caveat` como utility class
+- `pnpm lint` ✅ `pnpm type-check` ✅
+
+**Decisiones:**
+
+- Empezamos en `main` (el `git pull --rebase origin design/hero-polish` del inicio fusionó la rama)
+- CSS siempre append al final de globals.css, nunca modificar bloques existentes
+- AnimatedSection (Framer Motion) se mantiene para reveals — misma API que el resto del proyecto
+
+**Bloqueos:** ninguno
+
+**Próximo paso:** Abrir `http://localhost:3000` y revisar el home completo. Si hay ajustes visuales → sesión de fine-tuning. Si todo OK → merge a main / Vercel deploy.
+
+---
+
 ## 2026-04-27 · Sesión 8 — FeaturedProperties desde Claude Design
 
 **Sprint**: design/hero-polish · Trabajó con: Emilio
