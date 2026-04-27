@@ -5,6 +5,41 @@
 
 ---
 
+## 2026-04-27 · Sesión 8 — FeaturedProperties desde Claude Design
+
+**Sprint**: design/hero-polish · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Implementación de sección FeaturedProperties desde bundle de Claude Design
+- Documentación de protocolo de handoff en `docs/METODOLOGIA_DISENO_WEB.md` (sección 4b)
+
+**Commits:**
+
+- `4a01574` — feat(home): implementa sección FeaturedProperties desde Claude Design
+
+**Lo que se hizo:**
+
+- Extraído bundle Claude Design (tar.gz) → `components/Properties.jsx` + `styles/properties.css`
+- Ignorado: Navbar.jsx, Hero.jsx del bundle (tenemos los nuestros polidos)
+- Creado `FeaturedProperties.tsx` como client component TypeScript
+- Carrusel scroll-snap, 6 propiedades con gradientes coral, filter chips, flechas liquid glass, dots, reveal animado
+- Fondo gradient disuelve coral del hero → cream (continuidad visual entre secciones)
+- CSS appended al final de `globals.css` — nada existente modificado
+- `HeroSection.tsx` y `Navbar.tsx` intactos
+- Lint ✅ Type-check ✅
+
+**Decisiones:**
+
+- hero-v2.html pesa 2MB (fuentes base64) — inviable importar a Claude Design. Continuidad se mantiene trabajando en el mismo archivo de Design con su propio hero como contexto
+- Documentado protocolo de extracción parcial en METODOLOGIA_DISENO_WEB.md sección 4b: mostrar qué se ignora antes de implementar, esperar confirmación
+
+**Bloqueos:** ninguno
+
+**Próximo paso:** Revisar FeaturedProperties en `http://localhost:3000` y ajustar si hace falta. Luego siguiente sección en Claude Design.
+
+---
+
 ## 2026-04-27 · Sesión 7 — Polish Hero + Navbar
 
 **Sprint**: design/hero-polish · Trabajó con: Emilio
