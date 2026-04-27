@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { z } from 'zod';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
-import { Button, Input, AnimatedSection } from '@mobbitrips/ui';
+import { AnimatedSection } from '@mobbitrips/ui';
 
 const emailSchema = z.string().email('Por favor ingresa un correo válido.');
 
@@ -31,7 +31,7 @@ export function NewsletterCTA() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-      if (!res.ok) throw new Error('Error al suscribirse');
+      if (!res.ok) throw new Error();
       setStatus('success');
       setEmail('');
     } catch {
@@ -40,80 +40,103 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section
-      className="py-20 sm:py-28"
-      style={{ background: '#1C1C1C' }}
-      aria-labelledby="newsletter-heading"
-    >
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <section className="newsletter" aria-labelledby="newsletter-title">
+      <div className="newsletter__blob" aria-hidden="true" />
+      <div className="newsletter__inner">
         <AnimatedSection direction="up">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="h-px w-8 bg-primary" aria-hidden="true" />
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Newsletter</p>
-          </div>
-          <h2
-            id="newsletter-heading"
-            className="font-comfortaa font-bold text-white"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.05 }}
-          >
-            ¿Quieres las mejores
-            <br />
-            ofertas?
+          <span className="newsletter__kicker">Newsletter</span>
+          <h2 id="newsletter-title" className="newsletter__title">
+            Las mejores ofertas, <span className="script-inline">en tu correo.</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          <p className="newsletter__sub">
             Suscríbete y sé el primero en conocer disponibilidades especiales, guías de destino y
             descuentos para reservas directas.
           </p>
         </AnimatedSection>
 
-        <AnimatedSection direction="up" delay={0.15} className="mt-8">
+        <AnimatedSection direction="up" delay={0.15}>
           {status === 'success' ? (
             <div
-              className="flex flex-col gap-3 rounded-2xl p-8"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+                background: 'rgba(255,255,255,0.05)',
+                borderRadius: 16,
+                padding: '28px 32px',
+              }}
             >
-              <CheckCircle2 size={28} className="text-primary" aria-hidden="true" />
-              <p className="font-comfortaa text-lg font-semibold text-white">
+              <CheckCircle2 size={28} color="var(--coral-900)" aria-hidden="true" />
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  color: '#fff',
+                }}
+              >
                 ¡Listo, ya estás suscrito!
               </p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)' }}>
                 Pronto recibirás noticias y ofertas en tu correo.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3 sm:flex-row">
-              <div className="flex-1">
-                <Input
-                  type="email"
-                  placeholder="tu@correo.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (error) setError('');
-                    if (status === 'error') setStatus('idle');
-                  }}
-                  error={error}
-                  aria-label="Correo electrónico"
-                  autoComplete="email"
-                  disabled={status === 'loading'}
-                />
-              </div>
-              <Button type="submit" size="md" loading={status === 'loading'} className="shrink-0">
-                Suscribirme
-              </Button>
+            <form onSubmit={handleSubmit} noValidate className="newsletter__form">
+              <input
+                type="email"
+                className="newsletter__input"
+                placeholder="tu@correo.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError('');
+                  if (status === 'error') setStatus('idle');
+                }}
+                aria-label="Correo electrónico"
+                autoComplete="email"
+                disabled={status === 'loading'}
+              />
+              <button type="submit" className="newsletter__btn" disabled={status === 'loading'}>
+                {status === 'loading' ? 'Enviando…' : 'Suscribirme'}
+              </button>
             </form>
           )}
 
-          {status === 'error' && (
-            <p className="mt-3 flex items-center gap-1.5 text-sm text-status-error" role="alert">
+          {error && (
+            <p
+              style={{
+                marginTop: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                fontSize: '0.875rem',
+                color: '#E05555',
+              }}
+              role="alert"
+            >
+              <AlertCircle size={14} aria-hidden="true" />
+              {error}
+            </p>
+          )}
+          {status === 'error' && !error && (
+            <p
+              style={{
+                marginTop: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                fontSize: '0.875rem',
+                color: '#E05555',
+              }}
+              role="alert"
+            >
               <AlertCircle size={14} aria-hidden="true" />
               Ocurrió un error. Por favor intenta de nuevo.
             </p>
           )}
 
-          <p className="mt-4 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            Sin spam. Puedes darte de baja cuando quieras.
-          </p>
+          <p className="newsletter__fine">Sin spam. Puedes darte de baja cuando quieras.</p>
         </AnimatedSection>
       </div>
     </section>
