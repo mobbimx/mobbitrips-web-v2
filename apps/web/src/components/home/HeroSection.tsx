@@ -135,14 +135,9 @@ export function HeroSection() {
                   {word}
                 </span>
               ))}
-            </span>
-          </span>
-          <span className="hero-hl-line">
+            </span>{' '}
             <span className="hero-hl-script-wrap">
-              <span
-                className="hero-hl-script"
-                style={{ animationDelay: `${scriptDelay}ms` }}
-              >
+              <span className="hero-hl-script" style={{ animationDelay: `${scriptDelay}ms` }}>
                 en casa
                 <svg viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M 4 6 Q 50 2 100 5 T 196 4" strokeWidth="2.2" />
@@ -206,7 +201,10 @@ export function HeroSection() {
           <div className="hero-search-divider" aria-hidden="true" />
 
           {/* Huéspedes */}
-          <div className="hero-search-section" style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          <div
+            className="hero-search-section"
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+          >
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
               <span className="hero-search-label">Huéspedes</span>
               <span className="hero-search-value">
@@ -219,9 +217,18 @@ export function HeroSection() {
                 onClick={() => setGuests((g) => Math.max(1, g - 1))}
                 aria-label="Reducir huéspedes"
                 style={{
-                  width: 24, height: 24, borderRadius: '50%', border: '1px solid rgba(45,45,45,0.2)',
-                  background: 'transparent', cursor: 'pointer', fontSize: 16, lineHeight: 1,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#706F6F',
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  border: '1px solid rgba(45,45,45,0.2)',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  fontSize: 16,
+                  lineHeight: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#706F6F',
                 }}
               >
                 −
@@ -231,9 +238,18 @@ export function HeroSection() {
                 onClick={() => setGuests((g) => Math.min(16, g + 1))}
                 aria-label="Aumentar huéspedes"
                 style={{
-                  width: 24, height: 24, borderRadius: '50%', border: '1px solid rgba(45,45,45,0.2)',
-                  background: 'transparent', cursor: 'pointer', fontSize: 16, lineHeight: 1,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#706F6F',
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  border: '1px solid rgba(45,45,45,0.2)',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  fontSize: 16,
+                  lineHeight: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#706F6F',
                 }}
               >
                 +
@@ -243,9 +259,14 @@ export function HeroSection() {
 
           <button type="submit" className="hero-search-btn" aria-label="Buscar propiedades">
             <svg
-              width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="2.4"
-              strokeLinecap="round" strokeLinejoin="round"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               aria-hidden="true"
             >
               <circle cx="11" cy="11" r="7" />
