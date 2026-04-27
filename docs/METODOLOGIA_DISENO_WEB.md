@@ -181,6 +181,57 @@ git branch -a               # ¿hay ramas de diseño activas?
 
 ---
 
+## 4b. Handoff de secciones: cómo Claude Code extrae sin destruir
+
+Cuando Claude Design genera una sección nueva, el export **siempre incluye el hero y el navbar** porque necesita ese contexto para mantener continuidad visual. Claude Code nunca importa el HTML completo — solo extrae la sección nueva.
+
+### Regla de extracción
+
+El HTML de Claude Design llega con esta estructura:
+
+```html
+<nav class="navbar">...</nav>
+← IGNORAR siempre
+<section class="hero">...</section>
+← IGNORAR siempre
+
+<section class="section--properties">...</section>
+← IMPLEMENTAR esto
+<section class="section--destinations">...</section>
+← y esto si viene
+```
+
+Todo lo que esté **antes de la primera sección nueva** = basura para Claude Code.
+
+### Protocolo obligatorio antes de escribir código
+
+Cuando el usuario trae un export de Claude Design, Claude Code SIEMPRE:
+
+1. **Muestra qué va a usar y qué va a ignorar** — antes de escribir una sola línea de código.
+2. **Espera confirmación del usuario.**
+3. Solo entonces implementa.
+
+Ejemplo de confirmación previa:
+
+> "Del export veo: navbar (ignoro), hero (ignoro), `<section class="section--properties">` (implemento esto).  
+> Voy a crear `FeaturedPropertiesSection.tsx`. ¿Procedo?"
+
+### Archivos que NUNCA se tocan al agregar una sección nueva
+
+| Archivo           | Razón                                                                         |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `HeroSection.tsx` | Sección ya aprobada y pulida                                                  |
+| `Navbar.tsx`      | Componente estable                                                            |
+| `globals.css`     | Solo se **agregan** clases nuevas al final, nunca se modifican las existentes |
+
+Si Claude Code propone modificar cualquiera de estos tres archivos al implementar una sección nueva, el usuario debe parar y preguntar por qué.
+
+### Por qué no importamos el hero-v2.html a Claude Design
+
+El `design/exports/hero-v2.html` pesa ~2MB (contiene fuentes en base64). Claude Design no puede procesarlo. La continuidad visual se mantiene trabajando siempre en el mismo archivo de Claude Design — que ya tiene su propio hero como contexto interno.
+
+---
+
 ## 5. Hooks automáticos (`.claude/settings.json`)
 
 Hooks que se activan en cualquier máquina que clone el repo. Viven con el código,
