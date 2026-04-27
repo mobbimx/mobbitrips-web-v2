@@ -5,6 +5,38 @@
 
 ---
 
+## 2026-04-27 · Sesión 7 — Polish Hero + Navbar
+
+**Sprint**: design/hero-polish · Trabajó con: Emilio
+
+**Tasks cerradas**
+
+- Headline hero: de 4 líneas visuales a 2 (quita max-width 14ch + fusiona "en casa" a línea 2)
+- Search bar: max-width 720 → 860px (textos completos visibles)
+- Navbar: elimina smart-hide; siempre visible y fijo al scroll. Hover links: pill coral suave (bg-primary/10)
+
+**Commits**
+
+- `0443e30` style(hero): headline 2 líneas, search más ancha, navbar siempre visible + hover links
+
+**Decisiones**
+
+- Secciones placeholder debajo del hero (FeaturedProperties, WhyBookDirect, etc.) se conservan en código pero no se tocan hasta que pasen por Claude Design
+- Flujo confirmado: cada sección se diseña en Claude Design → HTML → Claude Code la implementa
+- Date picker custom (react-day-picker) se deja para sprint propio, no durante polish visual
+
+**Bloqueos activos**
+
+- STRIPE_WEBHOOK_SECRET sin configurar
+- Dominio Resend sin verificar
+
+**Próximo paso**
+
+- Emilio diseña la siguiente sección en Claude Design (FeaturedProperties o la que elija)
+- Claude Code la implementa reemplazando el placeholder existente
+
+---
+
 ## 2026-04-23 · Sesión 6 — Diseño Hero (continúa mañana en oficina)
 
 **Sprint**: 1.5 · Trabajé con: Emilio
@@ -20,6 +52,7 @@
 - chore ✅ `apps/web/CLAUDE.md` actualizado: flujo Claude Design, carpeta sections/, design tokens
 
 **Ajustes aplicados al Hero (hero-v1-editable.html)**:
+
 - ✅ Animaciones ~20% más rápidas: eyebrow 800→640ms, words 900→720ms, script 1200→950ms, lede 700→560ms, search 1000→800ms, CTAs 600→480ms, scroll indicator 800→640ms
 - ✅ Navbar: liquid glass→sólido ahora dispara a 40px scroll (era 80px) con 180ms de transición (era 400ms)
 - ✅ Espaciado redistribuido: menos aire arriba (padding hero 96→72px, content padding-top 50→16px), más respiración entre elementos (headline 12→20px, lede 12→28px, search 16→32px, CTAs 16→24px)
@@ -27,22 +60,27 @@
 - ✅ Placeholder texts acortados: "¿A dónde quieres ir?" → "Xalapa, México", "Agrega" → "Añade"
 
 **Pendiente (continuar mañana en la oficina)**:
+
 - 🔲 Verificar en browser que search pill ya no trunca texto en viewports ~768-900px
 - 🔲 Aprobar visualmente el Hero completo en mobile (375px) y desktop (1440px)
 - 🔲 Una vez aprobado el Hero → convertir a `apps/web/src/components/sections/HeroSection.tsx`
 - 🔲 Continuar con la siguiente sección (abrir Claude Design con hero-v1-editable.html como contexto)
 
 **Archivo principal de trabajo**:
+
 ```
 design/exports/hero-v1-editable.html
 ```
+
 Abrir este archivo en el browser y verificar el search pill antes de seguir.
 
 **Commits**:
+
 - `47ae98f` chore(design): hero editable standalone listo para afinar
 - `(esta sesión)` chore(design): ajustes Hero — animaciones, navbar, espaciado, search pill
 
 **Bloqueos**:
+
 - Search pill text cutoff: aplicado fix (padding 10px + overflow hidden), pendiente verificar en browser mañana
 
 ---
