@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Brand moodboard</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 0; background: var(--cream); font-family: var(--font-body); }
+  .wrap { padding: 24px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto auto; gap: 14px; }
+  .tile { border-radius: 20px; overflow: hidden; position: relative; padding: 22px; min-height: 150px; }
+  .tile-hero {
+    grid-column: 1 / 2; grid-row: 1 / 3;
+    background: var(--gradient-sunset);
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .tile-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.05; letter-spacing: -0.03em; color: var(--gray-950); margin: 0 0 6px; }
+  .tile-hero .script { font-family: var(--font-script); font-size: 30px; color: var(--coral-950); line-height: 1; display: inline; }
+  .tile-hero p { margin: 0; color: var(--gray-900); font-size: 13px; }
+
+  .tile-quote {
+    background: var(--white);
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .tile-quote q { font-family: var(--font-display); font-weight: 500; font-size: 20px; line-height: 1.3; color: var(--gray-950); letter-spacing: -0.01em; display: block; quotes: none; }
+  .tile-quote q::before, .tile-quote q::after { content: ''; }
+  .tile-quote cite { display: block; margin-top: 12px; font-style: normal; font-size: 12px; color: var(--gray-700); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .tile-palette {
+    background: var(--coral-900);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .tile-palette .row { display: flex; gap: 6px; }
+  .tile-palette .chip { flex: 1; height: 28px; border-radius: 8px; }
+  .tile-palette .kick { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+  .tile-palette h3 { font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--white); margin: 4px 0 12px; line-height: 1.2; }
+
+  .tile-glass {
+    background: var(--gradient-coral-soft);
+    padding: 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .glass-card {
+    background: rgba(250, 247, 242, 0.65);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow-glass);
+    width: 100%;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .glass-card .dot { width: 36px; height: 36px; border-radius: 999px; background: var(--coral-900); flex-shrink: 0; }
+  .glass-card .t { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--gray-950); }
+  .glass-card .s { font-size: 12px; color: var(--gray-700); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tile tile-hero">
+      <h1>Descansa, vive y sueña</h1>
+      <p><span class="script">como en casa</span></p>
+    </div>
+    <div class="tile tile-quote">
+      <q>Casa en todas partes.</q>
+      <cite>Arc × Bellroy · editorial con alma</cite>
+    </div>
+    <div class="tile tile-palette">
+      <div>
+        <div class="kick">Alma coral</div>
+        <h3>Cálido con personalidad</h3>
+      </div>
+      <div class="row">
+        <div class="chip" style="background:#FDE8E6"></div>
+        <div class="chip" style="background:#F9CFCC"></div>
+        <div class="chip" style="background:#F5B0AD"></div>
+        <div class="chip" style="background:#C14744"></div>
+        <div class="chip" style="background:#2D2D2D"></div>
+      </div>
+    </div>
+    <div class="tile tile-glass">
+      <div class="glass-card">
+        <div class="dot"></div>
+        <div>
+          <div class="t">Liquid glass</div>
+          <div class="s">Blur · saturate · profundidad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

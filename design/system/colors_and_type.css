@@ -1,0 +1,254 @@
+/* ============================================================
+   MobbiTrips — Design Tokens
+   Casa en todas partes · cálido, editorial, liquid glass
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap');
+
+@font-face {
+  font-family: 'Comfortaa';
+  src:
+    url('./fonts/Comfortaa-VariableFont_wght.ttf') format('truetype-variations'),
+    url('./fonts/Comfortaa-VariableFont_wght.ttf') format('truetype'),
+    url('../fonts/Comfortaa-VariableFont_wght.ttf') format('truetype-variations'),
+    url('../fonts/Comfortaa-VariableFont_wght.ttf') format('truetype'),
+    url('../../fonts/Comfortaa-VariableFont_wght.ttf') format('truetype-variations'),
+    url('../../fonts/Comfortaa-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Coral (alma de la marca) ---------- */
+  --coral-50: #fef5f4;
+  --coral-100: #fde8e6;
+  --coral-300: #f9cfcc;
+  --coral-500: #f5b0ad;
+  --coral-700: #f08884;
+  --coral-900: #ed6864; /* PRIMARY */
+  --coral-950: #c14744;
+
+  /* ---------- Gray cálido (nunca frío) ---------- */
+  --gray-100: #e8e8e6;
+  --gray-200: #dcdcda;
+  --gray-300: #c4c4c4;
+  --gray-500: #9a9999;
+  --gray-700: #706f6f; /* Corporativo */
+  --gray-900: #2d2d2d;
+  --gray-950: #1f1f1f;
+
+  /* ---------- Fondos ---------- */
+  --cream: #faf7f2; /* fondo principal — nunca blanco puro */
+  --white: #ffffff;
+  --charcoal: #1f1f1f;
+
+  /* ---------- Acentos (uso mínimo) ---------- */
+  --mustard: #e8b547;
+  --sage: #8fa68e;
+  --sky-warm: #b5cdd6;
+
+  /* ---------- Gradientes ---------- */
+  --gradient-warm: linear-gradient(135deg, #faf7f2 0%, #fde8e6 100%);
+  --gradient-coral-soft: linear-gradient(135deg, #fde8e6 0%, #f5b0ad 100%);
+  --gradient-sunset: linear-gradient(180deg, #faf7f2 0%, #f9cfcc 50%, #f08884 100%);
+  --gradient-dusk: linear-gradient(180deg, #f5b0ad 0%, #706f6f 70%, #1f1f1f 100%);
+
+  /* ---------- Semantic ---------- */
+  --bg: var(--cream);
+  --bg-elev: var(--white);
+  --bg-inv: var(--charcoal);
+  --fg: var(--gray-900);
+  --fg-muted: var(--gray-700);
+  --fg-subtle: var(--gray-500);
+  --fg-inv: var(--cream);
+  --border: var(--gray-200);
+  --border-strong: var(--gray-300);
+  --accent: var(--coral-900);
+  --accent-hover: var(--coral-950);
+  --accent-soft: var(--coral-100);
+
+  /* ---------- Typography families ---------- */
+  --font-display: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-script: 'Caveat', 'Brush Script MT', cursive;
+
+  /* ---------- Spacing (base 4px) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-40: 160px;
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 999px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-sm: 0 1px 4px rgba(45, 45, 45, 0.04);
+  --shadow-md: 0 4px 16px rgba(45, 45, 45, 0.06);
+  --shadow-lg: 0 8px 32px rgba(45, 45, 45, 0.08);
+  --shadow-xl: 0 20px 40px rgba(45, 45, 45, 0.1);
+  --shadow-coral: 0 8px 24px rgba(237, 104, 100, 0.25);
+  --shadow-coral-lg: 0 20px 40px rgba(237, 104, 100, 0.15);
+  --shadow-glass: 0 12px 40px rgba(45, 45, 45, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  /* ---------- Motion ---------- */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --dur-micro: 200ms;
+  --dur-hover: 350ms;
+  --dur-section: 700ms;
+  --dur-reveal: 1000ms;
+
+  /* ---------- Layout ---------- */
+  --container-max: 1280px;
+  --container-pad: clamp(20px, 5vw, 80px);
+}
+
+/* ============================================================
+   Typography — semantic roles
+   ============================================================ */
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display — hero */
+.type-display-xl {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Display L — section titles */
+.type-display-l,
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Display M — subsections */
+.type-display-m,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.type-heading-l,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.type-heading-m,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.type-body-l {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.type-body-m,
+p {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.type-body-s,
+small {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.type-ui-button {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.type-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Script accent — usar EXTREMADAMENTE puntual */
+.type-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--coral-900);
+}
+
+/* ============================================================
+   Base resets & helpers
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Motion tokens</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--cream); font-family: var(--font-body); color: var(--gray-900); }
+  .row { display: grid; grid-template-columns: 130px 1fr 90px; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--gray-200); }
+  .row:last-child { border-bottom: none; }
+  .name { font-family: var(--font-display); font-weight: 600; font-size: 13px; }
+  .code { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--gray-700); }
+  .dur { text-align: right; font-size: 12px; color: var(--gray-700); font-variant-numeric: tabular-nums; }
+  .ball { position: relative; height: 18px; background: var(--gray-100); border-radius: 999px; overflow: hidden; }
+  .ball::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 999px; background: var(--coral-900); animation: slide 1.8s infinite; }
+  .e1::after { animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1); }
+  .e2::after { animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .e3::after { animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); }
+  @keyframes slide { 0%, 10% { left: 2px; } 50%, 60% { left: calc(100% - 16px); } 100% { left: 2px; } }
+</style>
+</head>
+<body>
+  <div class="row"><div class="name">ease-out-expo</div><div class="ball e1"></div><div class="code">0.19, 1, 0.22, 1</div></div>
+  <div class="row"><div class="name">ease-out-back</div><div class="ball e2"></div><div class="code">0.34, 1.56, 0.64, 1</div></div>
+  <div class="row"><div class="name">ease-in-out</div><div class="ball e3"></div><div class="code">0.645, 0.045, 0.355, 1</div></div>
+  <div class="row"><div class="name">dur-micro</div><div class="code">micro-interacciones</div><div class="dur">200-300 ms</div></div>
+  <div class="row"><div class="name">dur-hover</div><div class="code">hovers, shimmer</div><div class="dur">300-400 ms</div></div>
+  <div class="row"><div class="name">dur-section</div><div class="code">transiciones de sección</div><div class="dur">600-800 ms</div></div>
+  <div class="row"><div class="name">dur-reveal</div><div class="code">scroll reveals, blur-to-focus</div><div class="dur">800-1200 ms</div></div>
+</body>
+</html>

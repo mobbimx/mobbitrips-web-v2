@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Property Card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--cream); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card-property { max-width: 320px; }
+  .media-sample {
+    height: 180px;
+    background: linear-gradient(135deg, #F5B0AD 0%, #F08884 60%, #ED6864 100%);
+    position: relative;
+  }
+  .media-sample::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 45%),
+      radial-gradient(circle at 20% 80%, rgba(193,71,68,0.35), transparent 50%);
+  }
+  .heart {
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px; border-radius: 999px;
+    background: rgba(255,255,255,0.55); backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--coral-900);
+  }
+  .badge {
+    position: absolute; top: 14px; left: 14px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+    font-family: var(--font-body); font-size: 12px; font-weight: 600; color: var(--gray-900);
+  }
+  .stars { color: var(--coral-900); font-size: 13px; }
+  .price-row { display: flex; align-items: baseline; justify-content: space-between; margin-top: 10px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <!-- default -->
+    <div class="card-property">
+      <div class="card-property__media media-sample">
+        <span class="badge">Favorito</span>
+        <span class="heart"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></span>
+      </div>
+      <div class="card-property__body">
+        <h3 class="card-property__title">Casa Los Cedros</h3>
+        <p class="card-property__meta">Xalapa, Veracruz · 4 huéspedes</p>
+        <div class="price-row">
+          <div class="stars">★ 4.96 <span style="color: var(--gray-700)">· 128</span></div>
+          <div class="card-property__price">$1,480 <span>/ noche</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- hover -->
+    <div class="card-property" style="transform: translateY(-4px); box-shadow: 0 20px 40px rgba(237,104,100,0.15);">
+      <div class="card-property__media media-sample" style="background: linear-gradient(135deg,#F9CFCC 0%,#F5B0AD 70%);">
+        <span class="badge">Superanfitrión</span>
+        <span class="heart"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></span>
+      </div>
+      <div class="card-property__body">
+        <h3 class="card-property__title">Estudio Niebla</h3>
+        <p class="card-property__meta">Coatepec · 2 huéspedes</p>
+        <div class="price-row">
+          <div class="stars">★ 5.00 <span style="color: var(--gray-700)">· 42</span></div>
+          <div class="card-property__price">$960 <span>/ noche</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Glass card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--gradient-sunset); min-height: 200px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card-glass h4 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--gray-950); }
+  .card-glass p { margin: 0; font-size: 14px; color: var(--gray-900); line-height: 1.5; }
+  .card-content h4 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--gray-950); }
+  .card-content p { margin: 0; font-size: 14px; color: var(--gray-700); line-height: 1.5; }
+  .script { font-family: var(--font-script); color: var(--coral-900); font-size: 24px; line-height: 1; display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card-glass">
+      <span class="script">como en casa</span>
+      <h4>Card glass</h4>
+      <p>Cream translúcido con blur 32px + saturate 180%. Aparece sobre fondos con color para crear profundidad.</p>
+    </div>
+    <div class="card-content">
+      <h4>Card content</h4>
+      <p>Fondo white sólido, radius 20, padding 32. Para bloques editoriales sobre cream.</p>
+    </div>
+  </div>
+</body>
+</html>

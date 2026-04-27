@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fondos y acentos</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--cream); }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+  .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .sw { border-radius: 14px; overflow: hidden; background: var(--white); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
+  .chip { aspect-ratio: 2.4/1; }
+  .meta { padding: 10px 14px; }
+  .name { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--gray-900); }
+  .hex  { font-family: var(--font-body); font-size: 11px; color: var(--gray-700); margin-top: 2px; }
+  .label { font-family: var(--font-display); font-weight: 500; font-size: 13px; color: var(--gray-700); margin: 0 0 10px; letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="label">Fondos · base neutral cálida</div>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#FAF7F2; border-bottom: 1px solid #E8E8E6"></div><div class="meta"><div class="name">Cream · fondo</div><div class="hex">#FAF7F2</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF; border-bottom: 1px solid #E8E8E6"></div><div class="meta"><div class="name">White · cards</div><div class="hex">#FFFFFF</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1F1F1F"></div><div class="meta"><div class="name">Charcoal · anochecer</div><div class="hex">#1F1F1F</div></div></div>
+  </div>
+  <div class="label" style="margin-top: 18px;">Acentos · uso mínimo, nunca compiten con el coral</div>
+  <div class="row-3">
+    <div class="sw"><div class="chip" style="background:#E8B547"></div><div class="meta"><div class="name">Mustard</div><div class="hex">#E8B547</div></div></div>
+    <div class="sw"><div class="chip" style="background:#8FA68E"></div><div class="meta"><div class="name">Sage</div><div class="hex">#8FA68E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#B5CDD6"></div><div class="meta"><div class="name">Sky warm</div><div class="hex">#B5CDD6</div></div></div>
+  </div>
+</body>
+</html>

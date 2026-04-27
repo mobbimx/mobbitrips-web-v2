@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { margin: 0; padding: 28px; background: var(--cream); display: flex; flex-direction: column; gap: 18px; }
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .tag { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-700); width: 120px; flex-shrink: 0; }
+  .glass-bg { background: linear-gradient(135deg, #FDE8E6 0%, #F5B0AD 100%); padding: 14px 16px; border-radius: 16px; display: flex; gap: 10px; align-items: center; flex-grow: 1; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="tag">Primary</div>
+    <button class="btn btn-primary">Reserva ahora</button>
+    <button class="btn btn-primary" style="transform: scale(1.02); box-shadow: 0 8px 24px rgba(237,104,100,0.35); background: linear-gradient(135deg,#F08884,#ED6864);">Hover</button>
+    <button class="btn btn-primary" style="transform: scale(0.98)">Active</button>
+  </div>
+  <div class="row"><div class="tag">Secondary</div>
+    <button class="btn btn-secondary">Conoce más</button>
+    <button class="btn btn-secondary" style="background: #2D2D2D; color: #FAF7F2;">Hover</button>
+  </div>
+  <div class="row"><div class="tag">Glass</div>
+    <div class="glass-bg">
+      <button class="btn btn-glass">Ver propiedades</button>
+      <button class="btn btn-glass" style="background: rgba(255,255,255,0.75);">Hover</button>
+    </div>
+  </div>
+</body>
+</html>
