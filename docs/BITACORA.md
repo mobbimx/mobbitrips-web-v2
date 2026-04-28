@@ -5,6 +5,50 @@
 
 ---
 
+## 2026-04-28 · Sesión 10 — Fix crítico animaciones de scroll
+
+**Sprint**: fix/animated-section · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Fix AnimatedSection: animaciones de scroll que nunca ejecutaban
+
+**Commits:**
+
+- `a3dd955` — fix(ui): reemplaza Framer Motion en AnimatedSection por IntersectionObserver
+- `0344b3f` — fix(ui): integra fix AnimatedSection + sync con origin/main (push a GitHub)
+
+**Problema identificado:**
+
+`AnimatedSection.tsx` usaba `motion(Tag)` dentro del cuerpo del componente → cada render creaba un nuevo tipo de componente → React hacía unmount/remount → Framer Motion perdía estado de animación. Además, el `initial: { opacity: 0 }` se renderizaba en SSR dejando secciones invisibles si JS fallaba o tardaba.
+
+**Solución aplicada:**
+
+Reescritura completa de `AnimatedSection` usando `IntersectionObserver + CSS transitions` (mismo patrón probado de FeaturedProperties):
+
+- Contenido visible por defecto en SSR (sin opacity:0 en HTML)
+- `useEffect` aplica la animación SOLO a elementos fuera del viewport al montar
+- `rootMargin: -60px` (menos agresivo que -100px, mejor en mobile)
+- `prefers-reduced-motion` respetado
+- Sin dependencia de Framer Motion
+- Agregado `AnimatedSection` a `FinalCTA` (única sección sin animaciones de scroll)
+
+**Decisiones:**
+
+- Se eliminó Framer Motion de AnimatedSection (la dependencia queda en package.json por si se usa en otro componente futuro)
+- FinalCTA ahora tiene animaciones: título + descripción entran primero, botones con 150ms de delay
+
+**Estado:**
+
+- `pnpm lint` ✅ `pnpm type-check` ✅ Push a main ✅ Vercel building...
+
+**Próximo paso:**
+
+- Verificar en el sitio live que todas las secciones animan al hacer scroll
+- Continuar con Sprint 1.5 (Stripe webhook en producción)
+
+---
+
 ## 2026-04-27 · Sesión 9 — 6 secciones restantes del Home
 
 **Sprint**: design/hero-polish (mergeado en main) · Trabajó con: Emilio
