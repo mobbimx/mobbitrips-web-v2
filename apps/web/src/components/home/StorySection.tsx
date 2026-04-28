@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AnimatedSection } from '@mobbitrips/ui';
+import { StoryBadges } from './StoryBadges';
 
 const highlights = [
   'Xalapa — la ciudad más verde de México',
@@ -69,14 +70,7 @@ export function StorySection() {
                 <p className="story__panel-sub">Veracruz, México</p>
               </div>
             </div>
-            <div className="story__badge story__badge--white">
-              <p className="story__badge-val">+50</p>
-              <p className="story__badge-label">estancias felices</p>
-            </div>
-            <div className="story__badge story__badge--coral">
-              <p className="story__badge-val">4.9★</p>
-              <p className="story__badge-label">calificación</p>
-            </div>
+            <StoryBadges />
           </div>
         </AnimatedSection>
       </div>
