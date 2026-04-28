@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Gradientes</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--cream); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .sw { border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); background: var(--white); }
+  .chip { aspect-ratio: 3/1; }
+  .meta { padding: 10px 14px; background: var(--white); }
+  .name { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--gray-900); }
+  .hex  { font-family: var(--font-body); font-size: 11px; color: var(--gray-700); margin-top: 2px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background: var(--gradient-warm)"></div><div class="meta"><div class="name">gradient-warm</div><div class="hex">cream → coral-100 · 135°</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--gradient-coral-soft)"></div><div class="meta"><div class="name">gradient-coral-soft</div><div class="hex">coral-100 → coral-500 · 135°</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--gradient-sunset)"></div><div class="meta"><div class="name">gradient-sunset</div><div class="hex">cream → coral-300 → coral-700</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--gradient-dusk)"></div><div class="meta"><div class="name">gradient-dusk</div><div class="hex">coral-500 → gray-700 → charcoal</div></div></div>
+  </div>
+</body>
+</html>

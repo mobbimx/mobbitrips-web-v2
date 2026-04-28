@@ -1,27 +1,28 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
-const directionMap: Record<Direction, { x?: number; y?: number }> = {
-  up: { y: 40 },
-  down: { y: -40 },
-  left: { x: 40 },
-  right: { x: -40 },
-};
-
-interface AnimatedSectionProps {
-  children: React.ReactNode;
+export interface AnimatedSectionProps {
+  children: ReactNode;
   direction?: Direction;
   delay?: number;
   duration?: number;
   className?: string;
-  as?: React.ElementType;
+  as?: ElementType;
 }
 
-function AnimatedSection({
+const dirOffset: Record<Direction, string> = {
+  up: 'translateY(40px)',
+  down: 'translateY(-40px)',
+  left: 'translateX(40px)',
+  right: 'translateX(-40px)',
+};
+
+export function AnimatedSection({
   children,
   direction = 'up',
   delay = 0,
@@ -29,26 +30,47 @@ function AnimatedSection({
   className,
   as: Tag = 'div',
 }: AnimatedSectionProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const offset = directionMap[direction];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ref = useRef<any>(null);
 
-  const initial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, ...offset };
-  const animate = { opacity: 1, x: 0, y: 0 };
+  useEffect(() => {
+    const el = ref.current as HTMLElement | null;
+    if (!el) return;
 
-  const MotionTag = motion(Tag as 'div');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Elements already visible on load don't need animation (no flash)
+    const rect = el.getBoundingClientRect();
+    const alreadyVisible = rect.top < window.innerHeight - 40 && rect.bottom > 40;
+    if (alreadyVisible) return;
+
+    el.style.opacity = '0';
+    el.style.transform = dirOffset[direction];
+    el.style.transition = [
+      `opacity ${duration}s ease-out ${delay}s`,
+      `transform ${duration}s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    ].join(', ');
+    el.style.willChange = 'opacity, transform';
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          el.style.willChange = 'auto';
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-60px 0px -60px 0px' },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [direction, delay, duration]);
 
   return (
-    <MotionTag
-      initial={initial}
-      whileInView={animate}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration, delay, ease: 'easeOut' }}
-      className={cn(className)}
-    >
+    <Tag ref={ref} className={cn(className)}>
       {children}
-    </MotionTag>
+    </Tag>
   );
 }
-
-export { AnimatedSection };
-export type { AnimatedSectionProps };

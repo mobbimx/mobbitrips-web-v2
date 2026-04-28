@@ -34,6 +34,7 @@ const config: Config = {
       fontFamily: {
         comfortaa: ['var(--font-comfortaa)', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
+        caveat: ['var(--font-caveat)', 'cursive'],
         sans: ['var(--font-inter)', 'sans-serif'],
       },
       boxShadow: {

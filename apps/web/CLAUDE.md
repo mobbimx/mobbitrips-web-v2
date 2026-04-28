@@ -62,10 +62,10 @@ colors: {
 ### Sombras (cálidas, no negras)
 
 ```css
---shadow-sm: 0 2px 8px rgba(237,104,100,0.06);
---shadow-md: 0 4px 16px rgba(237,104,100,0.10);
---shadow-lg: 0 12px 32px rgba(237,104,100,0.14);
---shadow-xl: 0 24px 48px rgba(237,104,100,0.18);
+--shadow-sm: 0 2px 8px rgba(237, 104, 100, 0.06);
+--shadow-md: 0 4px 16px rgba(237, 104, 100, 0.1);
+--shadow-lg: 0 12px 32px rgba(237, 104, 100, 0.14);
+--shadow-xl: 0 24px 48px rgba(237, 104, 100, 0.18);
 ```
 
 ### Radios
@@ -105,6 +105,7 @@ colors: {
 **Mobile-first siempre.**
 
 Breakpoints Tailwind estándar:
+
 - `sm`: 640px
 - `md`: 768px
 - `lg`: 1024px
@@ -151,7 +152,8 @@ apps/web/src/
 ├── components/
 │   ├── layout/            ← Navbar, Footer, etc.
 │   ├── ui/                ← Button, Badge, Input, etc. (o vienen de @mobbitrips/ui)
-│   ├── home/              ← secciones específicas del Home
+│   ├── sections/          ← ⭐ Secciones de página provenientes de Claude Design
+│   ├── home/              ← secciones del Home (legacy, migrando a sections/)
 │   ├── properties/        ← PropertyCard, PropertyGrid, etc.
 │   ├── owners/            ← landing B2B
 │   └── analytics/         ← GTM, Pixel, etc.
@@ -160,6 +162,21 @@ apps/web/src/
 ├── types/                  ← tipos específicos de la web
 └── content/                ← MDX de blog (Fase 2+)
 ```
+
+### ⭐ Flujo Claude Design → Claude Code
+
+Ver `design/WORKFLOW.md` para el flujo completo. En resumen:
+
+1. **Claude Design** genera la sección (HTML standalone grande)
+2. Se guarda en `design/exports/[seccion]-v[n].html` como referencia inmutable
+3. **Claude Code** extrae JSX + CSS y lo adapta a Next.js/TypeScript
+4. El componente resultante va en `apps/web/src/components/sections/[Seccion].tsx`
+5. Se prueba en `localhost:3000`, se afinan detalles pequeños
+6. Si necesita cambio de diseño grande → volver a Claude Design
+
+**CSS Design Tokens**: todos los exports de Claude Design usan `var(--coral-900)`,
+`var(--font-display)`, etc. Estos tokens están definidos en `globals.css > @layer base > :root`.
+No hay que traducirlos — ya funcionan directamente.
 
 ### Convenciones
 
@@ -226,21 +243,26 @@ Para detalles de cada una, ver `docs/MASTER.md`:
 
 ## 🎨 Componentes a construir (Sprint 1.1)
 
-*(Esta sección se expandirá con detalles cuando arranquemos Sprint 1.1. Por ahora solo lista de nombres.)*
+_(Esta sección se expandirá con detalles cuando arranquemos Sprint 1.1. Por ahora solo lista de nombres.)_
 
 **Componentes UI base (packages/ui):**
+
 - Button, Badge, Input, Skeleton, StarRating, AnimatedSection.
 
 **Layout:**
+
 - Navbar, Footer, WhatsAppFloatingButton, CookieBanner.
 
 **Home (apps/web/src/components/home):**
+
 - HeroSection, FeaturedProperties, WhyBookDirect, StorySection, AmenitiesSection, TestimonialsSection, OwnerTeaser, NewsletterCTA, FinalCTA.
 
 **Properties:**
+
 - PropertyCard, PropertyGrid, PropertyFilters, PropertyGallery, PropertyAmenities, PropertyReviews, PropertyMap, BookingWidget.
 
 **Owners (B2B):**
+
 - OwnerHero, OwnerBenefits, OwnerProcess, EarningsCalculator, OwnerTestimonials, OwnerContactForm.
 
 Cada uno tendrá especificación completa en la próxima versión de este documento.
@@ -296,4 +318,4 @@ NEXT_PUBLIC_SENTRY_DSN=
 
 **Última actualización**: abril 2026 · **Versión**: 0.1 (mínima viable)
 
-*Este documento se expandirá significativamente al arrancar Sprint 1.1.*
+_Este documento se expandirá significativamente al arrancar Sprint 1.1._

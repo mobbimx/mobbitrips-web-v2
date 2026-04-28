@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Navbar</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { margin: 0; padding: 0; background: var(--cream); }
+  .nav-demo {
+    position: relative;
+    height: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px;
+  }
+  .nav-transparent { background: linear-gradient(135deg, #FDE8E6 0%, #F5B0AD 60%, #F08884 100%); }
+  .nav-scrolled {
+    background: rgba(250, 247, 242, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 32px; height: 32px; }
+  .wordmark { font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--gray-900); letter-spacing: -0.01em; }
+  .links { display: flex; gap: 26px; }
+  .links a { font-family: var(--font-body); font-weight: 500; font-size: 14px; color: var(--gray-900); text-decoration: none; }
+  .state { position: absolute; top: 10px; right: 14px; font-family: var(--font-body); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-700); }
+  .divider { height: 1px; background: var(--gray-200); }
+</style>
+</head>
+<body>
+  <div class="nav-demo nav-transparent">
+    <span class="state" style="color: var(--white); opacity: 0.8;">estado · top</span>
+    <div class="brand"><img src="../assets/logo-coral.png" alt=""><span class="wordmark">MobbiTrips</span></div>
+    <div class="links"><a>Propiedades</a><a>Destinos</a><a>Experiencias</a><a>Entrar</a></div>
+    <button class="btn btn-primary btn-sm">Reserva</button>
+  </div>
+  <div class="divider"></div>
+  <div class="nav-demo nav-scrolled">
+    <span class="state">estado · scrolled (glass)</span>
+    <div class="brand"><img src="../assets/logo-coral.png" alt=""><span class="wordmark">MobbiTrips</span></div>
+    <div class="links"><a>Propiedades</a><a>Destinos</a><a>Experiencias</a><a>Entrar</a></div>
+    <button class="btn btn-primary btn-sm">Reserva</button>
+  </div>
+</body>
+</html>

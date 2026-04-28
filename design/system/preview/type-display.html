@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Type — Display</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 26px 28px; background: var(--cream); }
+  .row { display: flex; align-items: baseline; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--gray-200); }
+  .row:last-child { border-bottom: none; }
+  .tag { flex: 0 0 110px; font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-700); }
+  .specimen { font-family: var(--font-display); color: var(--gray-950); }
+  .xl { font-weight: 700; font-size: 44px; line-height: 1.05; letter-spacing: -0.03em; }
+  .l  { font-weight: 600; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em; }
+  .m  { font-weight: 500; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="tag">Display XL · 700</div><div class="specimen xl">Descansa, vive y sueña</div></div>
+  <div class="row"><div class="tag">Display L · 600</div><div class="specimen l">Casa en todas partes</div></div>
+  <div class="row"><div class="tag">Display M · 500</div><div class="specimen m">Propiedades con alma</div></div>
+</body>
+</html>

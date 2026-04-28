@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Voice & copy</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px 26px; background: var(--cream); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: var(--white); border-radius: 16px; padding: 18px 20px; box-shadow: var(--shadow-sm); }
+  .kicker { font-family: var(--font-body); font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-700); margin-bottom: 8px; }
+  .yes, .no { font-family: var(--font-body); font-size: 14px; line-height: 1.5; display: flex; gap: 8px; margin-bottom: 6px; }
+  .yes::before { content: '✓'; color: var(--coral-900); font-weight: 700; }
+  .no::before { content: '×'; color: var(--gray-500); font-weight: 700; }
+  .no { color: var(--gray-500); text-decoration: line-through; }
+  .hdr { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--gray-950); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card">
+      <div class="kicker">Tono · cálido y humano</div>
+      <div class="hdr">Sí suena a MobbiTrips</div>
+      <div class="yes">"Reserva ahora"</div>
+      <div class="yes">"Tu próxima casa te espera"</div>
+      <div class="yes">"Un momento, estamos haciendo la cama…"</div>
+      <div class="yes">"Conoce más"</div>
+    </div>
+    <div class="card">
+      <div class="kicker">Evitar · frío o corporativo</div>
+      <div class="hdr">No suena a MobbiTrips</div>
+      <div class="no">"Book now"</div>
+      <div class="no">"Explore our inventory"</div>
+      <div class="no">"Por favor espere, cargando…"</div>
+      <div class="no">"Submit reservation request"</div>
+    </div>
+  </div>
+</body>
+</html>

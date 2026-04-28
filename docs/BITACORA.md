@@ -5,6 +5,155 @@
 
 ---
 
+## 2026-04-27 · Sesión 9 — 6 secciones restantes del Home
+
+**Sprint**: design/hero-polish (mergeado en main) · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Implementación completa de WhyBookDirect, StorySection, TestimonialsSection, OwnerTeaser, NewsletterCTA, FinalCTA
+
+**Commits:**
+
+- `e36168c` — feat(home): implementa 6 secciones restantes con sistema CSS de clases
+
+**Lo que se hizo:**
+
+- 6 secciones convertidas al sistema CSS de clases (igual que Hero y FeaturedProperties)
+- Transiciones graduales entre secciones (cream→dark y dark→cream vía `::before`)
+- Caveat script inline en h2 de cada sección (`.script-inline`)
+- Blobs animados en secciones oscuras y cream con opacidad sutil
+- FinalCTA: sunset gradient `#1f1f1f → #c14744 → #ed6864 → #f08884`
+- tailwind.config.ts: agregada `font-caveat` como utility class
+- `pnpm lint` ✅ `pnpm type-check` ✅
+
+**Decisiones:**
+
+- Empezamos en `main` (el `git pull --rebase origin design/hero-polish` del inicio fusionó la rama)
+- CSS siempre append al final de globals.css, nunca modificar bloques existentes
+- AnimatedSection (Framer Motion) se mantiene para reveals — misma API que el resto del proyecto
+
+**Bloqueos:** ninguno
+
+**Próximo paso:** Abrir `http://localhost:3000` y revisar el home completo. Si hay ajustes visuales → sesión de fine-tuning. Si todo OK → merge a main / Vercel deploy.
+
+---
+
+## 2026-04-27 · Sesión 8 — FeaturedProperties desde Claude Design
+
+**Sprint**: design/hero-polish · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Implementación de sección FeaturedProperties desde bundle de Claude Design
+- Documentación de protocolo de handoff en `docs/METODOLOGIA_DISENO_WEB.md` (sección 4b)
+
+**Commits:**
+
+- `4a01574` — feat(home): implementa sección FeaturedProperties desde Claude Design
+
+**Lo que se hizo:**
+
+- Extraído bundle Claude Design (tar.gz) → `components/Properties.jsx` + `styles/properties.css`
+- Ignorado: Navbar.jsx, Hero.jsx del bundle (tenemos los nuestros polidos)
+- Creado `FeaturedProperties.tsx` como client component TypeScript
+- Carrusel scroll-snap, 6 propiedades con gradientes coral, filter chips, flechas liquid glass, dots, reveal animado
+- Fondo gradient disuelve coral del hero → cream (continuidad visual entre secciones)
+- CSS appended al final de `globals.css` — nada existente modificado
+- `HeroSection.tsx` y `Navbar.tsx` intactos
+- Lint ✅ Type-check ✅
+
+**Decisiones:**
+
+- hero-v2.html pesa 2MB (fuentes base64) — inviable importar a Claude Design. Continuidad se mantiene trabajando en el mismo archivo de Design con su propio hero como contexto
+- Documentado protocolo de extracción parcial en METODOLOGIA_DISENO_WEB.md sección 4b: mostrar qué se ignora antes de implementar, esperar confirmación
+
+**Bloqueos:** ninguno
+
+**Próximo paso:** Revisar FeaturedProperties en `http://localhost:3000` y ajustar si hace falta. Luego siguiente sección en Claude Design.
+
+---
+
+## 2026-04-27 · Sesión 7 — Polish Hero + Navbar
+
+**Sprint**: design/hero-polish · Trabajó con: Emilio
+
+**Tasks cerradas**
+
+- Headline hero: de 4 líneas visuales a 2 (quita max-width 14ch + fusiona "en casa" a línea 2)
+- Search bar: max-width 720 → 860px (textos completos visibles)
+- Navbar: elimina smart-hide; siempre visible y fijo al scroll. Hover links: pill coral suave (bg-primary/10)
+
+**Commits**
+
+- `0443e30` style(hero): headline 2 líneas, search más ancha, navbar siempre visible + hover links
+
+**Decisiones**
+
+- Secciones placeholder debajo del hero (FeaturedProperties, WhyBookDirect, etc.) se conservan en código pero no se tocan hasta que pasen por Claude Design
+- Flujo confirmado: cada sección se diseña en Claude Design → HTML → Claude Code la implementa
+- Date picker custom (react-day-picker) se deja para sprint propio, no durante polish visual
+
+**Bloqueos activos**
+
+- STRIPE_WEBHOOK_SECRET sin configurar
+- Dominio Resend sin verificar
+
+**Próximo paso**
+
+- Emilio diseña la siguiente sección en Claude Design (FeaturedProperties o la que elija)
+- Claude Code la implementa reemplazando el placeholder existente
+
+---
+
+## 2026-04-23 · Sesión 6 — Diseño Hero (continúa mañana en oficina)
+
+**Sprint**: 1.5 · Trabajé con: Emilio
+
+**Foco de la sesión**: Metodología Claude Design → Claude Code + refinamiento Hero standalone
+
+**Tasks cerradas**:
+
+- chore ✅ Metodología de trabajo formalizada: Claude Design genera secciones grandes → Claude Code afina detalles en browser → HTML final sube de vuelta como contexto a Claude Design
+- chore ✅ `design/WORKFLOW.md` documentado con flujo completo + convenciones de naming
+- chore ✅ `design/exports/hero-v1-editable.html` creado: HTML standalone extraído del bundle de Claude Design, con fuentes locales, logo base64 embebido, CSS design tokens inline
+- chore ✅ `apps/web/src/components/sections/` creada (`.gitkeep`) — carpeta destino de secciones convertidas
+- chore ✅ `apps/web/CLAUDE.md` actualizado: flujo Claude Design, carpeta sections/, design tokens
+
+**Ajustes aplicados al Hero (hero-v1-editable.html)**:
+
+- ✅ Animaciones ~20% más rápidas: eyebrow 800→640ms, words 900→720ms, script 1200→950ms, lede 700→560ms, search 1000→800ms, CTAs 600→480ms, scroll indicator 800→640ms
+- ✅ Navbar: liquid glass→sólido ahora dispara a 40px scroll (era 80px) con 180ms de transición (era 400ms)
+- ✅ Espaciado redistribuido: menos aire arriba (padding hero 96→72px, content padding-top 50→16px), más respiración entre elementos (headline 12→20px, lede 12→28px, search 16→32px, CTAs 16→24px)
+- ✅ Search pill: padding horizontal 14→10px por sección + overflow:hidden en sección → fix truncado de texto en viewports 768-900px
+- ✅ Placeholder texts acortados: "¿A dónde quieres ir?" → "Xalapa, México", "Agrega" → "Añade"
+
+**Pendiente (continuar mañana en la oficina)**:
+
+- 🔲 Verificar en browser que search pill ya no trunca texto en viewports ~768-900px
+- 🔲 Aprobar visualmente el Hero completo en mobile (375px) y desktop (1440px)
+- 🔲 Una vez aprobado el Hero → convertir a `apps/web/src/components/sections/HeroSection.tsx`
+- 🔲 Continuar con la siguiente sección (abrir Claude Design con hero-v1-editable.html como contexto)
+
+**Archivo principal de trabajo**:
+
+```
+design/exports/hero-v1-editable.html
+```
+
+Abrir este archivo en el browser y verificar el search pill antes de seguir.
+
+**Commits**:
+
+- `47ae98f` chore(design): hero editable standalone listo para afinar
+- `(esta sesión)` chore(design): ajustes Hero — animaciones, navbar, espaciado, search pill
+
+**Bloqueos**:
+
+- Search pill text cutoff: aplicado fix (padding 10px + overflow hidden), pendiente verificar en browser mañana
+
+---
+
 ## 2026-04-22 · Sesión 5 (en pausa)
 
 **Sprint**: 1.5 · **Trabajé con**: Emilio

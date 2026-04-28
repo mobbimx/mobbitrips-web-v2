@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Iconography</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--cream); }
+  .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px; border-radius: 12px; background: var(--white); box-shadow: var(--shadow-sm); }
+  .cell svg { width: 22px; height: 22px; stroke: var(--gray-900); stroke-width: 1.75; }
+  .cell .name { font-family: var(--font-body); font-size: 10px; color: var(--gray-700); }
+  .header { font-family: var(--font-display); font-weight: 500; font-size: 12px; color: var(--gray-700); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 10px; }
+</style>
+</head>
+<body>
+  <div class="header">Lucide · stroke 1.75 · redondeadas · coral/gray</div>
+  <div class="grid">
+    <div class="cell"><i data-lucide="home"></i><span class="name">home</span></div>
+    <div class="cell"><i data-lucide="search"></i><span class="name">search</span></div>
+    <div class="cell"><i data-lucide="heart"></i><span class="name">heart</span></div>
+    <div class="cell"><i data-lucide="map-pin"></i><span class="name">map-pin</span></div>
+    <div class="cell"><i data-lucide="calendar"></i><span class="name">calendar</span></div>
+    <div class="cell"><i data-lucide="users"></i><span class="name">users</span></div>
+    <div class="cell"><i data-lucide="wifi"></i><span class="name">wifi</span></div>
+    <div class="cell"><i data-lucide="coffee"></i><span class="name">coffee</span></div>
+    <div class="cell"><i data-lucide="bed-double"></i><span class="name">bed</span></div>
+    <div class="cell"><i data-lucide="bath"></i><span class="name">bath</span></div>
+    <div class="cell"><i data-lucide="key-round"></i><span class="name">key</span></div>
+    <div class="cell"><i data-lucide="star"></i><span class="name">star</span></div>
+    <div class="cell"><i data-lucide="waves"></i><span class="name">waves</span></div>
+    <div class="cell"><i data-lucide="tree-pine"></i><span class="name">tree</span></div>
+    <div class="cell"><i data-lucide="sun"></i><span class="name">sun</span></div>
+    <div class="cell"><i data-lucide="moon"></i><span class="name">moon</span></div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

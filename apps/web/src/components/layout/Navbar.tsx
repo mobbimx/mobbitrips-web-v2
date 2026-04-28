@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,28 +18,10 @@ const links = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
-  const lastYRef = useRef(0);
-  const accDownRef = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 80);
-      const delta = y - lastYRef.current;
-      if (y < 80) {
-        setHidden(false);
-        accDownRef.current = 0;
-      } else if (delta > 0) {
-        accDownRef.current += delta;
-        if (accDownRef.current > 80) setHidden(true);
-      } else if (delta < 0) {
-        setHidden(false);
-        accDownRef.current = 0;
-      }
-      lastYRef.current = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -56,11 +38,8 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-40 transition-all duration-[400ms]',
-          scrolled
-            ? 'h-16 border-b border-white/50 shadow-sm'
-            : 'h-[72px] bg-transparent',
-          hidden && !open ? '-translate-y-full' : 'translate-y-0',
+          'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
+          scrolled ? 'h-16 border-b border-white/50 shadow-sm' : 'h-[72px] bg-transparent',
         )}
         style={
           scrolled
@@ -93,7 +72,7 @@ export function Navbar() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="px-3 py-2 text-sm font-medium text-brand-gray transition-colors hover:text-brand-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:rounded-lg"
+                  className="px-3 py-2 text-sm font-medium text-brand-gray rounded-lg transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
                 >
                   {label}
                 </Link>

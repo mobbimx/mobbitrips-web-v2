@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Type — Body & UI</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px 28px; background: var(--cream); color: var(--gray-900); }
+  .row { display: flex; align-items: baseline; gap: 20px; padding: 10px 0; border-bottom: 1px solid var(--gray-200); }
+  .row:last-child { border-bottom: none; }
+  .tag { flex: 0 0 130px; font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-700); }
+  .s-body-l { font-family: var(--font-body); font-size: 18px; line-height: 1.6; }
+  .s-body-m { font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+  .s-body-s { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--gray-700); }
+  .s-btn    { font-family: var(--font-body); font-weight: 600; font-size: 16px; }
+  .s-label  { font-family: var(--font-body); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gray-700); }
+  .s-h-l    { font-family: var(--font-display); font-weight: 500; font-size: 24px; line-height: 1.3; }
+  .s-h-m    { font-family: var(--font-display); font-weight: 400; font-size: 20px; line-height: 1.4; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="tag">Heading L · Comfortaa 500</div><div class="s-h-l">Tu próxima casa te espera</div></div>
+  <div class="row"><div class="tag">Heading M · Comfortaa 400</div><div class="s-h-m">Detalles de la propiedad</div></div>
+  <div class="row"><div class="tag">Body L · Inter 400 / 18</div><div class="s-body-l">Cada propiedad se siente como casa.</div></div>
+  <div class="row"><div class="tag">Body M · Inter 400 / 16</div><div class="s-body-m">Hospedaje humano donde sea que estés — diseñado para que nunca extrañes tu hogar.</div></div>
+  <div class="row"><div class="tag">Body S · Inter 400 / 14</div><div class="s-body-s">Xalapa, México · 2 huéspedes · 1 habitación</div></div>
+  <div class="row"><div class="tag">UI Button · Inter 600</div><div class="s-btn">Reserva ahora</div></div>
+  <div class="row"><div class="tag">Label · Inter 500 caps</div><div class="s-label">Destino destacado</div></div>
+</body>
+</html>

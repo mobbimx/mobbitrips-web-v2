@@ -24,7 +24,7 @@
     "typescript": "^5.5.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
+    "{apps,packages}/**/*.{ts,tsx,js,jsx}": [
       "pnpm exec eslint --fix --max-warnings 0",
       "pnpm exec prettier --write"
     ],
