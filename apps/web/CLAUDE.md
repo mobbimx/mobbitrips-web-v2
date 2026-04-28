@@ -189,43 +189,44 @@ No hay que traducirlos — ya funcionan directamente.
 
 ---
 
-## 🎬 Animaciones (Framer Motion)
+## 🎬 Animaciones
+
+### ⚠️ REGLA INMUTABLE — NO usar Framer Motion para scroll-reveal
+
+El patrón `motion(Tag)` de Framer Motion dentro de componentes causa que React haga unmount/remount en cada render y rompe las animaciones. Además, el `initial: { opacity: 0 }` se renderiza en SSR dejando secciones **invisibles** si JS falla.
+
+**SIEMPRE usar `<AnimatedSection>` de `@mobbitrips/ui`** para reveals de scroll. Internamente usa `IntersectionObserver + CSS transitions` — robusto, sin SSR issues, sin dependencia de FM.
+
+### Patrón correcto: scroll-reveal
+
+```tsx
+import { AnimatedSection } from '@mobbitrips/ui';
+
+// Entrada simple
+<AnimatedSection direction="up">
+  <h2>Título</h2>
+</AnimatedSection>
+
+// Con delay (stagger manual)
+{items.map((item, i) => (
+  <AnimatedSection key={item.id} direction="up" delay={i * 0.08}>
+    <div>{item.content}</div>
+  </AnimatedSection>
+))}
+
+// Desde los lados
+<AnimatedSection direction="right">...</AnimatedSection>
+<AnimatedSection direction="left" delay={0.15}>...</AnimatedSection>
+```
+
+Props disponibles: `direction` (up/down/left/right) · `delay` (segundos) · `duration` (segundos, default 0.6) · `as` (elemento HTML) · `className`.
 
 ### Principios
 
 - **Suaves y orgánicas**, nunca bruscas.
-- **Respetar `prefers-reduced-motion`** siempre.
-- **Duration corta**: 200-400ms para hover, 500-700ms para entrada de secciones.
-- **Easing**: default de Framer (cubic-bezier natural) o `easeOut`.
-
-### Patrones comunes
-
-```tsx
-// Entrada de sección
-<motion.section
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-100px" }}
-  transition={{ duration: 0.6, ease: "easeOut" }}
->
-
-// Hover en card
-<motion.div
-  whileHover={{ y: -4 }}
-  transition={{ duration: 0.3 }}
->
-
-// Stagger de hijos
-<motion.div
-  initial="hidden"
-  animate="visible"
-  variants={{
-    visible: {
-      transition: { staggerChildren: 0.1 }
-    }
-  }}
->
-```
+- **Respetar `prefers-reduced-motion`** — AnimatedSection ya lo hace automáticamente.
+- **Duration corta**: 0.5–0.7s para entradas de sección.
+- Framer Motion **solo** está permitido para micro-interacciones hover en client components (no scroll-reveal).
 
 ---
 

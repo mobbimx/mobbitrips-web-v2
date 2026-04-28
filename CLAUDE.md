@@ -91,24 +91,24 @@ Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que con
 
 ## 🧱 Stack técnico
 
-| Capa          | Tecnología                                       |
-| ------------- | ------------------------------------------------ |
-| Framework     | Next.js 14 (App Router, Server Components)       |
-| Lenguaje      | TypeScript estricto                              |
-| Estilos       | Tailwind CSS (sin CSS-in-JS)                     |
-| Animación     | Framer Motion (solo en client components)        |
-| Smooth scroll | Lenis                                            |
-| Íconos        | Lucide React                                     |
-| HTTP          | Axios (clientes tipados en `packages/*-client/`) |
-| Forms         | React Hook Form + Zod                            |
-| Fechas        | date-fns + react-day-picker                      |
-| Fuentes       | next/font (Comfortaa + Inter)                    |
-| Pagos         | Stripe Elements + PayU Hosted Page               |
-| DB            | Supabase (Postgres + Auth + Storage + pgvector)  |
-| Email         | Resend                                           |
-| Deploy        | Vercel                                           |
-| Monitoreo     | Sentry                                           |
-| Monorepo      | Turborepo + pnpm workspaces                      |
+| Capa          | Tecnología                                                                                         |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| Framework     | Next.js 14 (App Router, Server Components)                                                         |
+| Lenguaje      | TypeScript estricto                                                                                |
+| Estilos       | Tailwind CSS (sin CSS-in-JS)                                                                       |
+| Animación     | `<AnimatedSection>` (IntersectionObserver+CSS) · Framer Motion solo para hover micro-interacciones |
+| Smooth scroll | Lenis                                                                                              |
+| Íconos        | Lucide React                                                                                       |
+| HTTP          | Axios (clientes tipados en `packages/*-client/`)                                                   |
+| Forms         | React Hook Form + Zod                                                                              |
+| Fechas        | date-fns + react-day-picker                                                                        |
+| Fuentes       | next/font (Comfortaa + Inter)                                                                      |
+| Pagos         | Stripe Elements + PayU Hosted Page                                                                 |
+| DB            | Supabase (Postgres + Auth + Storage + pgvector)                                                    |
+| Email         | Resend                                                                                             |
+| Deploy        | Vercel                                                                                             |
+| Monitoreo     | Sentry                                                                                             |
+| Monorepo      | Turborepo + pnpm workspaces                                                                        |
 
 ---
 
