@@ -191,42 +191,21 @@ No hay que traducirlos — ya funcionan directamente.
 
 ## 🎬 Animaciones
 
-### ⚠️ REGLA INMUTABLE — NO usar Framer Motion para scroll-reveal
+Para todas las reglas de animación: ver `docs/MOTION.md` (fuente única
+de verdad).
 
-El patrón `motion(Tag)` de Framer Motion dentro de componentes causa que React haga unmount/remount en cada render y rompe las animaciones. Además, el `initial: { opacity: 0 }` se renderiza en SSR dejando secciones **invisibles** si JS falla.
+**Resumen ejecutivo:**
 
-**SIEMPRE usar `<AnimatedSection>` de `@mobbitrips/ui`** para reveals de scroll. Internamente usa `IntersectionObserver + CSS transitions` — robusto, sin SSR issues, sin dependencia de FM.
+- Stack: GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive
+- Toda sección visible debe tener animación. Página estática = FALLO.
+- Easings oficiales: `ease-out-expo` (reveals), `ease-out-back` (hovers),
+  `ease-in-out-cubic` (transiciones)
+- `prefers-reduced-motion` respetado siempre
+- Importar GSAP desde `@/lib/gsap` (centralizado)
+- Usar `useGSAP` con scope para cleanup automático
+- Para implementar/mejorar secciones: invoca el agente `design-director`
 
-### Patrón correcto: scroll-reveal
-
-```tsx
-import { AnimatedSection } from '@mobbitrips/ui';
-
-// Entrada simple
-<AnimatedSection direction="up">
-  <h2>Título</h2>
-</AnimatedSection>
-
-// Con delay (stagger manual)
-{items.map((item, i) => (
-  <AnimatedSection key={item.id} direction="up" delay={i * 0.08}>
-    <div>{item.content}</div>
-  </AnimatedSection>
-))}
-
-// Desde los lados
-<AnimatedSection direction="right">...</AnimatedSection>
-<AnimatedSection direction="left" delay={0.15}>...</AnimatedSection>
-```
-
-Props disponibles: `direction` (up/down/left/right) · `delay` (segundos) · `duration` (segundos, default 0.6) · `as` (elemento HTML) · `className`.
-
-### Principios
-
-- **Suaves y orgánicas**, nunca bruscas.
-- **Respetar `prefers-reduced-motion`** — AnimatedSection ya lo hace automáticamente.
-- **Duration corta**: 0.5–0.7s para entradas de sección.
-- Framer Motion **solo** está permitido para micro-interacciones hover en client components (no scroll-reveal).
+Patrones completos en `docs/MOTION.md`.
 
 ---
 
