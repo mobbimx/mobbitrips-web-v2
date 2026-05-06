@@ -66,7 +66,8 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
 4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
 5. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
-6. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
+6. Si la task involucra UI/secciones visuales, **INVOCA el agente `design-director`**. Lee `docs/MOTION.md` obligatoriamente antes de cualquier código de UI.
+7. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
 
 ### Durante la sesión
 
@@ -91,24 +92,24 @@ Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que con
 
 ## 🧱 Stack técnico
 
-| Capa          | Tecnología                                                                                         |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| Framework     | Next.js 14 (App Router, Server Components)                                                         |
-| Lenguaje      | TypeScript estricto                                                                                |
-| Estilos       | Tailwind CSS (sin CSS-in-JS)                                                                       |
-| Animación     | `<AnimatedSection>` (IntersectionObserver+CSS) · Framer Motion solo para hover micro-interacciones |
-| Smooth scroll | Lenis                                                                                              |
-| Íconos        | Lucide React                                                                                       |
-| HTTP          | Axios (clientes tipados en `packages/*-client/`)                                                   |
-| Forms         | React Hook Form + Zod                                                                              |
-| Fechas        | date-fns + react-day-picker                                                                        |
-| Fuentes       | next/font (Comfortaa + Inter)                                                                      |
-| Pagos         | Stripe Elements + PayU Hosted Page                                                                 |
-| DB            | Supabase (Postgres + Auth + Storage + pgvector)                                                    |
-| Email         | Resend                                                                                             |
-| Deploy        | Vercel                                                                                             |
-| Monitoreo     | Sentry                                                                                             |
-| Monorepo      | Turborepo + pnpm workspaces                                                                        |
+| Capa          | Tecnología                                                                               |
+| ------------- | ---------------------------------------------------------------------------------------- |
+| Framework     | Next.js 14 (App Router, Server Components)                                               |
+| Lenguaje      | TypeScript estricto                                                                      |
+| Estilos       | Tailwind CSS (sin CSS-in-JS)                                                             |
+| Animación     | GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive (ver `docs/MOTION.md`) |
+| Smooth scroll | Lenis                                                                                    |
+| Íconos        | Lucide React                                                                             |
+| HTTP          | Axios (clientes tipados en `packages/*-client/`)                                         |
+| Forms         | React Hook Form + Zod                                                                    |
+| Fechas        | date-fns + react-day-picker                                                              |
+| Fuentes       | next/font (Comfortaa + Inter)                                                            |
+| Pagos         | Stripe Elements + PayU Hosted Page                                                       |
+| DB            | Supabase (Postgres + Auth + Storage + pgvector)                                          |
+| Email         | Resend                                                                                   |
+| Deploy        | Vercel                                                                                   |
+| Monitoreo     | Sentry                                                                                   |
+| Monorepo      | Turborepo + pnpm workspaces                                                              |
 
 ---
 
