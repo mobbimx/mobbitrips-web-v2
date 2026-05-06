@@ -5,6 +5,64 @@
 
 ---
 
+## 2026-05-05 · Sesión 11 — Setup tooling de animación + agente design-director
+
+**Sprint**: chore/design-tooling · Trabajó con: Emilio
+
+**Tasks cerradas:**
+
+- Stack de animación instalado: `gsap` `@gsap/react` `split-type` `@lottiefiles/dotlottie-react` `@rive-app/react-canvas`
+- `apps/web/src/lib/gsap.ts` creado (registro centralizado de plugins)
+- `apps/web/src/hooks/use-reduced-motion.ts` creado
+- `SmoothScrollProvider` modificado: Lenis sincronizado con GSAP ScrollTrigger
+- `docs/MOTION.md` creado (fuente única de verdad para animación)
+- `.claude/agents/design-director.md` creado (agente director de diseño)
+- `.claude/settings.json`: SessionStart hook agrega recordatorio sobre design-director
+- `CLAUDE.md` raíz: stack técnico actualizado, protocolo de sesión añade punto sobre agente
+- `apps/web/CLAUDE.md`: sección de animación reemplazada por referencia a `docs/MOTION.md`
+- `.gitignore`: añadido `!.claude/agents` para que los agentes entren al repo
+
+**Commits:**
+
+- `fe7bf39` — feat(web): install animation stack (gsap split-type lottie rive)
+- `ff1cc11` — feat(web): add lib/gsap.ts with centralized plugin registration
+- `5447977` — feat(web): add useReducedMotion hook
+- `e94b9a3` — feat(web): sync Lenis with GSAP ScrollTrigger
+- `3957cd8` — docs: add MOTION.md as single source of truth for animation
+- `4bde1d4` — feat(claude): add design-director agent for UI/UX work
+- `1abd8d8` — chore(claude): SessionStart hook reminds about design-director
+- `d8e8eb5` — docs: update CLAUDE.md stack and protocol for animation
+- `efc65be` — docs: replace web/CLAUDE.md animation section with MOTION.md reference
+
+**Decisiones tomadas:**
+
+- Stack final: GSAP (timelines + ScrollTrigger) + Framer Motion (gestos/AnimatePresence) + Lenis (smooth scroll) + split-type (text reveal) + Lottie (loaders) + Rive (botones interactivos). Coexisten — cada uno se usa para lo suyo.
+- Three.js / curtains.js NO se instalan ahora. Se agregarán solo si surge una sección que los justifique.
+- El conflicto de `cubic-bezier(0.34, 1.56, 0.64, 1)` entre design system y skill `/animate` se resuelve a favor del design system: la curva es oficial de Mobbitrips para hovers.
+- El agente `design-director` es OBLIGATORIO para todo trabajo de UI/UX. El SessionStart hook lo recuerda automáticamente.
+- Fix en `lib/gsap.ts`: `gsap.core.globals()` no existe en tipos GSAP — se reemplazó por variable de módulo `let registered = false`.
+
+**Validación:**
+
+- `pnpm lint`: ✅ pass
+- `pnpm type-check`: ✅ pass (tras fix de tipos en gsap.ts)
+- `pnpm dev`: ✅ arranca sin errores en 2.1s
+
+**NO se tocó en esta sesión:**
+
+- `HeroSection.tsx`, `FeaturedProperties.tsx` (ya están bien)
+- `packages/*` (intacto)
+- `supabase/*` (intacto)
+- Skills antiguos en `.agents/skills/` (queda como referencia histórica, el agente design-director es el que manda)
+
+**Próximo paso sugerido:**
+
+Sesión nueva: invocar al agente `design-director` para implementar la primera sección posterior al Hero/FeaturedProperties (probablemente StorySection, WhyBookDirect o lo que indique SPRINT_ACTUAL).
+
+Ejemplo de prompt: _"Usa el agente design-director. Lee la sección StorySection actual y elévala al nivel del Hero."_
+
+---
+
 ## 2026-04-28 · Sesión 10 — Fix crítico animaciones de scroll
 
 **Sprint**: fix/animated-section · Trabajó con: Emilio
