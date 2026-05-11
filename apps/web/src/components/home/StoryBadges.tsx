@@ -5,14 +5,14 @@ import CountUp from 'react-countup';
 export function StoryBadges() {
   return (
     <>
-      <div className="story__badge story__badge--white">
+      <div className="story__badge story__badge--white" data-story-reveal="badge">
         <p className="story__badge-val">
           +
           <CountUp end={50} duration={2} enableScrollSpy scrollSpyOnce />
         </p>
         <p className="story__badge-label">estancias felices</p>
       </div>
-      <div className="story__badge story__badge--coral">
+      <div className="story__badge story__badge--coral" data-story-reveal="badge">
         <p className="story__badge-val">
           <CountUp end={4.9} decimals={1} duration={1.8} enableScrollSpy scrollSpyOnce />★
         </p>
