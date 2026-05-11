@@ -5,6 +5,81 @@
 
 ---
 
+## 2026-05-11 · Sesión 12 — Elevación de StorySection al nivel del Hero
+
+**Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
+
+**Contexto:** primera sesión usando el agente `design-director` end-to-end. Objetivo: cerrar el gap visual entre `StorySection` (plana, estática) y `HeroSection` (orgánica, animada, jerárquica).
+
+**Tasks cerradas:**
+
+- `StoryShapes.tsx` creado (server component) — SVG arc coral light + círculo difuminado con `data-story-parallax="shapes"`.
+- `StorySection.client.tsx` creado (`'use client'`) — wrapper con `useGSAP` scope, master timeline (ScrollTrigger `top 75%`, `toggleActions: 'play none none reverse'`) + 3 scrubs parallax independientes (watermark, shapes, panel).
+- `StorySection.tsx` refactor — removidos los dos `<AnimatedSection>`, headline split en spans con `overflow:hidden` lines + `data-story-reveal="word"`, "Mobi." con underline SVG (stroke-draw vía `strokeDashoffset` + `getTotalLength()`), CTA pill outline coral con flecha hover, `aria-label` accesible + `aria-hidden` en words splitteadas.
+- `StoryBadges.tsx` — añadido `data-story-reveal="badge"` (CountUp + scrollSpyOnce intacto).
+- `globals.css` — grid asimétrico `5fr 6fr` con `align-items: start`, panel `translateY(40px)` en desktop (reset en `<=1024px`), watermark `rgba(255,255,255,0.04)` → `0.08`, transición dark→cream del `::before` suavizada (180px → 260px con stops curvados), nuevos estilos `.story__shapes`, `.story__shape-arc/circle`, `.story__title-line/words/word/script/script-underline`, `.story__cta/cta-arrow`, `.story__motion-root`, fallback `prefers-reduced-motion` específico.
+
+**Commits:**
+
+- `269551d` — feat(home): add StoryShapes and client motion wrapper for Story section
+- `ef8402b` — feat(home): elevate StorySection with split headline, scroll choreography and asymmetric grid
+
+**Decisiones tomadas:**
+
+- Spans manuales para split del headline (mismo patrón que Hero) en vez de instalar `split-type`. 0kb extra, SSR-friendly.
+- GSAP timeline + ScrollTrigger para coreografía orquestada; CSS transitions clásicas para hovers (no Framer aquí). Si los hovers se sienten flojos en validación visual, escalar a Framer en iteración siguiente.
+- Conservar transición oscura del `::before` (Why→Story) — NO es residuo: `WhyBookDirect` tiene fondo `#1f1f1f` y la transición es legítima. Lo que se hizo fue suavizarla, no eliminarla.
+- Watermark "Mobi" del panel: opacidad `0.04` era invisible en muchos monitores → subida a `0.08` + `will-change: transform` para parallax.
+- CTA "Conócenos más" pasa de link textual minúsculo a **pill outline coral** — jerarquía editorial (no comercial; el sólido es para "Ver propiedades" del Hero).
+- Asimetría 5fr/6fr + `translateY(40px)` al panel rompe el "PowerPoint" simétrico sin sacrificar lectura. En `<1024px` colapsa a 1fr y se quita el translateY.
+- Cast `as unknown as SVGPathElement[]` en el query del underline path (genérico de `gsap.utils.selector` no acepta `SVGPathElement` directo — preferí cast tipado a silenciar con `@ts-expect-error`).
+- StorySection sigue siendo server component; solo el wrapper interno es `'use client'`. Patrón coherente con `StoryBadges`.
+- Easings respetados: `expo.out` reveals, `back.out(1.4/1.6)` script + badges, scrub linear para parallax.
+- Mobile (`<640px`): badges siguen `display:none`, asimetría off, grid colapsa.
+- `prefers-reduced-motion`: early return en `useGSAP` + `clearProps` + fallback CSS específico al final de la sección Story.
+
+**Validación:**
+
+- `pnpm lint`: ✅ No ESLint warnings or errors
+- `pnpm type-check`: ✅ pass
+- `pnpm dev`: ✅ Ready in 6s, `GET / 200` en 15.8s, sin errores de compilación
+
+**Validación visual pendiente (Emil debe revisar en localhost:3000):**
+
+Sección Story (después de Featured Properties y Why Book Direct):
+
+- [ ] Headline "Nacimos del amor a Mobi." entra palabra por palabra al hacer scroll
+- [ ] "Mobi." con rebote `back.out` + subrayado coral dibujándose con `strokeDashoffset`
+- [ ] Panel oscuro entra desde abajo con `scale 0.97 → 1`
+- [ ] Watermark "Mobi" con clip-path reveal de abajo hacia arriba
+- [ ] Badges (50+ estancias / 4.9★) con stagger 140ms `back.out(1.6)`
+- [ ] CTA "Conócenos más" como pill outline coral, flecha que se mueve al hover
+- [ ] Parallax scrub: shapes/panel/watermark a velocidades distintas mientras se scrollea
+- [ ] Mobile 375px: layout colapsa, asimetría off, badges ocultos
+- [ ] DevTools → Emulate `prefers-reduced-motion: reduce`: todo visible sin animar
+
+**NO se tocó en esta sesión:**
+
+- `WhyBookDirect`, `HeroSection`, `FeaturedProperties`, `TestimonialsSection` (fuera de scope).
+- `AnimatedSection` en `packages/ui` (sigue intacto — lo usan otras secciones).
+- `scripts/migrate-newsletter.mjs` (modificado desde antes de la sesión, no es nuestro) y `lighthouse-report.json` (untracked desde antes, no es nuestro).
+
+**Referencia visual abierta:**
+
+Emil mencionó `lumiereautomata.com` como ejemplo de animaciones que le gustaron. WebFetch no puede leer las animaciones (renderizan client-side y los assets no se exponen al fetch estático). **Pendiente al retomar**: Emil va a pasar video/screen recording o frames del momento específico que le flechó para que el design-director lo traduzca al motion de Mobbitrips. Sugerido guardar los assets en `design/refs/lumiere/`.
+
+**Próximo paso sugerido (al retomar desde casa):**
+
+1. Arrancar `pnpm dev` y validar visualmente la elevación de Story (checklist arriba).
+2. Si Emil ya tiene el video/frames de Lumière Automata, ponerlos en `design/refs/lumiere/` y pedirle al design-director que los analice e identifique qué patrones aplicar.
+3. Próxima sección candidata para elevar: `TestimonialsSection` (sigue al Story en el orden del Home y todavía está en nivel básico) o `OwnerTeaser`.
+
+**Bloqueos activos:**
+
+Ninguno.
+
+---
+
 ## 2026-05-05 · Sesión 11 — Setup tooling de animación + agente design-director
 
 **Sprint**: chore/design-tooling · Trabajó con: Emilio
