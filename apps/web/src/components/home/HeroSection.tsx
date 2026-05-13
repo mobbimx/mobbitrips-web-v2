@@ -25,7 +25,6 @@ const scriptDelay = line2Start + line2.length * stagger + 300;
 
 export function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
-  const shapesRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const [checkin, setCheckin] = useState('');
@@ -41,10 +40,6 @@ export function HeroSection() {
         const y = window.scrollY;
         const vh = window.innerHeight;
         const progress = Math.min(1, Math.max(0, y / vh));
-        const isMobile = window.innerWidth < 768;
-        if (shapesRef.current) {
-          shapesRef.current.style.transform = `translate3d(0, ${-y * (isMobile ? 0.075 : 0.15)}px, 0)`;
-        }
         if (contentRef.current) {
           contentRef.current.style.filter = `blur(${progress * 10}px)`;
           contentRef.current.style.opacity = String(1 - progress * 0.7);
@@ -74,35 +69,6 @@ export function HeroSection() {
   return (
     <section className="hero-section" aria-label="Bienvenida">
       <div className="hero-gradient" aria-hidden="true" />
-
-      <div className="hero-shapes" ref={shapesRef} aria-hidden="true">
-        <div className="hero-shape hero-shape-arc1">
-          <svg viewBox="0 0 600 800" preserveAspectRatio="none">
-            <path
-              d="M 100 780 Q 100 200 380 200 Q 560 200 560 420 Q 560 780 560 780"
-              fill="none"
-              stroke="#F9CFCC"
-              strokeWidth="180"
-              strokeLinecap="round"
-              opacity="0.85"
-            />
-          </svg>
-        </div>
-        <div className="hero-shape hero-shape-circle1" />
-        <div className="hero-shape hero-shape-arc2">
-          <svg viewBox="0 0 350 450" preserveAspectRatio="none">
-            <path
-              d="M 60 440 Q 60 80 190 80 Q 310 80 310 240 Q 310 440 310 440"
-              fill="none"
-              stroke="#E8B547"
-              strokeWidth="120"
-              strokeLinecap="round"
-              opacity="0.15"
-            />
-          </svg>
-        </div>
-        <div className="hero-shape hero-shape-glass" />
-      </div>
 
       <div className="hero-content" ref={contentRef}>
         <span className="hero-eyebrow">

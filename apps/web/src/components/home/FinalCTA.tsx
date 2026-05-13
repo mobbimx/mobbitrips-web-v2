@@ -10,8 +10,6 @@ const WA_MESSAGE = encodeURIComponent(
 export function FinalCTA() {
   return (
     <section className="finalcta" aria-labelledby="finalcta-title">
-      <div className="finalcta__blob finalcta__blob--1" aria-hidden="true" />
-      <div className="finalcta__blob finalcta__blob--2" aria-hidden="true" />
       <div className="finalcta__inner">
         <AnimatedSection direction="up">
           <p className="finalcta__kicker">¿Listo para tu próxima escapada?</p>

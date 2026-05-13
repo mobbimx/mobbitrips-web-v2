@@ -8,7 +8,6 @@ export function TestimonialsSection() {
 
   return (
     <section className="testimonials" aria-labelledby="testimonials-title">
-      <div className="testimonials__blob" aria-hidden="true" />
       <div className="testimonials__inner">
         <AnimatedSection direction="up">
           <span className="testimonials__kicker">Huéspedes</span>

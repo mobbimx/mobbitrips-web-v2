@@ -139,13 +139,16 @@
 .hero-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 90% 70% at top right, #fde8e6 0%, #faf7f2 60%);
-  opacity: 0.8;
+  background: radial-gradient(ellipse 90% 70% at top right, #fde8e6 0%, transparent 60%);
+  /* lowered from 0.8 so the unified AmbientCanvas can breathe through the hero */
+  opacity: 0.35;
   z-index: 0;
   pointer-events: none;
 }
 
-/* Shapes container */
+/* ARCHIVED 2026-05-12: unified ambient layer (AmbientCanvas) replaced
+   per-section hero shapes. Kept commented for quick revert if needed. */
+/*
 .hero-shapes {
   position: absolute;
   inset: 0;
@@ -159,7 +162,6 @@
   will-change: transform;
 }
 
-/* Arc 1 — top-left coral blur */
 .hero-shape-arc1 {
   top: 10%;
   left: -5%;
@@ -173,7 +175,6 @@
   filter: blur(40px);
 }
 
-/* Circle — right side coral gradient */
 .hero-shape-circle1 {
   top: 25%;
   right: 8%;
@@ -186,7 +187,6 @@
   animation: hero-float-y2 18s ease-in-out infinite;
 }
 
-/* Arc 2 — mustard bottom-right */
 .hero-shape-arc2 {
   bottom: 15%;
   right: 18%;
@@ -200,7 +200,6 @@
   filter: blur(50px);
 }
 
-/* Glass circle */
 .hero-shape-glass {
   top: 50%;
   left: 12%;
@@ -216,6 +215,7 @@
     0 8px 32px rgba(45, 45, 45, 0.05);
   animation: hero-float-rotate 15s ease-in-out infinite;
 }
+*/
 
 /* Content wrapper */
 .hero-content {
@@ -559,36 +559,22 @@
 }
 
 /* Responsive */
+/* ARCHIVED 2026-05-12: hero-shape responsive rules removed with unified ambient layer.
 @media (max-width: 1024px) {
-  .hero-shape-arc1 {
-    width: 420px;
-    height: 560px;
-  }
-  .hero-shape-circle1 {
-    width: 280px;
-    height: 280px;
-  }
-  .hero-shape-arc2 {
-    width: 240px;
-    height: 320px;
-  }
+  .hero-shape-arc1 { width: 420px; height: 560px; }
+  .hero-shape-circle1 { width: 280px; height: 280px; }
+  .hero-shape-arc2 { width: 240px; height: 320px; }
 }
 @media (max-width: 768px) {
   .hero-shape-arc1,
-  .hero-shape-arc2 {
-    display: none;
-  }
+  .hero-shape-arc2 { display: none; }
   .hero-shape-circle1 {
-    width: 220px;
-    height: 220px;
-    top: 8%;
-    right: -10%;
+    width: 220px; height: 220px; top: 8%; right: -10%;
   }
-  .hero-shape-glass {
-    width: 120px;
-    height: 120px;
-  }
-
+  .hero-shape-glass { width: 120px; height: 120px; }
+}
+*/
+@media (max-width: 768px) {
   .hero-search {
     height: auto;
     flex-direction: column;
@@ -624,7 +610,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-shape,
+  /* .hero-shape removed — replaced by AmbientCanvas 2026-05-12 */
   .hero-eyebrow-dot {
     animation: none !important;
   }
@@ -769,17 +755,12 @@
 .properties {
   position: relative;
   padding: 128px 0 128px;
-  background: linear-gradient(
-    180deg,
-    #f5b0ad 0%,
-    #f9cfcc 18%,
-    #fde8e6 42%,
-    #faf7f2 75%,
-    #faf7f2 100%
-  );
+  /* ARCHIVED 2026-05-12: unified ambient layer (cream + AmbientCanvas) replaces per-section gradients */
+  background: transparent;
   overflow: hidden;
 }
 
+/* ARCHIVED 2026-05-12: replaced by unified AmbientCanvas
 .properties__ambient {
   position: absolute;
   inset: -200px 0 0 0;
@@ -831,6 +812,7 @@
   width: 100%;
   height: 100%;
 }
+*/
 
 @keyframes propsFloat {
   0%,
@@ -1270,20 +1252,11 @@
 .why {
   position: relative;
   padding: 160px 0 120px;
-  background: #1f1f1f;
+  /* ARCHIVED 2026-05-12: dark slab replaced by unified ambient layer */
+  background: transparent;
   overflow: hidden;
 }
-.why::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 180px;
-  background: linear-gradient(180deg, #faf7f2 0%, transparent 100%);
-  z-index: 1;
-  pointer-events: none;
-}
+/* ARCHIVED 2026-05-12: unified ambient layer replaced per-section blobs.
 .why__blob {
   position: absolute;
   border-radius: 50%;
@@ -1306,6 +1279,7 @@
   left: -80px;
   animation: sectionBlobFloat 14s ease-in-out infinite reverse;
 }
+*/
 .why__inner {
   position: relative;
   z-index: 2;
@@ -1329,7 +1303,7 @@
   font-size: clamp(2rem, 4.5vw, 3.4rem);
   line-height: 1.05;
   letter-spacing: -0.025em;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   margin: 0 0 56px;
 }
 .why__grid {
@@ -1338,7 +1312,7 @@
 }
 .why__item {
   padding: 0 32px;
-  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 1px solid rgba(61, 61, 61, 0.1);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1353,30 +1327,30 @@
   font-weight: 700;
   line-height: 1;
   color: var(--coral-900);
-  opacity: 0.25;
+  opacity: 0.35;
 }
 .why__item-title {
   font-family: var(--font-display);
   font-size: 0.9375rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   line-height: 1.4;
 }
 .why__item-desc {
   font-size: 0.875rem;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(61, 61, 61, 0.72);
 }
 @media (max-width: 860px) {
   .why__grid {
     grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    background: rgba(255, 255, 255, 0.06);
+    gap: 24px;
+    background: transparent;
   }
   .why__item {
     border-left: none;
-    background: #1f1f1f;
-    padding: 28px 20px;
+    background: transparent;
+    padding: 20px 0;
   }
 }
 @media (max-width: 480px) {
@@ -1395,26 +1369,11 @@
 .story {
   position: relative;
   padding: 160px 0 120px;
-  background: var(--cream);
+  /* ARCHIVED 2026-05-12: background now comes from unified AmbientCanvas */
+  background: transparent;
   overflow: hidden;
 }
-.story::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 260px;
-  background: linear-gradient(
-    180deg,
-    #1f1f1f 0%,
-    rgba(31, 31, 31, 0.6) 28%,
-    rgba(31, 31, 31, 0.2) 58%,
-    transparent 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
+/* ARCHIVED 2026-05-12: unified ambient layer replaced per-section blobs.
 .story__blob {
   position: absolute;
   border-radius: 50%;
@@ -1427,6 +1386,7 @@
   right: -100px;
   animation: sectionBlobFloat 20s ease-in-out infinite;
 }
+*/
 .story__motion-root {
   position: relative;
   z-index: 2;
@@ -1748,9 +1708,11 @@
 .testimonials {
   position: relative;
   padding: 120px 0;
-  background: var(--cream);
+  /* ARCHIVED 2026-05-12: background now comes from unified AmbientCanvas */
+  background: transparent;
   overflow: hidden;
 }
+/* ARCHIVED 2026-05-12: unified ambient layer replaced per-section blobs.
 .testimonials__blob {
   position: absolute;
   border-radius: 50%;
@@ -1763,6 +1725,7 @@
   left: -200px;
   animation: sectionBlobFloat 22s ease-in-out infinite;
 }
+*/
 .testimonials__inner {
   position: relative;
   z-index: 1;
@@ -1901,9 +1864,11 @@
 .owner {
   position: relative;
   padding: 120px 0;
-  background: var(--cream);
+  /* ARCHIVED 2026-05-12: background now comes from unified AmbientCanvas */
+  background: transparent;
   overflow: hidden;
 }
+/* ARCHIVED 2026-05-12: unified ambient layer replaced per-section blobs.
 .owner__blob {
   position: absolute;
   border-radius: 50%;
@@ -1916,6 +1881,7 @@
   right: -80px;
   animation: sectionBlobFloat 16s ease-in-out infinite reverse;
 }
+*/
 .owner__inner {
   position: relative;
   z-index: 1;
@@ -2028,19 +1994,9 @@
 .newsletter {
   position: relative;
   padding: 160px 0 120px;
-  background: #1f1f1f;
+  /* ARCHIVED 2026-05-12: dark slab replaced by unified ambient layer */
+  background: transparent;
   overflow: hidden;
-}
-.newsletter::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 180px;
-  background: linear-gradient(180deg, var(--cream) 0%, transparent 100%);
-  z-index: 1;
-  pointer-events: none;
 }
 .newsletter__blob {
   position: absolute;
@@ -2077,13 +2033,13 @@
   font-size: clamp(1.75rem, 4vw, 2.8rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   margin: 0 0 12px;
 }
 .newsletter__sub {
   font-size: 1rem;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.48);
+  color: rgba(61, 61, 61, 0.72);
   margin: 0 0 32px;
 }
 .newsletter__form {
@@ -2092,24 +2048,24 @@
 }
 .newsletter__input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(61, 61, 61, 0.15);
   border-radius: 12px;
   padding: 14px 18px;
   font-family: var(--font-body);
   font-size: 0.9375rem;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   outline: none;
   transition:
     border-color 200ms,
     background 200ms;
 }
 .newsletter__input::placeholder {
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(61, 61, 61, 0.4);
 }
 .newsletter__input:focus {
-  border-color: rgba(237, 104, 100, 0.5);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(237, 104, 100, 0.6);
+  background: rgba(255, 255, 255, 0.9);
 }
 .newsletter__btn {
   background: var(--coral-900);
@@ -2138,7 +2094,7 @@
 }
 .newsletter__fine {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(61, 61, 61, 0.5);
   margin-top: 12px;
 }
 @media (max-width: 500px) {
@@ -2157,17 +2113,12 @@
 .finalcta {
   position: relative;
   padding: 160px clamp(20px, 5vw, 80px) 120px;
-  background: linear-gradient(
-    180deg,
-    #1f1f1f 0%,
-    #1f1f1f 8%,
-    #c14744 28%,
-    #ed6864 55%,
-    #f08884 100%
-  );
+  /* ARCHIVED 2026-05-12: dark→coral gradient replaced by unified ambient layer */
+  background: transparent;
   overflow: hidden;
   text-align: center;
 }
+/* ARCHIVED 2026-05-12: unified ambient layer replaced per-section blobs.
 .finalcta__blob {
   position: absolute;
   border-radius: 50%;
@@ -2190,6 +2141,7 @@
   left: -80px;
   animation: sectionBlobFloat 12s ease-in-out infinite reverse;
 }
+*/
 .finalcta__inner {
   position: relative;
   z-index: 1;
@@ -2202,7 +2154,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--coral-900);
   display: block;
   margin-bottom: 20px;
 }
@@ -2212,13 +2164,13 @@
   font-size: clamp(2.5rem, 7vw, 5.5rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   margin: 0 0 24px;
 }
 .finalcta__sub {
   font-size: clamp(1rem, 1.5vw, 1.1rem);
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(61, 61, 61, 0.72);
   max-width: 480px;
   margin: 0 auto 40px;
 }
@@ -2232,41 +2184,41 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  color: var(--coral-900);
+  background: var(--coral-900);
+  color: #fff;
   font-size: 1rem;
   font-weight: 700;
   padding: 16px 32px;
   border-radius: 14px;
   text-decoration: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(237, 104, 100, 0.25);
   transition:
     transform 200ms,
     box-shadow 200ms;
 }
 .finalcta__btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 48px rgba(237, 104, 100, 0.35);
 }
 .finalcta__btn-secondary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: #fff;
+  color: var(--charcoal, #3d3d3d);
   font-size: 1rem;
   font-weight: 700;
   padding: 16px 32px;
   border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(61, 61, 61, 0.25);
   text-decoration: none;
   transition:
     background 200ms,
     border-color 200ms;
 }
 .finalcta__btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(61, 61, 61, 0.04);
+  border-color: rgba(61, 61, 61, 0.45);
 }
 @media (max-width: 640px) {
   .finalcta {
@@ -2287,12 +2239,8 @@
    REDUCED MOTION — new sections
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .why__blob,
-  .story__blob,
-  .testimonials__blob,
-  .owner__blob,
-  .newsletter__blob,
-  .finalcta__blob {
+  /* Per-section blobs archived 2026-05-12; only newsletter remains. */
+  .newsletter__blob {
     animation: none !important;
   }
 }

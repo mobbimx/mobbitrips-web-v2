@@ -26,8 +26,6 @@ const reasons = [
 export function WhyBookDirect() {
   return (
     <section className="why" aria-labelledby="why-title">
-      <div className="why__blob why__blob--1" aria-hidden="true" />
-      <div className="why__blob why__blob--2" aria-hidden="true" />
       <div className="why__inner">
         <AnimatedSection direction="up">
           <span className="why__kicker">¿Por qué reservar directo?</span>

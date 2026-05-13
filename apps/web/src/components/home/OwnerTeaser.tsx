@@ -23,7 +23,6 @@ const benefits = [
 export function OwnerTeaser() {
   return (
     <section className="owner" aria-labelledby="owner-title">
-      <div className="owner__blob" aria-hidden="true" />
       <div className="owner__inner">
         <AnimatedSection direction="right">
           <span className="owner__kicker">Para propietarios</span>

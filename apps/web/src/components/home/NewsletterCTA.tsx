@@ -41,7 +41,6 @@ export function NewsletterCTA() {
 
   return (
     <section className="newsletter" aria-labelledby="newsletter-title">
-      <div className="newsletter__blob" aria-hidden="true" />
       <div className="newsletter__inner">
         <AnimatedSection direction="up">
           <span className="newsletter__kicker">Newsletter</span>

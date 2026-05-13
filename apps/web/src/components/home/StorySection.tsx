@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { StoryBadges } from './StoryBadges';
-import { StoryShapes } from './StoryShapes';
 import { StorySectionClient } from './StorySection.client';
 
 const highlights = [
@@ -14,8 +13,6 @@ const titleLine1 = ['Nacimos', 'del', 'amor'];
 export function StorySection() {
   return (
     <section className="story" aria-labelledby="story-title">
-      <div className="story__blob" aria-hidden="true" />
-      <StoryShapes />
       <StorySectionClient>
         <div className="story__inner">
           <div className="story__text">

@@ -224,23 +224,6 @@ export function FeaturedProperties() {
 
   return (
     <section className="properties" id="propiedades" ref={sectionRef}>
-      <div className="properties__ambient" aria-hidden="true">
-        <div className="properties__blob properties__blob--1" />
-        <div className="properties__blob properties__blob--2" />
-        <div className="properties__blob properties__blob--3" />
-        <div className="properties__arc">
-          <svg viewBox="0 0 240 320" preserveAspectRatio="none">
-            <path
-              d="M 30 310 Q 30 60 130 60 Q 220 60 220 180 Q 220 310 220 310"
-              fill="none"
-              stroke="#F5B0AD"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-      </div>
-
       <div className="properties__container">
         <header className="properties__header">
           <div>
