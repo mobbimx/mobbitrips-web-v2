@@ -5,6 +5,42 @@
 
 ---
 
+## 2026-05-13 · Sesión 13 — AmbientCanvas: fondo vivo tipo lámpara de lava
+
+**Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
+
+**Objetivo:** reemplazar el patchwork de fondos por sección (oscuro/coral/cream) con una sola capa de fondo animado que cubre todo el Home — blobs orgánicos que flotan autónomamente y reaccionan al cursor como una lámpara de lava.
+
+**Tasks cerradas:**
+
+- `AmbientCanvas.tsx` creado en `apps/web/src/components/ambient/` — capa `position: fixed; inset: 0; z-index: -1` con 10 blobs de radial-gradient blureados. Arquitectura de dos divs anidados por blob: outer (drift/deflexión) + inner (ripple sutil). Cleanup via `gsap.context()`.
+- **Drift autónomo**: cada blob elige un destino aleatorio dentro de su rango (400-700px), glide con `sine.inOut`, al llegar elige otro. Nunca vuelve a un punto fijo — libre flotación permanente. Blobs arrancan en posición aleatoria dispersa (no desde 0,0).
+- **Deflexión de dirección por cursor**: cuando el cursor entra en la zona de influencia, se interrumpe el drift actual y se lanza un nuevo tween en dirección contraria. El blob sigue flotando desde la nueva posición — cambia de camino, no cede y regresa. Cooldown de 1.5s por blob evita jitter.
+- **Ripple líquido (inner div)**: `quickTo` con `duration: 1.6, ease: 'power1.out'` — respuesta lenta y suave al cursor (20% del push). Sustituye el force-field agresivo anterior.
+- **Fondos unificados**: todas las secciones del Home pasaron a `background: transparent`. Colores de texto corregidos en secciones que antes eran oscuras (`.why`, `.newsletter`, `.finalcta`).
+- **Blobs por sección eliminados**: removidos los divs de blob individuales de `HeroSection`, `FeaturedProperties`, `WhyBookDirect`, `StorySection`, `TestimonialsSection`, `OwnerTeaser`, `NewsletterCTA`, `FinalCTA`.
+- **Distribución de color**: 50% coral `#ED6864`, 20% rosa `#F4A09E`, 30% dorado `#E8B547` (subido desde 20% por petición de Emilio).
+
+**Commits:**
+
+- `69d6c56` — feat(home): unified ambient canvas with lava-lamp drift and cursor deflection
+
+**Decisiones tomadas:**
+
+- Arquitectura nested div en lugar de CSS custom properties + `calc()` — la primera implementación usaba `transform: translate3d(calc(var(--dx) + var(--fx)), ...)` y GSAP escribía valores sin unidad, rompiendo el calc. Con divs anidados los transforms se suman naturalmente.
+- `gsap.context()` para cleanup en lugar de arrays de tweens manuales — más robusto y el patrón oficial de GSAP para React.
+- Deflexión en el div exterior (drift) en lugar de force field cosmético en el interior — el blob genuinamente cambia de destino, como lava que choca. El inner div quedó solo para el ripple sutil.
+- `noUncheckedIndexedAccess: true` en tsconfig obliga a `?? 0` en lecturas de arrays — corregido.
+- El warning de ESLint `react-hooks/exhaustive-deps` sobre `driftRefs.current` en cleanup — corregido capturando snapshot (`driftRefs.current.slice()`) al inicio del effect.
+- Duraciones de drift: 5-13s (era 12-28s). A 20+ segundos el movimiento era invisible; a 5-13s se ve como lámpara de lava.
+- Rangos de drift: 400-700px (era 240-380px) para que los blobs crucen zonas amplias de la pantalla.
+
+**Bloqueos activos:** ninguno.
+
+**Próximo paso sugerido:** validación visual completa del Home en mobile (375px) — verificar que los blobs no causen layout shift visible y que el cream de fondo se vea correcto en iOS Safari.
+
+---
+
 ## 2026-05-11 · Sesión 12 — Elevación de StorySection al nivel del Hero
 
 **Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
