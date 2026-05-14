@@ -15,12 +15,12 @@ export function NosotrosHero() {
 
     const ctx = gsap.context(() => {
       gsap.from('[data-reveal]', {
-        y: 64,
+        y: 40,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.1,
+        duration: 0.65,
+        stagger: 0.06,
         ease: 'expo.out',
-        delay: 0.15,
+        delay: 0.1,
       });
     }, el);
 

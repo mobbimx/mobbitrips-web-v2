@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { MessageCircle, Mail, Clock } from 'lucide-react';
 import { AnimatedSection } from '@mobbitrips/ui';
 import { ContactoForm } from './ContactoForm';
+import { ContactoHero } from '@/components/contacto/ContactoHero';
 
 export const metadata: Metadata = {
   title: 'Contacto — Mobbitrips',
@@ -20,33 +21,7 @@ const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5212282525244';
 export default function ContactoPage() {
   return (
     <>
-      {/* Hero — transparent, warm language */}
-      <section className="py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <AnimatedSection direction="up">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="h-px w-8 bg-primary" aria-hidden="true" />
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Contacto</p>
-            </div>
-            <h1
-              className="font-comfortaa font-bold text-brand-charcoal"
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                lineHeight: 0.95,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Estamos aquí
-              <br />
-              <em className="not-italic text-primary">para ayudarte.</em>
-            </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-brand-gray">
-              Ya sea para una reserva, una duda o información sobre nuestras propiedades —
-              escríbenos y te respondemos rápido.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+      <ContactoHero />
 
       {/* Contact grid */}
       <section className="py-20 sm:py-28">

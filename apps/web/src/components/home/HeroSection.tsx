@@ -4,10 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
-
-function getMinDate() {
-  return new Date().toISOString().split('T')[0] ?? '';
-}
+import { HeroDatePicker } from './HeroDatePicker';
 
 function getDefaultCheckout(checkin: string) {
   if (!checkin) return '';
@@ -16,12 +13,12 @@ function getDefaultCheckout(checkin: string) {
   return d.toISOString().split('T')[0] ?? '';
 }
 
-const stagger = 80;
+const stagger = 50;
 const line1 = ['Descansa,', 'vive', 'y', 'sueña'];
 const line2 = ['como', 'si', 'estuvieras'];
-const line1Start = 200;
-const line2Start = line1Start + line1.length * stagger + 120;
-const scriptDelay = line2Start + line2.length * stagger + 300;
+const line1Start = 100;
+const line2Start = line1Start + line1.length * stagger + 80;
+const scriptDelay = line2Start + line2.length * stagger + 200;
 
 export function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -63,8 +60,6 @@ export function HeroSection() {
     },
     [checkin, checkout, guests, router],
   );
-
-  const today = getMinDate();
 
   return (
     <section className="hero-section" aria-label="Bienvenida">
@@ -125,45 +120,18 @@ export function HeroSection() {
           </div>
           <div className="hero-search-divider" aria-hidden="true" />
 
-          {/* Llegada */}
-          <div className="hero-search-section">
-            <label htmlFor="hero-checkin" className="hero-search-label">
-              Llegada
-            </label>
-            <input
-              id="hero-checkin"
-              type="date"
-              value={checkin}
-              min={today}
-              onChange={(e) => {
-                setCheckin(e.target.value);
-                if (!checkout || checkout <= e.target.value) {
-                  setCheckout(getDefaultCheckout(e.target.value));
-                }
-              }}
-              className="hero-search-date"
-              aria-label="Fecha de llegada"
-              placeholder="Agrega fecha"
-            />
-          </div>
-          <div className="hero-search-divider" aria-hidden="true" />
-
-          {/* Salida */}
-          <div className="hero-search-section">
-            <label htmlFor="hero-checkout" className="hero-search-label">
-              Salida
-            </label>
-            <input
-              id="hero-checkout"
-              type="date"
-              value={checkout}
-              min={checkin || today}
-              onChange={(e) => setCheckout(e.target.value)}
-              className="hero-search-date"
-              aria-label="Fecha de salida"
-              placeholder="Agrega fecha"
-            />
-          </div>
+          {/* Llegada + Salida — custom date picker */}
+          <HeroDatePicker
+            checkin={checkin}
+            checkout={checkout}
+            onCheckinChange={(val) => {
+              setCheckin(val);
+              if (!checkout || checkout <= val) {
+                setCheckout(getDefaultCheckout(val));
+              }
+            }}
+            onCheckoutChange={setCheckout}
+          />
           <div className="hero-search-divider" aria-hidden="true" />
 
           {/* Huéspedes */}
@@ -246,14 +214,14 @@ export function HeroSection() {
           <Link
             href="/propiedades"
             className="hero-cta hero-cta-primary"
-            style={{ animationDelay: '2400ms' }}
+            style={{ animationDelay: '1300ms' }}
           >
             <span>Ver propiedades</span>
           </Link>
           <Link
             href="/nosotros"
             className="hero-cta hero-cta-secondary"
-            style={{ animationDelay: '2500ms' }}
+            style={{ animationDelay: '1400ms' }}
           >
             <span>Conoce más</span>
             <ArrowRight size={16} aria-hidden="true" />
