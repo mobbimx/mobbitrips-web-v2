@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Heart, Shield, Zap } from 'lucide-react';
 import { AnimatedSection } from '@mobbitrips/ui';
+import { NosotrosHero } from '@/components/nosotros/NosotrosHero';
 
 export const metadata: Metadata = {
   title: 'Nosotros — Mobbitrips',
@@ -45,42 +46,12 @@ const stats = [
 
 export default function NosotrosPage() {
   return (
-    <main id="main-content">
-      {/* Hero */}
-      <section
-        className="py-24 sm:py-32"
-        style={{ background: '#1C1C1C' }}
-        aria-labelledby="nosotros-heading"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <AnimatedSection direction="up">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="h-px w-8 bg-primary" aria-hidden="true" />
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Quiénes somos
-              </p>
-            </div>
-            <h1
-              id="nosotros-heading"
-              className="font-comfortaa font-bold text-white"
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                lineHeight: 0.95,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Hacemos que cada
-              <br />
-              viaje se sienta
-              <br />
-              <em className="not-italic text-primary">como en casa.</em>
-            </h1>
-          </AnimatedSection>
-        </div>
-      </section>
+    <>
+      {/* Hero — animated, transparent (AmbientCanvas shows through) */}
+      <NosotrosHero />
 
       {/* Story */}
-      <section className="bg-brand-cream py-20 sm:py-28" aria-labelledby="story-heading">
+      <section className="py-20 sm:py-28" aria-labelledby="story-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <AnimatedSection direction="right">
@@ -148,7 +119,7 @@ export default function NosotrosPage() {
       </section>
 
       {/* Stats */}
-      <section style={{ background: '#1C1C1C' }} className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-10 lg:grid-cols-4">
             {stats.map(({ value, label }, i) => (
@@ -164,9 +135,7 @@ export default function NosotrosPage() {
                   >
                     {value}
                   </span>
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                    {label}
-                  </span>
+                  <span className="text-sm text-brand-gray">{label}</span>
                 </div>
               </AnimatedSection>
             ))}
@@ -175,7 +144,7 @@ export default function NosotrosPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-white py-20 sm:py-28" aria-labelledby="values-heading">
+      <section className="py-20 sm:py-28" aria-labelledby="values-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up" className="mb-16">
             <div className="mb-4 flex items-center gap-3">
@@ -247,6 +216,6 @@ export default function NosotrosPage() {
           </AnimatedSection>
         </div>
       </section>
-    </main>
+    </>
   );
 }

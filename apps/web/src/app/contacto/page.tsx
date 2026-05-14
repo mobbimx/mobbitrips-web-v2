@@ -19,9 +19,9 @@ const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5212282525244';
 
 export default function ContactoPage() {
   return (
-    <main id="main-content">
-      {/* Hero */}
-      <section style={{ background: '#1C1C1C' }} className="py-24 sm:py-32">
+    <>
+      {/* Hero — transparent, warm language */}
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up">
             <div className="mb-6 flex items-center gap-3">
@@ -29,7 +29,7 @@ export default function ContactoPage() {
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Contacto</p>
             </div>
             <h1
-              className="font-comfortaa font-bold text-white"
+              className="font-comfortaa font-bold text-brand-charcoal"
               style={{
                 fontSize: 'clamp(2.5rem, 6vw, 5rem)',
                 lineHeight: 0.95,
@@ -40,10 +40,7 @@ export default function ContactoPage() {
               <br />
               <em className="not-italic text-primary">para ayudarte.</em>
             </h1>
-            <p
-              className="mt-6 max-w-md text-base leading-relaxed"
-              style={{ color: 'rgba(255,255,255,0.55)' }}
-            >
+            <p className="mt-6 max-w-md text-base leading-relaxed text-brand-gray">
               Ya sea para una reserva, una duda o información sobre nuestras propiedades —
               escríbenos y te respondemos rápido.
             </p>
@@ -52,7 +49,7 @@ export default function ContactoPage() {
       </section>
 
       {/* Contact grid */}
-      <section className="bg-brand-cream py-20 sm:py-28">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Left: channels */}
@@ -69,7 +66,7 @@ export default function ContactoPage() {
                   href={`https://wa.me/${WA}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="group flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   aria-label="WhatsApp de Mobbitrips"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#25D366]/10">
@@ -88,7 +85,7 @@ export default function ContactoPage() {
 
                 <a
                   href="mailto:hola@mobbitrips.com"
-                  className="group flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="group flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   aria-label="Email de Mobbitrips"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-soft">
@@ -103,7 +100,7 @@ export default function ContactoPage() {
                   </span>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-cream">
                     <Clock size={22} className="text-brand-gray" aria-hidden="true" />
                   </div>
@@ -125,13 +122,13 @@ export default function ContactoPage() {
                   Envíanos un mensaje
                 </p>
               </div>
-              <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+              <div className="rounded-2xl bg-white/80 p-6 shadow-sm backdrop-blur-sm sm:p-8">
                 <ContactoForm />
               </div>
             </AnimatedSection>
           </div>
         </div>
       </section>
-    </main>
+    </>
   );
 }

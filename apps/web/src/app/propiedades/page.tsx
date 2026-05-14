@@ -20,26 +20,38 @@ export default async function PropiedadesPage() {
   const properties = await getProperties();
 
   return (
-    <main id="main-content">
-      {/* Header */}
-      <div className="bg-white border-b border-brand-border">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <p className="mb-1 text-sm font-semibold uppercase tracking-widest text-primary">
-            Propiedades vacacionales
-          </p>
-          <h1 className="font-comfortaa text-3xl font-bold text-brand-charcoal sm:text-4xl">
-            Nuestras propiedades
+    <>
+      {/* Hero */}
+      <section className="py-20 sm:py-28" aria-labelledby="propiedades-heading">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="h-px w-8 bg-primary" aria-hidden="true" />
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Propiedades vacacionales
+            </p>
+          </div>
+          <h1
+            id="propiedades-heading"
+            className="font-comfortaa font-bold text-brand-charcoal"
+            style={{
+              fontSize: 'clamp(2.2rem, 5vw, 4rem)',
+              lineHeight: 1,
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Casas con alma, <em className="not-italic text-primary">no hoteles.</em>
           </h1>
-          <p className="mt-2 text-brand-gray">
-            {properties.length} propiedade{properties.length !== 1 ? 's' : ''} disponible
+          <p className="mt-4 text-brand-gray">
+            {properties.length} propiedad{properties.length !== 1 ? 'es' : ''} disponible
             {properties.length !== 1 ? 's' : ''} — reserva directo y ahorra
           </p>
         </div>
-      </div>
+      </section>
 
-      <div className="bg-brand-cream min-h-screen">
+      {/* Grid */}
+      <div className="pb-24">
         <PropertiesView properties={properties} />
       </div>
-    </main>
+    </>
   );
 }

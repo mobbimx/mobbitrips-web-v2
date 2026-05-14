@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { AmbientCanvas } from '@/components/ambient/AmbientCanvas';
 import { HeroSection } from '@/components/home/HeroSection';
 import { FeaturedProperties } from '@/components/home/FeaturedProperties';
 import { WhyBookDirect } from '@/components/home/WhyBookDirect';
@@ -26,7 +25,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <AmbientCanvas />
       <HeroSection />
       <FeaturedProperties />
       <WhyBookDirect />

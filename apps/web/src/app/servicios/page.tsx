@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, TrendingUp, Wrench, Users, BarChart3, Shield, Headphones } from 'lucide-react';
 import { AnimatedSection } from '@mobbitrips/ui';
+import { ServiciosHero } from '@/components/servicios/ServiciosHero';
 
 export const metadata: Metadata = {
   title: 'Para propietarios — Mobbitrips',
@@ -77,56 +78,12 @@ const steps = [
 
 export default function ServiciosPage() {
   return (
-    <main id="main-content">
-      {/* Hero */}
-      <section
-        style={{ background: '#1C1C1C' }}
-        className="py-24 sm:py-32"
-        aria-labelledby="servicios-heading"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <AnimatedSection direction="up">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="h-px w-8 bg-primary" aria-hidden="true" />
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Para propietarios
-              </p>
-            </div>
-            <h1
-              id="servicios-heading"
-              className="font-comfortaa font-bold text-white"
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                lineHeight: 0.95,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Tu propiedad trabaja.
-              <br />
-              <em className="not-italic text-primary">Tú descansas.</em>
-            </h1>
-            <p
-              className="mt-8 max-w-xl text-base leading-relaxed"
-              style={{ color: 'rgba(255,255,255,0.6)' }}
-            >
-              Gestionamos tu propiedad vacacional de principio a fin: desde la fotografía hasta el
-              depósito mensual. Sin complicaciones, sin sorpresas.
-            </p>
-            <div className="mt-10">
-              <Link
-                href="/contacto"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-base font-bold text-white transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
-                Quiero listar mi propiedad
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+    <>
+      {/* Hero — animated, transparent */}
+      <ServiciosHero />
 
       {/* Benefits */}
-      <section className="bg-white py-20 sm:py-28" aria-labelledby="benefits-heading">
+      <section className="py-20 sm:py-28" aria-labelledby="benefits-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up" className="mb-16">
             <div className="mb-4 flex items-center gap-3">
@@ -149,8 +106,8 @@ export default function ServiciosPage() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {benefits.map(({ icon: Icon, title, description }, i) => (
               <AnimatedSection key={title} direction="up" delay={i * 0.08}>
-                <div className="flex flex-col gap-4 rounded-2xl bg-brand-cream p-6">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm">
+                <div className="flex flex-col gap-4 rounded-2xl bg-white/70 p-6 shadow-sm backdrop-blur-sm">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft">
                     <Icon size={18} className="text-primary" aria-hidden="true" />
                   </div>
                   <h3 className="font-comfortaa text-base font-bold text-brand-charcoal">
@@ -165,11 +122,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Process */}
-      <section
-        style={{ background: '#1C1C1C' }}
-        className="py-20 sm:py-28"
-        aria-labelledby="process-heading"
-      >
+      <section className="py-20 sm:py-28" aria-labelledby="process-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection direction="up" className="mb-16">
             <div className="mb-4 flex items-center gap-3">
@@ -180,7 +133,7 @@ export default function ServiciosPage() {
             </div>
             <h2
               id="process-heading"
-              className="font-comfortaa font-bold text-white"
+              className="font-comfortaa font-bold text-brand-charcoal"
               style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.05 }}
             >
               Simple, rápido
@@ -193,22 +146,17 @@ export default function ServiciosPage() {
               <AnimatedSection key={num} direction="up" delay={i * 0.1}>
                 <div
                   className="flex flex-col gap-5 border-t py-10 lg:border-l lg:border-t-0 lg:px-10 lg:py-4 lg:first:border-l-0 lg:first:pl-0"
-                  style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+                  style={{ borderColor: 'rgba(61,61,61,0.12)' }}
                 >
                   <span
                     className="font-comfortaa text-5xl font-bold leading-none"
-                    style={{ color: '#ED6864', opacity: 0.35 }}
+                    style={{ color: '#ED6864', opacity: 0.4 }}
                     aria-hidden="true"
                   >
                     {num}
                   </span>
-                  <h3 className="font-comfortaa text-lg font-bold text-white">{title}</h3>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.45)' }}
-                  >
-                    {description}
-                  </p>
+                  <h3 className="font-comfortaa text-lg font-bold text-brand-charcoal">{title}</h3>
+                  <p className="text-sm leading-relaxed text-brand-gray">{description}</p>
                 </div>
               </AnimatedSection>
             ))}
@@ -253,6 +201,6 @@ export default function ServiciosPage() {
           </AnimatedSection>
         </div>
       </section>
-    </main>
+    </>
   );
 }

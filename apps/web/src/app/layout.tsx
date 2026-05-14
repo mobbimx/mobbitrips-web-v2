@@ -8,6 +8,7 @@ import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvide
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
+import { AmbientCanvas } from '@/components/ambient/AmbientCanvas';
 import { ViewTransitions } from 'next-view-transitions';
 import './globals.css';
 
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             Ir al contenido principal
           </a>
+          <AmbientCanvas />
           <SmoothScrollProvider>
             <Navbar />
             <main id="main-content" className="pt-[72px]">
