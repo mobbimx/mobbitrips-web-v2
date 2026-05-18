@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface PropertyData {
   title: string;
@@ -86,6 +86,10 @@ const FILTERS = [
   'Montaña',
 ];
 
+// 3× los datos: [clones_previos | reales | clones_siguientes]
+const N = PROPERTIES_DATA.length;
+const EXTENDED_DATA = [...PROPERTIES_DATA, ...PROPERTIES_DATA, ...PROPERTIES_DATA];
+
 function PropertyCard({
   data,
   index,
@@ -154,13 +158,30 @@ function PropertyCard({
 export function FeaturedProperties() {
   const [active, setActive] = useState('Todas');
   const [activeDot, setActiveDot] = useState(0);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
   const [revealed, setRevealed] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const isJumping = useRef(false);
+  const scrollEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Posicionar en el set del medio sin animación al montar
+  useEffect(() => {
+    const t = trackRef.current;
+    if (!t) return;
+    isJumping.current = true;
+    requestAnimationFrame(() => {
+      const cards = t.querySelectorAll<HTMLElement>('.prop-card');
+      const firstReal = cards[N];
+      if (firstReal) t.scrollLeft = firstReal.offsetLeft;
+      setActiveDot(0);
+      requestAnimationFrame(() => {
+        isJumping.current = false;
+      });
+    });
+  }, []);
+
+  // Reveal al hacer scroll hasta la sección
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -179,45 +200,90 @@ export function FeaturedProperties() {
     return () => io.disconnect();
   }, []);
 
-  const updateNavState = () => {
+  // Índice de la tarjeta más cercana al borde izquierdo del track
+  const getClosestIndex = useCallback((): number => {
     const t = trackRef.current;
-    if (!t) return;
-    const max = t.scrollWidth - t.clientWidth;
-    setCanPrev(t.scrollLeft > 4);
-    setCanNext(t.scrollLeft < max - 4);
-    const ratio = max > 0 ? t.scrollLeft / max : 0;
-    setActiveDot(
-      Math.min(PROPERTIES_DATA.length - 1, Math.round(ratio * (PROPERTIES_DATA.length - 1))),
-    );
-  };
+    if (!t) return N;
+    const cards = t.querySelectorAll<HTMLElement>('.prop-card');
+    let best = N;
+    let bestDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - t.scrollLeft);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    return best;
+  }, []);
+
+  // Tras detener el scroll: actualizar dot y teleportar si estamos en zona clon
+  const handleScrollEnd = useCallback(() => {
+    const t = trackRef.current;
+    if (!t || isJumping.current) return;
+
+    const idx = getClosestIndex();
+    setActiveDot(idx % N);
+
+    if (idx < N || idx >= 2 * N) {
+      isJumping.current = true;
+      const cards = t.querySelectorAll<HTMLElement>('.prop-card');
+      // Equivalente en el set del medio: siempre en [N, 2N-1]
+      const targetCard = cards[(idx % N) + N];
+      if (targetCard) t.scrollLeft = targetCard.offsetLeft;
+      requestAnimationFrame(() => {
+        isJumping.current = false;
+      });
+    }
+  }, [getClosestIndex]);
 
   useEffect(() => {
     const t = trackRef.current;
     if (!t) return;
-    updateNavState();
-    t.addEventListener('scroll', updateNavState, { passive: true });
-    window.addEventListener('resize', updateNavState);
-    return () => {
-      t.removeEventListener('scroll', updateNavState);
-      window.removeEventListener('resize', updateNavState);
+
+    const onScroll = () => {
+      if (isJumping.current) return;
+      setActiveDot(getClosestIndex() % N);
+      // Timer de fallback para navegadores sin scrollend
+      if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
+      scrollEndTimer.current = setTimeout(handleScrollEnd, 150);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    const onScrollEnd = () => {
+      if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
+      handleScrollEnd();
+    };
+
+    const onResize = () => setActiveDot(getClosestIndex() % N);
+
+    t.addEventListener('scroll', onScroll, { passive: true });
+    t.addEventListener('scrollend', onScrollEnd);
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      t.removeEventListener('scroll', onScroll);
+      t.removeEventListener('scrollend', onScrollEnd);
+      window.removeEventListener('resize', onResize);
+      if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
+    };
+  }, [handleScrollEnd, getClosestIndex]);
 
   const scrollByDir = (dir: number) => {
     const t = trackRef.current;
     if (!t) return;
-    const card = t.querySelector('.prop-card') as HTMLElement | null;
+    const card = t.querySelector<HTMLElement>('.prop-card');
     const step = card ? card.offsetWidth + 32 : t.clientWidth * 0.8;
     t.scrollBy({ left: dir * step, behavior: 'smooth' });
   };
 
-  const scrollToIndex = (i: number) => {
+  const scrollToDot = (dotIndex: number) => {
     const t = trackRef.current;
     if (!t) return;
-    const card = t.querySelectorAll('.prop-card')[i] as HTMLElement | undefined;
-    if (card) {
-      const left = card.offsetLeft - (t.clientWidth - card.offsetWidth) / 2;
+    const cards = t.querySelectorAll<HTMLElement>('.prop-card');
+    // Siempre apunta al set del medio para evitar saltos inesperados
+    const target = cards[N + dotIndex];
+    if (target) {
+      const left = target.offsetLeft - (t.clientWidth - target.offsetWidth) / 2;
       t.scrollTo({ left, behavior: 'smooth' });
     }
   };
@@ -261,7 +327,6 @@ export function FeaturedProperties() {
             type="button"
             className="properties__nav properties__nav--prev"
             onClick={() => scrollByDir(-1)}
-            disabled={!canPrev}
             aria-label="Anterior"
           >
             <svg
@@ -277,8 +342,13 @@ export function FeaturedProperties() {
           </button>
 
           <div className="properties__track" ref={trackRef}>
-            {PROPERTIES_DATA.map((p, i) => (
-              <PropertyCard key={i} data={p} index={i} revealed={revealed} />
+            {EXTENDED_DATA.map((p, i) => (
+              <PropertyCard
+                key={`${Math.floor(i / N)}-${i % N}`}
+                data={p}
+                index={i % N}
+                revealed={revealed}
+              />
             ))}
           </div>
 
@@ -286,7 +356,6 @@ export function FeaturedProperties() {
             type="button"
             className="properties__nav properties__nav--next"
             onClick={() => scrollByDir(1)}
-            disabled={!canNext}
             aria-label="Siguiente"
           >
             <svg
@@ -308,7 +377,7 @@ export function FeaturedProperties() {
               key={i}
               type="button"
               className={`properties__dot${i === activeDot ? ' properties__dot--active' : ''}`}
-              onClick={() => scrollToIndex(i)}
+              onClick={() => scrollToDot(i)}
               aria-label={`Ir a propiedad ${i + 1}`}
             />
           ))}

@@ -1362,6 +1362,35 @@
     padding-bottom: 80px;
   }
 }
+/* WHY — motion elevation (2026-05-18) */
+.why__title {
+  margin-bottom: 16px;
+}
+.why__divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(61, 61, 61, 0.15);
+  margin-bottom: 48px;
+}
+.why__num {
+  transition: opacity 280ms ease;
+}
+.why__item {
+  transition: border-left-color 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+.why__item:hover {
+  border-left-color: rgba(237, 104, 100, 0.4);
+}
+.why__item:hover .why__num {
+  opacity: 0.65;
+}
+@media (prefers-reduced-motion: reduce) {
+  .why__item,
+  .why__num {
+    transition: none;
+  }
+}
 
 /* ============================================================
    STORY SECTION — cream, transition from dark

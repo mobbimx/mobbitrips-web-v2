@@ -5,6 +5,40 @@
 
 ---
 
+## 2026-05-18 · Sesión 14 — WhyBookDirect elevada + carrusel infinito
+
+**Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
+
+**Tasks cerradas:**
+
+- `WhyBookDirect.tsx` elevada a Nivel B: kicker + headline split-type con ScrollTrigger, línea divisoria animada (scaleX 0→1), items stagger de entrada, números con clip-path "sello" desde abajo (`back.out(1.4)`), hover Framer Motion (`y: -6`, borde coral, número más brillante). Stack: GSAP + ScrollTrigger + split-type + Framer Motion.
+- `FeaturedProperties.tsx` — carrusel infinito implementado: render de 3× los datos (`[clones | real | clones]`), teleport silencioso al detectar zona clon via `scrollend` + timer fallback 150ms. Botones siempre habilitados. Dots apuntan siempre al set del medio.
+- `globals.css` — append estilos para `.why__divider`, hover transitions en `.why__item` y `.why__num`, override `margin-bottom` del título.
+
+**Commits:** pendientes (validación visual en curso)
+
+**Decisiones tomadas:**
+
+- `WhyBookDirect` como `'use client'` único (sin split server/client): la sección es suficientemente simple.
+- Carrusel infinito con DOM de 18 nodos (3× 6) en lugar de manipulación imperativa; `isJumping` ref evita loops de scroll.
+- Buttons del carrusel sin `disabled` — siempre activos en loop infinito.
+
+**Bloqueos activos:**
+
+- **Copy StorySection**: el headline "Nacimos del amor a Mobi." no comunica correctamente. "Mobi" no es un término reconocible para el visitante. Emilio debe elegir entre estas opciones de reemplazo (o proponer otra):
+  - A: _"Nacimos de creer que se puede hacer mejor."_
+  - B: _"Nacimos de una idea sencilla: hacerlo bien."_
+  - C: _"Nacimos de que todos merecen más."_
+- **Imágenes del sitio**: ninguna imagen real definida aún. Pendiente levantar un inventario completo de imágenes necesarias en toda la web y definir qué foto va en cada lugar. Prioridad 1: panel oscuro de StorySection (foto de propiedad o ciudad). Ver `apps/web/public/images/` — carpeta destino cuando estén listas.
+
+**Próximo paso sugerido:**
+
+1. Elegir copy de StorySection → actualizar headline y body copy.
+2. Levantar inventario de imágenes necesarias (hero, StorySection, propiedades, OwnerTeaser, etc.).
+3. Continuar elevando secciones: `TestimonialsSection` → `OwnerTeaser` → `NewsletterCTA + FinalCTA`.
+
+---
+
 ## 2026-05-13 · Sesión 13 — AmbientCanvas: fondo vivo tipo lámpara de lava
 
 **Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
