@@ -2311,3 +2311,201 @@
     animation: none !important;
   }
 }
+
+/* ============================================================
+   TESTIMONIALS — double marquee + liquid glass cards
+   ============================================================ */
+.testi {
+  padding: 96px 0 80px;
+  background: transparent;
+}
+.testi__header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+.testi__kicker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral-600, #ed6864);
+  margin-bottom: 16px;
+}
+.testi__title {
+  font-family: var(--font-comfortaa), Comfortaa, sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--charcoal, #3d3d3d);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.testi__subtitle {
+  font-size: 16px;
+  color: var(--gray-500, #706f6f);
+  margin: 0 auto 56px;
+  max-width: 480px;
+}
+
+/* Marquee wrapper — edge fade via pseudo-elements */
+.testi__marquee-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.testi__marquee-wrap::before,
+.testi__marquee-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.testi__marquee-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--cream, #faf8f5), transparent);
+}
+.testi__marquee-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--cream, #faf8f5), transparent);
+}
+
+/* Track row — padding gives the card room to lift on hover
+   before hitting the overflow:hidden clip boundary */
+.testi-track {
+  overflow: hidden;
+  padding: 12px 0;
+  width: 100%;
+}
+.testi-track__inner {
+  display: flex;
+  width: max-content;
+}
+.testi-track--left .testi-track__inner {
+  animation: testi-marquee-left 32s linear infinite;
+}
+.testi-track--right .testi-track__inner {
+  animation: testi-marquee-right 38s linear infinite;
+}
+.testi-track:hover .testi-track__inner {
+  animation-play-state: paused;
+}
+
+/* Card — liquid glass */
+.testi__card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 18px;
+  box-shadow:
+    0 4px 24px rgba(237, 104, 100, 0.08),
+    0 1px 4px rgba(61, 61, 61, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  padding: 22px 20px 18px;
+  text-align: left;
+  will-change: transform;
+}
+.testi-track .testi__card {
+  width: 295px;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+/* Stars */
+.testi__card .flex {
+  margin-bottom: 10px;
+}
+
+/* Card text */
+.testi__card-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--charcoal, #3d3d3d);
+  margin: 10px 0 16px;
+  font-style: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card footer */
+.testi__card-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testi__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.testi__card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--charcoal, #3d3d3d);
+  margin: 0;
+}
+.testi__card-loc {
+  font-size: 12px;
+  color: var(--gray-500, #706f6f);
+  margin: 0;
+}
+
+/* Reduced-motion static grid */
+.testi__reduced-grid {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.testi__reduced-grid .testi__card {
+  width: auto;
+}
+
+@keyframes testi-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes testi-marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testi-track__inner {
+    animation: none !important;
+  }
+}
+@media (max-width: 640px) {
+  .testi {
+    padding: 72px 0 64px;
+  }
+  .testi__marquee-wrap::before,
+  .testi__marquee-wrap::after {
+    width: 60px;
+  }
+}
