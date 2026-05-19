@@ -2187,7 +2187,7 @@
    ============================================================ */
 .finalcta {
   position: relative;
-  padding: 160px clamp(20px, 5vw, 80px) 120px;
+  padding: 160px clamp(20px, 5vw, 80px) 160px;
   /* ARCHIVED 2026-05-12: dark→coral gradient replaced by unified ambient layer */
   background: transparent;
   overflow: hidden;
@@ -2247,7 +2247,7 @@
   line-height: 1.7;
   color: rgba(61, 61, 61, 0.72);
   max-width: 480px;
-  margin: 0 auto 40px;
+  margin: 0 auto 80px;
 }
 .finalcta__actions {
   display: flex;
