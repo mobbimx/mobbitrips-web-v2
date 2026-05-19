@@ -173,7 +173,7 @@ export function FeaturedProperties() {
     requestAnimationFrame(() => {
       const cards = t.querySelectorAll<HTMLElement>('.prop-card');
       const firstReal = cards[N];
-      if (firstReal) t.scrollLeft = firstReal.offsetLeft;
+      if (firstReal) t.scrollTo({ left: firstReal.offsetLeft, behavior: 'instant' });
       setActiveDot(0);
       requestAnimationFrame(() => {
         isJumping.current = false;
@@ -230,7 +230,7 @@ export function FeaturedProperties() {
       const cards = t.querySelectorAll<HTMLElement>('.prop-card');
       // Equivalente en el set del medio: siempre en [N, 2N-1]
       const targetCard = cards[(idx % N) + N];
-      if (targetCard) t.scrollLeft = targetCard.offsetLeft;
+      if (targetCard) t.scrollTo({ left: targetCard.offsetLeft, behavior: 'instant' });
       requestAnimationFrame(() => {
         isJumping.current = false;
       });
