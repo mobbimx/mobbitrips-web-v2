@@ -3299,7 +3299,7 @@
   margin: 0 0 24px;
 }
 .ctc-hero__em {
-  font-style: italic;
+  font-style: normal;
   color: var(--coral-900);
 }
 .ctc-hero__sub {
@@ -3312,7 +3312,7 @@
 
 /* Content grid */
 .ctc-content {
-  padding: 60px 0 160px;
+  padding: 60px 0 240px;
   background: transparent;
 }
 .ctc-content__inner {
@@ -3448,7 +3448,7 @@ a.ctc-channel:hover .ctc-channel__arrow {
     padding: 140px 0 64px;
   }
   .ctc-content {
-    padding: 48px 0 120px;
+    padding: 48px 0 160px;
   }
   .ctc-form-card {
     padding: 28px 20px;
