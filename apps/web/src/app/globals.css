@@ -1992,6 +1992,13 @@
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(237, 104, 100, 0.08);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease;
+}
+.owner__benefit:hover .owner__benefit-icon {
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px rgba(237, 104, 100, 0.2);
 }
 .owner__benefit-title {
   font-family: var(--font-display);
