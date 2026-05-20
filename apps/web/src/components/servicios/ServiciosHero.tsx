@@ -1,83 +1,80 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { gsap } from '@/lib/gsap';
+import SplitType from 'split-type';
+import { gsap, useGSAP } from '@/lib/gsap';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 export function ServiciosHero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
-  useEffect(() => {
-    if (reduce) return;
-    const el = ref.current;
-    if (!el) return;
+  useGSAP(
+    () => {
+      const root = ref.current;
+      if (!root) return;
 
-    const ctx = gsap.context(() => {
-      gsap.from('[data-reveal]', {
-        y: 40,
-        opacity: 0,
-        duration: 0.65,
-        stagger: 0.06,
-        ease: 'expo.out',
-        delay: 0.1,
-      });
-    }, el);
+      const q = gsap.utils.selector(root);
+      const kicker = q('[data-sh="kicker"]');
+      const titleEl = root.querySelector<HTMLElement>('[data-sh="title"]');
+      const sub = q('[data-sh="sub"]');
+      const cta = q('[data-sh="cta"]');
 
-    return () => ctx.revert();
-  }, [reduce]);
+      if (reduce) {
+        gsap.set([kicker, sub, cta], { clearProps: 'all', opacity: 1 });
+        if (titleEl) gsap.set(titleEl, { clearProps: 'all', opacity: 1 });
+        return;
+      }
+
+      let split: SplitType | null = null;
+      if (titleEl) split = new SplitType(titleEl, { types: 'words' });
+      const words = split?.words ?? [];
+
+      gsap.set(kicker, { y: 20, opacity: 0 });
+      if (words.length) {
+        gsap.set(words, { y: 40, opacity: 0 });
+      } else if (titleEl) {
+        gsap.set(titleEl, { y: 32, opacity: 0 });
+      }
+      gsap.set(sub, { y: 16, opacity: 0 });
+      gsap.set(cta, { y: 12, opacity: 0 });
+
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+      tl.to(kicker, { y: 0, opacity: 1, duration: 0.6 }, 0.1);
+      if (words.length) {
+        tl.to(words, { y: 0, opacity: 1, duration: 0.8, stagger: 0.05 }, 0.28);
+      } else if (titleEl) {
+        tl.to(titleEl, { y: 0, opacity: 1, duration: 0.8 }, 0.28);
+      }
+      tl.to(sub, { y: 0, opacity: 1, duration: 0.5 }, '>-0.3');
+      tl.to(cta, { y: 0, opacity: 1, duration: 0.45 }, '>-0.2');
+
+      return () => {
+        split?.revert();
+      };
+    },
+    { scope: ref, dependencies: [reduce] },
+  );
 
   return (
-    <section ref={ref} className="py-24 sm:py-32" aria-labelledby="servicios-heading">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="overflow-hidden">
-          <p
-            data-reveal
-            className="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-primary"
-          >
-            <span className="inline-block h-px w-8 bg-primary" aria-hidden="true" />
-            Para propietarios
-          </p>
-        </div>
-        <h1
-          id="servicios-heading"
-          className="font-comfortaa font-bold text-brand-charcoal"
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          <span className="block overflow-hidden">
-            <span data-reveal className="block">
-              Tu propiedad trabaja.
-            </span>
-          </span>
-          <span className="block overflow-hidden">
-            <em data-reveal className="not-italic text-primary block">
-              Tú descansas.
-            </em>
-          </span>
+    <section ref={ref} className="srv-hero" aria-labelledby="servicios-heading">
+      <div className="srv-hero__inner">
+        <p className="srv-hero__kicker" data-sh="kicker">
+          Para propietarios
+        </p>
+        <h1 id="servicios-heading" className="srv-hero__title" data-sh="title">
+          Tu propiedad trabaja. <em className="srv-hero__em">Tú descansas.</em>
         </h1>
-        <div className="overflow-hidden">
-          <p data-reveal className="mt-8 max-w-xl text-base leading-relaxed text-brand-gray">
-            Gestionamos tu propiedad vacacional de principio a fin: desde la fotografía hasta el
-            depósito mensual. Sin complicaciones, sin sorpresas.
-          </p>
-        </div>
-        <div className="overflow-hidden">
-          <div data-reveal className="mt-10">
-            <Link
-              href="/contacto"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-base font-bold text-white transition hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              Quiero listar mi propiedad
-              <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
+        <p className="srv-hero__sub" data-sh="sub">
+          Gestionamos tu propiedad vacacional de principio a fin: desde la fotografía hasta el
+          depósito mensual. Sin complicaciones, sin sorpresas.
+        </p>
+        <Link href="/contacto" className="srv-hero__btn" data-sh="cta">
+          Quiero listar mi propiedad
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
       </div>
     </section>
   );
