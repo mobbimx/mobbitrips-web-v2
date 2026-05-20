@@ -1,70 +1,71 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { gsap } from '@/lib/gsap';
+import { useRef } from 'react';
+import SplitType from 'split-type';
+import { gsap, useGSAP } from '@/lib/gsap';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 export function ContactoHero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
-  useEffect(() => {
-    if (reduce) return;
-    const el = ref.current;
-    if (!el) return;
+  useGSAP(
+    () => {
+      const root = ref.current;
+      if (!root) return;
 
-    const ctx = gsap.context(() => {
-      gsap.from('[data-reveal]', {
-        y: 40,
-        opacity: 0,
-        duration: 0.65,
-        stagger: 0.06,
-        ease: 'expo.out',
-        delay: 0.1,
-      });
-    }, el);
+      const kicker = root.querySelector<HTMLElement>('[data-ch="kicker"]');
+      const titleEl = root.querySelector<HTMLElement>('[data-ch="title"]');
+      const sub = root.querySelector<HTMLElement>('[data-ch="sub"]');
 
-    return () => ctx.revert();
-  }, [reduce]);
+      if (reduce) {
+        if (kicker) gsap.set(kicker, { clearProps: 'all', opacity: 1 });
+        if (titleEl) gsap.set(titleEl, { clearProps: 'all', opacity: 1 });
+        if (sub) gsap.set(sub, { clearProps: 'all', opacity: 1 });
+        return;
+      }
+
+      let split: SplitType | null = null;
+      if (titleEl) split = new SplitType(titleEl, { types: 'words' });
+      const words = split?.words ?? [];
+
+      if (kicker) gsap.set(kicker, { y: 20, opacity: 0 });
+      if (words.length) {
+        gsap.set(words, { y: 40, opacity: 0 });
+      } else if (titleEl) {
+        gsap.set(titleEl, { y: 32, opacity: 0 });
+      }
+      if (sub) gsap.set(sub, { y: 16, opacity: 0 });
+
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+      tl.to(kicker, { y: 0, opacity: 1, duration: 0.6 }, 0.1);
+      if (words.length) {
+        tl.to(words, { y: 0, opacity: 1, duration: 0.8, stagger: 0.05 }, 0.28);
+      } else if (titleEl) {
+        tl.to(titleEl, { y: 0, opacity: 1, duration: 0.8 }, 0.28);
+      }
+      tl.to(sub, { y: 0, opacity: 1, duration: 0.5 }, '>-0.3');
+
+      return () => {
+        split?.revert();
+      };
+    },
+    { scope: ref, dependencies: [reduce] },
+  );
 
   return (
-    <section ref={ref} className="py-24 sm:py-32" aria-labelledby="contacto-heading">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="overflow-hidden">
-          <p
-            data-reveal
-            className="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-primary"
-          >
-            <span className="inline-block h-px w-8 bg-primary" aria-hidden="true" />
-            Contacto
-          </p>
-        </div>
-        <h1
-          id="contacto-heading"
-          className="font-comfortaa font-bold text-brand-charcoal"
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          <span className="block overflow-hidden">
-            <span data-reveal className="block">
-              Estamos aquí
-            </span>
-          </span>
-          <span className="block overflow-hidden">
-            <em data-reveal className="not-italic text-primary block">
-              para ayudarte.
-            </em>
-          </span>
+    <section ref={ref} className="ctc-hero" aria-labelledby="contacto-heading">
+      <div className="ctc-hero__inner">
+        <p className="ctc-hero__kicker" data-ch="kicker">
+          Contacto
+        </p>
+        <h1 id="contacto-heading" className="ctc-hero__title" data-ch="title">
+          Estamos aquí <em className="ctc-hero__em">para ayudarte.</em>
         </h1>
-        <div className="overflow-hidden">
-          <p data-reveal className="mt-6 max-w-md text-base leading-relaxed text-brand-gray">
-            Ya sea para una reserva, una duda o información sobre nuestras propiedades — escríbenos
-            y te respondemos rápido.
-          </p>
-        </div>
+        <p className="ctc-hero__sub" data-ch="sub">
+          Ya sea para una reserva, una duda o información sobre nuestras propiedades — escríbenos y
+          te respondemos rápido.
+        </p>
       </div>
     </section>
   );

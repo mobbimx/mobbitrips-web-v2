@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { MessageCircle, Mail, Clock } from 'lucide-react';
-import { AnimatedSection } from '@mobbitrips/ui';
-import { ContactoForm } from './ContactoForm';
 import { ContactoHero } from '@/components/contacto/ContactoHero';
+import { ContactoContent } from './ContactoContent';
 
 export const metadata: Metadata = {
   title: 'Contacto — Mobbitrips',
@@ -16,94 +14,11 @@ export const metadata: Metadata = {
   },
 };
 
-const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5212282525244';
-
 export default function ContactoPage() {
   return (
     <>
       <ContactoHero />
-
-      {/* Contact grid */}
-      <section className="py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-            {/* Left: channels */}
-            <AnimatedSection direction="right">
-              <div className="mb-8 flex items-center gap-3">
-                <div className="h-px w-8 bg-primary" aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Canales directos
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <a
-                  href={`https://wa.me/${WA}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label="WhatsApp de Mobbitrips"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#25D366]/10">
-                    <MessageCircle size={22} className="text-[#25D366]" aria-hidden="true" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-comfortaa text-base font-bold text-brand-charcoal">
-                      WhatsApp
-                    </p>
-                    <p className="text-sm text-brand-gray">+52 228 252 5244</p>
-                  </div>
-                  <span className="text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">
-                    Escribir →
-                  </span>
-                </a>
-
-                <a
-                  href="mailto:hola@mobbitrips.com"
-                  className="group flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label="Email de Mobbitrips"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-soft">
-                    <Mail size={22} className="text-primary" aria-hidden="true" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-comfortaa text-base font-bold text-brand-charcoal">Correo</p>
-                    <p className="text-sm text-brand-gray">hola@mobbitrips.com</p>
-                  </div>
-                  <span className="text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">
-                    Escribir →
-                  </span>
-                </a>
-
-                <div className="flex items-center gap-4 rounded-2xl bg-white/80 p-5 shadow-sm backdrop-blur-sm">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-cream">
-                    <Clock size={22} className="text-brand-gray" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <p className="font-comfortaa text-base font-bold text-brand-charcoal">
-                      Tiempo de respuesta
-                    </p>
-                    <p className="text-sm text-brand-gray">Menos de 2 horas en horario normal</p>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Right: form */}
-            <AnimatedSection direction="left" delay={0.15}>
-              <div className="mb-8 flex items-center gap-3">
-                <div className="h-px w-8 bg-primary" aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Envíanos un mensaje
-                </p>
-              </div>
-              <div className="rounded-2xl bg-white/80 p-6 shadow-sm backdrop-blur-sm sm:p-8">
-                <ContactoForm />
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
+      <ContactoContent />
     </>
   );
 }
