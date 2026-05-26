@@ -1,7 +1,10 @@
 import { Resend } from 'resend';
 import type { Reservation } from '@/types/db';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy — clients are created at request time, not at module import time (build time).
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'reservas@mobbitrips.com';
 const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5212282525244';
 
@@ -41,7 +44,7 @@ export async function sendReservationConfirmation(reservation: Reservation, prop
 </body>
 </html>`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: guest_email,
     subject: `✅ Solicitud de reserva — ${propertyName}`,
