@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { supabaseAdmin } from '@/lib/supabase';
 import { sendReservationConfirmation } from '@/lib/email';
 import { checkAvailability, getPropertyBySlug } from '@mobbitrips/hostex-client';
+
+export const dynamic = 'force-dynamic';
 import { isRateLimited, getIp } from '@/lib/ratelimit';
 
 const schema = z.object({

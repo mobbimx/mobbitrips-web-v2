@@ -4,6 +4,8 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase';
 import { isRateLimited, getIp } from '@/lib/ratelimit';
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   reservation_id: z.string().uuid(),
 });

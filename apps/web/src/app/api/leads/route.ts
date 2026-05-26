@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { supabaseAdmin } from '@/lib/supabase';
 import { isRateLimited, getIp } from '@/lib/ratelimit';
 
+export const dynamic = 'force-dynamic';
+
 const schema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email(),

@@ -3,6 +3,8 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase';
 import type Stripe from 'stripe';
 
+export const dynamic = 'force-dynamic';
+
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
