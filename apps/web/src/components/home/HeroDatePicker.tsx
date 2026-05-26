@@ -104,6 +104,7 @@ interface PanelContentProps {
   from: Date | undefined;
   to: Date | undefined;
   onSelect: (range: DateRange | undefined) => void;
+  mobile?: boolean;
 }
 
 function PanelContent({
@@ -114,6 +115,7 @@ function PanelContent({
   from,
   to,
   onSelect,
+  mobile,
 }: PanelContentProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -131,8 +133,9 @@ function PanelContent({
         boxShadow:
           '0 24px 64px rgba(237,104,100,0.18), 0 4px 20px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.7)',
         borderRadius: 20,
-        padding: 20,
-        minWidth: 320,
+        padding: mobile ? 16 : 20,
+        minWidth: mobile ? 0 : 320,
+        width: mobile ? '100%' : undefined,
       }}
     >
       {/* Active field indicator — shows which date the user is picking */}
@@ -213,6 +216,7 @@ export function HeroDatePicker({
   const [activeField, setActiveField] = useState<ActiveField>('checkin');
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
@@ -220,6 +224,10 @@ export function HeroDatePicker({
 
   useEffect(() => {
     setMounted(true);
+    const check = () => setIsMobile(window.innerWidth < 480);
+    check();
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
   }, []);
 
   const updatePos = useCallback(() => {
@@ -287,6 +295,17 @@ export function HeroDatePicker({
     }
   }
 
+  const anchorStyle: React.CSSProperties = isMobile
+    ? {
+        position: 'fixed',
+        zIndex: 9999,
+        top: 72,
+        left: 8,
+        right: 8,
+        transform: 'none',
+      }
+    : { ...ABOVE_STYLE, top: pos.top, left: pos.left };
+
   const panelContent = (
     <PanelContent
       panelRef={panelRef}
@@ -296,6 +315,7 @@ export function HeroDatePicker({
       from={from}
       to={to}
       onSelect={handleSelect}
+      mobile={isMobile}
     />
   );
 
@@ -342,6 +362,11 @@ export function HeroDatePicker({
         .hdp-outside .hdp-day-btn { opacity: 0; pointer-events: none; }
         .hdp-disabled .hdp-day-btn { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
         .hdp-hidden { visibility: hidden; }
+        @media (max-width: 480px) {
+          .hdp-month { width: 100%; }
+          .hdp-day-btn { width: 32px; height: 32px; font-size: 13px; }
+          .hdp-weekday { font-size: 10px; }
+        }
         @media (prefers-reduced-motion: reduce) {
           .hdp-day-btn, .hdp-btn-nav { transition: none !important; transform: none !important; }
         }
@@ -401,14 +426,32 @@ export function HeroDatePicker({
         {mounted &&
           createPortal(
             reduced ? (
-              open && (
-                <div style={{ ...ABOVE_STYLE, top: pos.top, left: pos.left }}>{panelContent}</div>
-              )
+              open && <div style={anchorStyle}>{panelContent}</div>
             ) : (
               <AnimatePresence>
                 {open && (
-                  <div key="hdp-anchor" style={{ ...ABOVE_STYLE, top: pos.top, left: pos.left }}>
-                    <motion.div variants={variants} initial="hidden" animate="visible" exit="exit">
+                  <div key="hdp-anchor" style={anchorStyle}>
+                    <motion.div
+                      variants={
+                        isMobile
+                          ? {
+                              hidden: { opacity: 0, scale: 0.97 },
+                              visible: {
+                                opacity: 1,
+                                scale: 1,
+                                transition: {
+                                  duration: 0.22,
+                                  ease: [0.19, 1, 0.22, 1] as number[],
+                                },
+                              },
+                              exit: { opacity: 0, scale: 0.97, transition: { duration: 0.15 } },
+                            }
+                          : variants
+                      }
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                    >
                       {panelContent}
                     </motion.div>
                   </div>

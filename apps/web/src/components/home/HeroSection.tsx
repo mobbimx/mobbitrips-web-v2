@@ -36,6 +36,16 @@ export function HeroSection() {
         raf = 0;
         const y = window.scrollY;
         const vh = window.innerHeight;
+        if (window.innerWidth < 768) {
+          const start = vh * 0.65;
+          const range = vh * 0.35;
+          const progress = Math.min(1, Math.max(0, (y - start) / range));
+          if (contentRef.current) {
+            contentRef.current.style.filter = progress > 0 ? `blur(${progress * 8}px)` : '';
+            contentRef.current.style.opacity = progress > 0 ? String(1 - progress * 0.7) : '';
+          }
+          return;
+        }
         const progress = Math.min(1, Math.max(0, y / vh));
         if (contentRef.current) {
           contentRef.current.style.filter = `blur(${progress * 10}px)`;

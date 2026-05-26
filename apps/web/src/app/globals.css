@@ -575,6 +575,9 @@
 }
 */
 @media (max-width: 768px) {
+  .hero-scroll {
+    display: none;
+  }
   .hero-search {
     height: auto;
     flex-direction: column;
@@ -1210,7 +1213,12 @@
     padding: 64px 0;
   }
   .prop-card {
-    flex: 0 0 85%;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+  .properties__track {
+    gap: 16px;
+    scroll-padding-left: 0;
   }
   .properties__nav {
     display: none;
