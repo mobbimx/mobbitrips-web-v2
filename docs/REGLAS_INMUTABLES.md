@@ -85,7 +85,7 @@ git push -u origin wip/<tema>-<maquina>
 ## 🌿 REGLA 4 — Nunca editar `portal` ni `main` directo: worktree + rama + PR
 
 - **`portal`** es la rama de trabajo e integración (rediseño y base ligera). Solo recibe cambios por **Pull Request con CI verde** (`pnpm lint` + `pnpm type-check` + `pnpm build`), integrados con `scripts/merge-si-verde.sh`.
-- **`main`** es lo que sirve mobbitrips.com y **no se toca** hasta la Fase 9, cuando `portal` pase a ser `main` por decisión expresa de Emilio.
+- **`main`** es lo que sirve mobbitrips.com y **no se toca** hasta la Fase 9, cuando `portal` pase a ser `main` por decisión expresa de Emilio y José (01-PLAN, Fase 9).
 - Cada sesión trabaja en **su propio worktree** (`~/Desktop/mobbitrips-sesiones/<tema>`) con una rama `wip/<tema>-<maquina>` (`<maquina>` = `mac` o `laptop`) y su PR en Draft (`[EN USO]`) hacia `portal`. Atajo: `scripts/mobbitrips-sesion.sh nueva <tema>`.
 - Antes de integrar, Emilio revisa en la **vista previa de Vercel** del PR (Regla 1).
 

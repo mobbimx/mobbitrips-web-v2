@@ -8,6 +8,8 @@
 > publicado y no se toca hasta la Fase 9. Cada sesión trabaja en su worktree + PR `[EN USO]`, y entra a `portal` solo
 > con CI verde. Donde este archivo hable de `main`, `design/*|content/*|fix/*` o de commitear en la rama actual,
 > lo que vale es `AGENTS.md`.
+>
+> **Rumbo vigente (oct-2026):** Mobbitrips es el escaparate de las casas de los anfitriones de Mobbilink (portal nacional, cero comisión, a los huéspedes los atiende cada anfitrión). Mandan `planeacion/proyectos/mobbitrips/00-PIVOTE.md` (decisiones) y `01-PLAN.md` (fases). Donde este archivo o `apps/web/CLAUDE.md` describan el modelo viejo (administradora en Xalapa, reservas propias, Hostex/Zoho/PayU, portada con casas y testimonios), manda el PIVOTE.
 
 ---
 
@@ -73,7 +75,7 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
 4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
 5. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
-6. Si la task involucra UI/secciones visuales, usa el agente **`disenador`** y lee `docs/MOTION.md` antes de cualquier código de UI: el rendimiento manda sobre la animación (Lighthouse móvil ≥ 90 para publicar). Las decisiones visuales se toman con **maquetación en vivo con opciones**: máximo 3 opciones más «Hoy» montadas en la página real con un selector flotante TEMPORAL; Emilio elige viéndolas en la vista previa de Vercel; la ganadora pasa a las reglas normales, se borra todo lo temporal y nunca se publica con el selector.
+6. Si la task involucra UI/secciones visuales, usa el agente **`disenador`** y lee `docs/MOTION.md` antes de cualquier código de UI: el rendimiento manda sobre la animación (Lighthouse móvil ≥ 90 para publicar). Las decisiones visuales se toman con **maquetación en vivo con opciones**: máximo 3 opciones más «Hoy» montadas en la página real con un selector flotante TEMPORAL; Emilio elige viéndolas en la vista previa de Vercel; la ganadora pasa a las reglas normales y se anota en `planeacion/aprendizajes-diseno/mobbitrips.md`, se borra todo lo temporal y nunca se publica con el selector. (Mientras no esté conectada la vista previa de Vercel, se enseña en el visor de siempre.)
 7. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
 
 ### Durante la sesión
