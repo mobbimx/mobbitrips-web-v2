@@ -154,8 +154,9 @@ export function ManchasLigeras() {
     });
     tamano.observe(canvas);
 
-    const vista = new IntersectionObserver(([e]) => {
-      enPantalla = !!e?.isIntersecting;
+    const vista = new IntersectionObserver((entradas) => {
+      // La última entrada del lote es el estado más reciente.
+      enPantalla = !!entradas[entradas.length - 1]?.isIntersecting;
       actualizar();
     });
     vista.observe(canvas);
