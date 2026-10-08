@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
+import { ManchasLigeras } from '@/components/ambient/ManchasLigeras';
 import { HeroDatePicker } from './HeroDatePicker';
 
 function getDefaultCheckout(checkin: string) {
@@ -73,6 +74,7 @@ export function HeroSection() {
 
   return (
     <section className="hero-section" aria-label="Bienvenida">
+      <ManchasLigeras />
       <div className="hero-gradient" aria-hidden="true" />
 
       <div className="hero-content" ref={contentRef}>

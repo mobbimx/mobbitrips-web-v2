@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-10-08 · Fase 0A.5 — Manchas ligeras detrás del buscador
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**Qué cambió:**
+
+- Nuevo `components/ambient/ManchasLigeras.tsx` (client component): 4 manchas coral / rosa / durazno sobre el crema de la marca, dibujadas en un `<canvas>` 8 veces más chico que el espacio que ocupa (no se multiplica por `devicePixelRatio` a propósito), a 20 cuadros por segundo. Se detiene solo cuando la franja sale de pantalla (`IntersectionObserver`) o la pestaña se oculta; con «reducir movimiento» pinta un solo cuadro. Sin seguir al mouse, sin `filter: blur`, sin librerías.
+- Ciclo de vida: al desmontar cancela el `requestAnimationFrame`, desconecta `ResizeObserver` e `IntersectionObserver` y quita los listeners de `visibilitychange` y de «reducir movimiento». Al cambiar de tamaño re-mide y repinta en el acto.
+- `HeroSection.tsx`: solo agrega `<ManchasLigeras />` como primer hijo de la sección (queda detrás del degradado y del contenido). El diseño del Hero no cambió; eso es 1A.
+
+**Verificación** (build de producción, Playwright, cel 390 y compu 1440): se ve; 20 cuadros/s; 0 dibujos al bajar fuera del Hero, con la pestaña oculta y al navegar a otra página (el lienzo sale del DOM); reanuda al volver; con «reducir movimiento» queda quieta; 0 errores o avisos de consola.
+
+**Costo medido** (CPU de todo el navegador, 10 s, mediana de 3): las manchas suman unos +21 puntos en cel y +39 en compu sobre el Hero con sus animaciones CSS en pausa. En esa misma sesión el visor de referencia daba 1.6 veces lo medido el 5-oct, así que calibrado queda en ≈ +13 / +23, dentro de la meta (15 / 28).
+
+**Visto de paso (no se tocó, es de 1A):**
+
+- El Hero, aun sin manchas, gasta mucho CPU por sus animaciones CSS infinitas (cel ≈ 120 %, compu ≈ 145 % en la medición de esta sesión frente a ≈ 8 % con ellas en pausa). Parte del costo de las manchas lo pone el `backdrop-filter: blur(28px)` del buscador, que se recalcula en cada cuadro: sin él, el incremento baja a la mitad en cel.
+
+---
+
 ## 2026-10-08 · Fase 0A.4 — Quitar el peso global (lámpara y Lenis)
 
 **Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
