@@ -4,8 +4,9 @@
 >
 > Este archivo contiene las reglas que NO se tocan entre sesiones, máquinas o
 > personas. Si algo aquí parece mal, antes de cambiarlo habla con Emilio.
-> Versionado en `main` → todas las máquinas y todas las cuentas de Claude
-> que clonen el repo las ven iguales.
+> Versionado en el repo (rama `portal`) → todas las máquinas y todas las cuentas
+> de Claude que clonen el repo las ven iguales. El protocolo completo de ramas y
+> sesiones vive en `AGENTS.md`; aquí está lo que no se negocia.
 
 ---
 
@@ -41,7 +42,7 @@ pnpm --filter @mobbitrips/web dev
 
 - ✅ Dev server de Next.js: `pnpm dev` desde la raíz → `http://localhost:3000`.
 - ✅ Puerto alternativo SOLO si 3000 está ocupado: Next.js sugerirá otro puerto automáticamente. Avisar si eso pasa.
-- ✅ Preview de Vercel (URLs `*.vercel.app`) SOLO para revisar ramas ya pusheadas — NO para trabajo activo.
+- ✅ **La vista previa de Vercel (URL `*.vercel.app` del PR/rama) es lo que Emilio ve y aprueba.** Su navegador vive en otra máquina: tu `localhost:3000` no es el suyo. Para enseñarle algo: push a tu rama `wip/…` → compártele el link de la vista previa. El trabajo activo se sigue haciendo y revisando en `localhost:3000`; la vista previa solo sale de ramas ya subidas a GitHub, nunca de una carpeta local.
 - ✅ Abrir el HTML de `design/exports/` en navegador SOLO como referencia puntual ("¿cómo era este detalle del diseño de Claude Design?"), **nunca como visualizador de trabajo en curso**.
 
 ### Why
@@ -52,13 +53,15 @@ El 2026-04-24 Emilio perdió tiempo porque en una máquina se le pidió visualiz
 
 ## 🔄 REGLA 2 — Preflight obligatorio al iniciar sesión
 
-Al abrir Claude Code en CUALQUIER máquina, antes de tocar un solo archivo:
+Al abrir Claude Code en CUALQUIER máquina, antes de tocar un solo archivo, desde TU worktree
+(`~/Desktop/mobbitrips-sesiones/<tema>`, nunca desde la carpeta base):
 
 ```bash
-git fetch --all
+git fetch --all --prune
 git status
-git pull --rebase origin main
+git pull --rebase origin portal
 git log --oneline -5
+scripts/mobbitrips-sesion.sh lista    # qué hay EN USO (PRs abiertos y worktrees)
 ```
 
 Si hay divergencia, cambios sin commit, o cualquier cosa rara → **parar, avisar a Emilio, no editar nada hasta resolver**.
@@ -72,23 +75,21 @@ Antes de cerrar sesión, acabarse los créditos, o cambiar de máquina:
 ```bash
 git add -A
 git commit -m "<type>(<scope>): <resumen>"   # WIP está OK si es WIP
-git push -u origin <rama>
+git push -u origin wip/<tema>-<maquina>
 ```
 
 **Sin excepciones.** Si quedó a medias: commit `wip(scope): ...` + push. Mejor WIP pusheado que trabajo limpio perdido.
 
 ---
 
-## 🌿 REGLA 4 — Nunca editar `main` directo
+## 🌿 REGLA 4 — Nunca editar `portal` ni `main` directo: worktree + rama + PR
 
-Todo cambio va en rama:
+- **`portal`** es la rama de trabajo e integración (rediseño y base ligera). Solo recibe cambios por **Pull Request con CI verde** (`pnpm lint` + `pnpm type-check` + `pnpm build`), integrados con `scripts/merge-si-verde.sh`.
+- **`main`** es lo que sirve mobbitrips.com y **no se toca** hasta la Fase 9, cuando `portal` pase a ser `main` por decisión expresa de Emilio.
+- Cada sesión trabaja en **su propio worktree** (`~/Desktop/mobbitrips-sesiones/<tema>`) con una rama `wip/<tema>-<maquina>` (`<maquina>` = `mac` o `laptop`) y su PR en Draft (`[EN USO]`) hacia `portal`. Atajo: `scripts/mobbitrips-sesion.sh nueva <tema>`.
+- Antes de integrar, Emilio revisa en la **vista previa de Vercel** del PR (Regla 1).
 
-- `design/<seccion>-v<n>` → rediseño grande
-- `design/<seccion>-polish` → pulir detalles
-- `content/<area>` → solo copy
-- `fix/<scope>` → bugs
-
-Merge a `main` solo con `lint` + `type-check` limpios y aprobación visual.
+Detalle y conflictos: `AGENTS.md`.
 
 ---
 
@@ -101,6 +102,11 @@ Merge a `main` solo con `lint` + `type-check` limpios y aprobación visual.
 | **GitHub `main`**                 | Source of truth único.                                               |
 
 Rediseño grande → Claude Design. Detalles pequeños → Claude Code. Nunca al revés.
+
+**Decisiones visuales → maquetación en vivo con opciones.** Cuando haya que elegir colores, formas, acomodo
+o movimiento, las opciones se montan en la página real (máximo 3 más «Hoy») con un selector flotante
+**temporal**, y Emilio elige viéndolas en la vista previa. La ganadora pasa a las reglas normales, se borra
+todo lo temporal y **nunca se publica con el selector**. Se hace con el agente `disenador`.
 
 ---
 
@@ -132,7 +138,7 @@ Los HTML de `design/exports/` son **inmutables**. Nuevo export de Claude Design 
 
 ---
 
-**Versión:** 1.0 · **Última actualización:** 2026-04-24 · **Estado:** INMUTABLE
+**Versión:** 2.0 · **Última actualización:** 2026-10-08 (rumbo `portal`, Fase 0A) · **Estado:** INMUTABLE
 
 _Cualquier edición a este archivo debe ir en commit separado con mensaje
 `chore(rules): <cambio>` y notificación explícita a Emilio._
