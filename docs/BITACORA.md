@@ -5,6 +5,25 @@
 
 ---
 
+## 2026-10-08 · Fase 0A.4 — Quitar el peso global (lámpara y Lenis)
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**Qué cambió:**
+
+- `layout.tsx` ya no monta `AmbientCanvas` (lámpara de lava, 10 manchas siguiendo el mouse en TODAS las páginas) ni `SmoothScrollProvider` (Lenis). Archivos borrados: `components/ambient/AmbientCanvas.tsx` y `components/providers/SmoothScrollProvider.tsx`. El fondo queda crema liso (`bg-brand-cream`, `#FAF8F5`); las manchas ligeras solo detrás del buscador son la tarea 0A.5.
+- La sincronización Lenis↔GSAP vivía dentro de `SmoothScrollProvider` (`lenis.on('scroll', ScrollTrigger.update)`, `gsap.ticker.add`, `lagSmoothing(0)`), no en `lib/gsap.ts`; se fue con el archivo. ScrollTrigger vuelve a escuchar el scroll nativo y el `lagSmoothing` regresa al valor por defecto de GSAP.
+- **Dependencias desinstaladas** (`apps/web`): `lenis`, `@rive-app/react-canvas`, `@lottiefiles/dotlottie-react` (las dos últimas sin ningún import).
+- **Se quedan, con nota:** `react-countup` solo lo usa `StoryBadges` (2 contadores; muere con la sección Story en 1A). `next-view-transitions` solo aparece como `<ViewTransitions>` en el layout; ningún `Link` ni `useTransitionRouter` de la librería se usa, así que hoy solo anima atrás/adelante del navegador. Se decide en 1A.
+
+**Verificación:** `pnpm lint`, `pnpm type-check` y `pnpm build` en verde. Recorrido con Playwright sobre el build de producción (compu 1440×900 y cel 390×844) en `/`, `/propiedades`, `/nosotros`, `/servicios`, `/contacto`, antes y después del cambio: 0 errores de JavaScript, 0 elementos con texto invisibles al terminar de bajar (sin bajar, la portada tiene 193 ocultos esperando su ScrollTrigger: el detector sí los ve). Bajar y volver a subir deja el Hero sin desenfoque.
+
+**Visto de paso (no se tocó):**
+
+- El Footer enlaza a `/(legal)/privacidad` y `/(legal)/terminos` (el grupo de rutas no va en la URL): 2 errores 404 en cada página, ya existían antes.
+
+---
+
 ## 2026-05-18 · Sesión 14 — WhyBookDirect elevada + carrusel infinito
 
 **Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio
