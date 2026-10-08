@@ -19,7 +19,7 @@
 
 ## 📊 Progreso
 
-**7 / 10 tareas listas** (0A.0, 0A.2 a 0A.7). Falta confirmar la vista previa (0A.1), medir «después» (0A.8) y cerrar (0A.9).
+**9 / 10 tareas listas** (0A.0, 0A.2 a 0A.9). Queda pendiente la vista previa de Vercel (0A.1: falta que Emilio apruebe el acceso); pasa a la siguiente fase.
 
 ---
 
@@ -27,7 +27,7 @@
 
 - [x] **0A.0** Inventario de qué librería pesada usa cada archivo y qué sección muere en 1A.
 - [x] **0A.2** Rama `portal`, protocolo de sesiones (`AGENTS.md`), candado pre-push, `scripts/merge-si-verde.sh` y CI (`lint` + `type-check` + `build`) — `74fc60d`.
-- [x] **0A.3** Medición «antes» (build de producción local sobre `07b1687`, medianas de 3 corridas): Lighthouse móvil `/` **85** (LCP 4.2 s, TBT 110 ms) y `/propiedades` **86**; escritorio **99** en ambas. El archivo con la tabla (`docs/rendimiento/2026-10-0A.md`) todavía no está en el repo.
+- [x] **0A.3** Medición «antes» (build de producción local sobre `07b1687`, medianas de 3 corridas): Lighthouse móvil `/` **85** (LCP 4.2 s, TBT 110 ms) y `/propiedades` **86**; escritorio **99** en ambas. Tabla final en `docs/rendimiento/2026-10-0A.md`.
 - [x] **0A.4** Peso global fuera: `AmbientCanvas` y Lenis salen del layout y se borran; se desinstalan `lenis`, `@rive-app/react-canvas` y `@lottiefiles/dotlottie-react` — `b3a2d74`.
 - [x] **0A.5** Manchas ligeras solo detrás del buscador (`components/ambient/ManchasLigeras.tsx`) — `fdb5886`.
 - [x] **0A.6** Textos del cascarón (metadatos, Navbar, Footer, botón flotante, 404) y del Hero en `apps/web/src/textos/es.ts` con `t()` — `9e613b5`.
@@ -38,16 +38,16 @@
 ## 📋 Pendiente
 
 - [ ] **0A.1** Confirmar la **vista previa de Vercel por rama**: acceso de escritura al repo ya funciona (hay PR #1), pero al 2026-10-08 el repo muestra 0 despliegues de Vercel. Sin esto no hay «lo que Emilio ve».
-- [ ] **0A.8** Medición «después»: mismas corridas que 0A.3 sobre la vista previa; tabla antes/después en `docs/rendimiento/2026-10-0A.md`.
+- [x] **0A.8** Medición «después» (local, alternando con «antes»; la primera corrida se descartó por método): compu 99 → 100, cel 85 → 87. Tabla en `docs/rendimiento/2026-10-0A.md`. Repetir sobre la vista previa cuando exista.
 - [ ] **0A.9** Cierre: escaneo de secretos antes del push, PR listo (`scripts/mobbitrips-sesion.sh listo`), CI verde, `scripts/merge-si-verde.sh` a `portal`, link de la vista previa + tabla para Emilio.
 
 ---
 
 ## 🎯 Criterios de cierre de la fase
 
-- [ ] Lighthouse móvil de la portada ≥ 90 (era 85 «antes»).
+- [ ] Lighthouse móvil de la portada ≥ 90 (85 → 87; pasa a 1A: Hero con animaciones infinitas y vidrio esmerilado, LCP = texto del logo).
 - [ ] Vista previa de `portal` funcionando en Vercel.
-- [ ] Tabla antes/después en `docs/rendimiento/`.
+- [x] Tabla antes/después en `docs/rendimiento/`.
 - [x] Sin `AmbientCanvas` ni Lenis; manchas ligeras solo detrás del buscador.
 - [x] Textos del cascarón y del Hero fuera de los componentes (`apps/web/src/textos/es.ts`).
 - [x] `pnpm lint`, `pnpm type-check` y `pnpm build` pasan; CI verde.

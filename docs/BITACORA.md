@@ -5,6 +5,14 @@
 
 ---
 
+## 2026-10-08 — Cierre de la Fase 0A (base ligera)
+
+- **0A.2:** rama `portal` desde `07b1687`, protocolo de sesiones (`AGENTS.md`, `scripts/mobbitrips-sesion.sh`, `scripts/merge-si-verde.sh`, candado pre-push con gitleaks) y CI (`verificar`: lint, tipos, build). PR #1.
+- **0A.3 / 0A.8:** Lighthouse antes/después en local. Una primera corrida de «después» dio compu 84 y se descartó: el diagnóstico (debugger) infiere que se tomó con perfil móvil (sin los JSON crudos no es 100 % seguro). Tanda válida, alternando: compu 99 → 100, cel 85 → 87 (el +2 está dentro del ruido). LCP = texto del logo de la Navbar.
+- **0A.5:** manchas ligeras (4) solo en el Hero. CPU sumada medida: +21 cel / +39 compu; calibrada contra la referencia del 5-oct ≈ +13 / +23 (calibración declarada y opinable). El Hero de mayo ya gastaba ~120–145 % sin manchas (animaciones CSS infinitas + `backdrop-filter`): se ataca en 1A.
+- **Revisiones:** 0A.0 corregida por el coordinador (FeaturedProperties muere en 1A); 0A.4 reviewer + dependency-auditor; 0A.5 reviewer (aprobada, ajuste 884ba54); 0A.6 reviewer (aprobada); 0A.7 auditor (ajustes en 74bdaf3); 0A.3/0A.8 repetidas por debugger; 0A.2 revisada dentro del veredicto final del auditor (no tuvo revisor propio); 0A.9 secrets-scanner (limpio) + auditor (integrar con pendientes).
+- **Pendientes a la siguiente fase:** vista previa de Vercel (0A.1, falta OK de Emilio); Lighthouse cel ≥ 90 (1A); Next 14.2.35 con vulnerabilidades también en producción y axios (decisión de Emilio); enlaces legales 404; selector de fechas en inglés; repo público.
+
 ## 2026-10-08 · Fases 0A.6 y 0A.7 — Textos en un solo archivo y docs al rumbo nuevo
 
 **Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
@@ -27,7 +35,7 @@
 **Visto de paso (no se tocó):**
 
 - La vista previa de Vercel por rama no está confirmada: al 8-oct el repo tiene 0 despliegues de Vercel y el PR #1 solo muestra el CI `verificar` (tarea 0A.1 pendiente).
-- `docs/rendimiento/2026-10-0A.md` (medición «antes» de 0A.3) todavía no está en el repo.
+- `docs/rendimiento/2026-10-0A.md` ya está en el repo (tabla final antes/después).
 - El mensaje de WhatsApp del botón flotante dice «…propiedades vacacionales en Xalapa», y `app/page.tsx` repite título y descripción de la portada: se movieron/quedaron tal cual; revisarlos en 1A con el rumbo nacional.
 - `HeroSearchWidget.tsx` no lo importa nadie (código muerto con sus propios textos); no se movió.
 - El selector de fechas del Hero no le pasa `locale` a `react-day-picker`, así que los nombres de mes y día salen en inglés (su valor por defecto); es de antes y no se cambió.
