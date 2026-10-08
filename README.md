@@ -36,7 +36,7 @@ Antes de tocar código, lee esto en orden:
 
 - **Next.js 14** (App Router, Server Components).
 - **TypeScript** estricto.
-- **Tailwind CSS** + **Framer Motion** + **Lenis** + **Lucide React**.
+- **Tailwind CSS** + **Framer Motion** + **Lucide React**.
 - **Supabase** (Postgres + Auth + Storage + pgvector).
 - **Hostex** (PMS) + **Stripe** + **PayU México** (pagos).
 - **Zoho One** (ERP completo) con **PAC** para CFDI 4.0.
@@ -147,6 +147,7 @@ refactor(hostex-client): simplify retry logic
 ### PRs
 
 Cada PR debe:
+
 - Tener título con Conventional Commit.
 - Referenciar task de ClickUp si aplica (`Closes S1.2-3`).
 - Pasar preview deploy de Vercel.

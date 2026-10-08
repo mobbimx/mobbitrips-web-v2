@@ -99,24 +99,24 @@ Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que con
 
 ## 🧱 Stack técnico
 
-| Capa          | Tecnología                                                                               |
-| ------------- | ---------------------------------------------------------------------------------------- |
-| Framework     | Next.js 14 (App Router, Server Components)                                               |
-| Lenguaje      | TypeScript estricto                                                                      |
-| Estilos       | Tailwind CSS (sin CSS-in-JS)                                                             |
-| Animación     | GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive (ver `docs/MOTION.md`) |
-| Smooth scroll | Lenis                                                                                    |
-| Íconos        | Lucide React                                                                             |
-| HTTP          | Axios (clientes tipados en `packages/*-client/`)                                         |
-| Forms         | React Hook Form + Zod                                                                    |
-| Fechas        | date-fns + react-day-picker                                                              |
-| Fuentes       | next/font (Comfortaa + Inter)                                                            |
-| Pagos         | Stripe Elements + PayU Hosted Page                                                       |
-| DB            | Supabase (Postgres + Auth + Storage + pgvector)                                          |
-| Email         | Resend                                                                                   |
-| Deploy        | Vercel                                                                                   |
-| Monitoreo     | Sentry                                                                                   |
-| Monorepo      | Turborepo + pnpm workspaces                                                              |
+| Capa      | Tecnología                                                               |
+| --------- | ------------------------------------------------------------------------ |
+| Framework | Next.js 14 (App Router, Server Components)                               |
+| Lenguaje  | TypeScript estricto                                                      |
+| Estilos   | Tailwind CSS (sin CSS-in-JS)                                             |
+| Animación | GSAP + ScrollTrigger + Framer Motion + split-type (ver `docs/MOTION.md`) |
+| Scroll    | Nativo del navegador (Lenis, Lottie y Rive se quitaron en la 0A.4)       |
+| Íconos    | Lucide React                                                             |
+| HTTP      | Axios (clientes tipados en `packages/*-client/`)                         |
+| Forms     | React Hook Form + Zod                                                    |
+| Fechas    | date-fns + react-day-picker                                              |
+| Fuentes   | next/font (Comfortaa + Inter)                                            |
+| Pagos     | Stripe Elements + PayU Hosted Page                                       |
+| DB        | Supabase (Postgres + Auth + Storage + pgvector)                          |
+| Email     | Resend                                                                   |
+| Deploy    | Vercel                                                                   |
+| Monitoreo | Sentry                                                                   |
+| Monorepo  | Turborepo + pnpm workspaces                                              |
 
 ---
 

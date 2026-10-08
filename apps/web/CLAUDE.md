@@ -196,7 +196,7 @@ de verdad).
 
 **Resumen ejecutivo:**
 
-- Stack: GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive
+- Stack: GSAP + ScrollTrigger + Framer Motion + split-type (Lottie y Rive se quitaron en la 0A.4)
 - Toda sección visible debe tener animación. Página estática = FALLO.
 - Easings oficiales: `ease-out-expo` (reveals), `ease-out-back` (hovers),
   `ease-in-out-cubic` (transiciones)
@@ -258,7 +258,6 @@ Cada uno tendrá especificación completa en la próxima versión de este docume
     "react": "18.x",
     "react-dom": "18.x",
     "framer-motion": "11.x",
-    "lenis": "1.x",
     "lucide-react": "latest",
     "axios": "1.x",
     "react-hook-form": "7.x",

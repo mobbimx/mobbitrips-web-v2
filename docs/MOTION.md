@@ -16,16 +16,17 @@ sitios tienen movimiento profesional. Una página estática transmite
 
 ---
 
-## 🧰 Stack disponible (todo instalado)
+## 🧰 Stack disponible
 
-| Librería             | Cuándo usar                                                                                       |
-| -------------------- | ------------------------------------------------------------------------------------------------- |
-| GSAP + ScrollTrigger | Timelines complejas, animaciones disparadas por scroll, parallax, animaciones de hero coordinadas |
-| split-type           | Reveals de texto por palabra/letra (como el Hero existente)                                       |
-| Framer Motion        | Gestos (hover/tap), AnimatePresence (mount/unmount), layout animations, drag                      |
-| Lenis                | Smooth scroll global (ya activo)                                                                  |
-| Lottie               | Loaders, empty states, success animations (lineales preautoradas)                                 |
-| Rive                 | Botones interactivos con state machines (idle→hover→loading→success)                              |
+| Librería              | Cuándo usar                                                                                                 |
+| --------------------- | ----------------------------------------------------------------------------------------------------------- |
+| GSAP + ScrollTrigger  | Timelines complejas, animaciones disparadas por scroll, parallax, animaciones de hero coordinadas           |
+| split-type            | Reveals de texto por palabra/letra (como el Hero existente)                                                 |
+| Framer Motion         | Gestos (hover/tap), AnimatePresence (mount/unmount), layout animations, drag                                |
+| Lottie (no instalado) | Loaders, empty states, success animations. Se desinstaló en la 0A.4; reinstalar solo si una sección lo pide |
+| Rive (no instalado)   | Botones con state machines. Se desinstaló en la 0A.4; reinstalar solo si una sección lo pide                |
+
+> El scroll es el nativo del navegador: Lenis se quitó en la 0A.4 y ScrollTrigger escucha el scroll nativo.
 
 ---
 
@@ -38,10 +39,10 @@ sitios tienen movimiento profesional. Una página estática transmite
 | Hover en card / botón / link                          | Framer Motion con `whileHover` + spring transition           |
 | Modal / drawer que abre y cierra                      | Framer Motion AnimatePresence                                |
 | Imagen con parallax al scroll                         | Framer Motion `useScroll` + `useTransform`                   |
-| Loader cuando se está cargando algo                   | Lottie (.lottie file) o Rive                                 |
-| Empty state ilustrativo                               | Lottie                                                       |
-| Botón que cambia de estado (idle → loading → success) | Rive con state machine                                       |
-| Smooth scroll global                                  | Lenis (ya configurado, no tocar)                             |
+| Loader cuando se está cargando algo                   | Lottie (.lottie file) o Rive (hay que reinstalarlos)         |
+| Empty state ilustrativo                               | Lottie (hay que reinstalarlo)                                |
+| Botón que cambia de estado (idle → loading → success) | Rive con state machine (hay que reinstalarlo)                |
+| Scroll global                                         | Nativo del navegador (Lenis se quitó en la 0A.4)             |
 
 ---
 
@@ -220,6 +221,8 @@ export function ParallaxImage() {
 
 ### Patrón E — Loader Lottie
 
+> Referencia: `@lottiefiles/dotlottie-react` no está instalado desde la 0A.4.
+
 ```tsx
 'use client';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
@@ -237,6 +240,8 @@ export function LoadingState() {
 ```
 
 ### Patrón F — Botón Rive con estados
+
+> Referencia: `@rive-app/react-canvas` no está instalado desde la 0A.4.
 
 ```tsx
 'use client';
@@ -319,7 +324,7 @@ const reduce = useReducedMotion();
 ## ✅ Cómo validar que una sección cumple
 
 1. Recargar la página: ¿el contenido aparece animado o estático? Si estático = FALLO
-2. Hacer scroll: ¿se siente smooth (Lenis)? ¿las secciones aparecen al entrar viewport?
+2. Hacer scroll: ¿el scroll nativo se siente fluido? ¿las secciones aparecen al entrar viewport?
 3. Hover en interactivos: ¿reaccionan con animación?
 4. Activar prefers-reduced-motion: ¿el contenido sigue siendo legible y visible (no se queda invisible)?
 5. Performance: ¿corre a 60fps? (DevTools → Performance)
@@ -339,7 +344,7 @@ Si cualquiera de los 5 falla, la sección no está lista.
 | CTA final                    | B (con magnetic hover en CTA principal)       |
 | Footer                       | D (fade-in suave al entrar viewport)          |
 | Modal / drawer               | B (AnimatePresence + spring)                  |
-| Loading states               | C (Lottie o Rive)                             |
+| Loading states               | C (Lottie o Rive, si se reinstalan)           |
 
 Niveles A-D = complejidad descendente. NUNCA bajar de D.
 
