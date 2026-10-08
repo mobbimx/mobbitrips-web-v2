@@ -73,7 +73,7 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
 4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
 5. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
-6. Si la task involucra UI/secciones visuales, **INVOCA el agente `design-director`**. Lee `docs/MOTION.md` obligatoriamente antes de cualquier código de UI.
+6. Si la task involucra UI/secciones visuales, usa el agente **`disenador`** y lee `docs/MOTION.md` antes de cualquier código de UI: el rendimiento manda sobre la animación (Lighthouse móvil ≥ 90 para publicar). Las decisiones visuales se toman con **maquetación en vivo con opciones**: máximo 3 opciones más «Hoy» montadas en la página real con un selector flotante TEMPORAL; Emilio elige viéndolas en la vista previa de Vercel; la ganadora pasa a las reglas normales, se borra todo lo temporal y nunca se publica con el selector.
 7. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
 
 ### Durante la sesión

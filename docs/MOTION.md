@@ -2,17 +2,32 @@
 
 > **Fuente única de verdad para animaciones en Mobbitrips.**
 > Si otro doc dice algo distinto, este gana.
+>
+> **Rumbo vigente (pivote del 2-oct-2026, Fase 0A):** Mobbitrips es el escaparate de las casas de los
+> anfitriones de Mobbilink. El rendimiento manda sobre la animación. La regla anterior de mayo
+> («toda sección debe tener animación; una página estática es fallo») **quedó sustituida** por la Regla #1.
 
 ---
 
-## 🔴 Regla #1 (no negociable)
+## 🔴 Regla #1 (no negociable): el rendimiento manda sobre la animación
 
-TODA sección visible al usuario debe tener animación. Una página
-estática es FALLO de entrega.
+Decisión de Emilio (2-oct-2026), tras preguntar si tanta animación más un catálogo de alojamientos haría la
+página pesada.
 
-Mobbitrips compite contra Airbnb Luxe, Plum Guide, OneFineStay. Esos
-sitios tienen movimiento profesional. Una página estática transmite
-"template de WordPress" y mata la conversión.
+1. **Condición para publicar:** Lighthouse móvil ≥ 90 (rendimiento) medido sobre un build de producción o la
+   vista previa de Vercel. Si una animación lo baja, se simplifica o se quita; no se publica por encima de eso.
+2. **Presupuesto de peso:** cada fase lo respeta y lo mide con el antes/después de su cambio. Nada nuevo entra
+   si empeora el peso o el Lighthouse móvil de la página.
+3. **Animación solo donde aporte:** guiar la atención, confirmar una acción, dar continuidad entre estados.
+   Una sección sin animación **no es un fallo**; una animación que no aporta y cuesta CPU sí lo es.
+4. **Dónde vive el movimiento (decisión 13):** la portada lleva las manchas ligeras
+   (`components/ambient/ManchasLigeras.tsx`) solo detrás del buscador. Las páginas de resultados, ficha y
+   reserva son **lisas**: sin manchas ni fondo animado.
+5. **Lo que ya se fue y no vuelve:** la lámpara de lava (`AmbientCanvas`, 10 capas con `filter: blur`
+   grandes y un bucle que medía las manchas en cada cuadro) y el scroll suave global (Lenis).
+
+El sitio ya no compite en «movimiento de agencia»: compite en que el huésped encuentre y reserve rápido,
+también en un celular con mala señal.
 
 ---
 
@@ -27,6 +42,10 @@ sitios tienen movimiento profesional. Una página estática transmite
 | Rive (no instalado)   | Botones con state machines. Se desinstaló en la 0A.4; reinstalar solo si una sección lo pide                |
 
 > El scroll es el nativo del navegador: Lenis se quitó en la 0A.4 y ScrollTrigger escucha el scroll nativo.
+>
+> GSAP, split-type y Framer Motion **se quedan por ahora**: viven en secciones que las fases 1A, 3A y 4A van
+> a rehacer. Al rehacer una sección, si CSS (`transform`/`opacity`, `IntersectionObserver`) alcanza, se usa
+> CSS y no se suma una librería.
 
 ---
 
@@ -311,6 +330,10 @@ const reduce = useReducedMotion();
 
 ## ❌ Lo que NO se hace en Mobbitrips
 
+- ❌ Fondos animados globales o a pantalla completa (la lámpara de lava se fue en la 0A.4)
+- ❌ `filter: blur` grande animado, ni bucles que midan el DOM en cada cuadro
+- ❌ Scroll suave global (Lenis se quitó; pelea con el scroll nativo, el mapa y las listas)
+- ❌ Publicar una página con Lighthouse móvil < 90 por una animación
 - ❌ Cursor custom global (rompe el aire premium hospitality)
 - ❌ Animaciones agresivas o con overshoot fuerte (no es agencia, es cálido)
 - ❌ Animar `width`/`height`/`top`/`left` (siempre `transform` y `opacity`)
@@ -323,31 +346,33 @@ const reduce = useReducedMotion();
 
 ## ✅ Cómo validar que una sección cumple
 
-1. Recargar la página: ¿el contenido aparece animado o estático? Si estático = FALLO
-2. Hacer scroll: ¿el scroll nativo se siente fluido? ¿las secciones aparecen al entrar viewport?
-3. Hover en interactivos: ¿reaccionan con animación?
-4. Activar prefers-reduced-motion: ¿el contenido sigue siendo legible y visible (no se queda invisible)?
-5. Performance: ¿corre a 60fps? (DevTools → Performance)
+1. **Lighthouse móvil ≥ 90** sobre el build de producción o la vista previa de Vercel. Si falla, se arregla
+   o se quita la animación antes de seguir. Esto manda sobre los demás puntos.
+2. ¿Cada animación aporta algo (guía, confirma, da continuidad)? Si no, se quita.
+3. Scroll nativo fluido: ¿las secciones que sí se animan aparecen al entrar al viewport sin trabarse?
+4. Activar `prefers-reduced-motion`: ¿el contenido sigue legible y visible (no se queda invisible)?
+5. Performance en celular: ¿corre sin tirones? (DevTools → Performance, con la CPU limitada).
 
 Si cualquiera de los 5 falla, la sección no está lista.
 
 ---
 
-## 🎯 Niveles de complejidad por sección
+## 🎯 Techo de complejidad por sección (es un máximo, no un mínimo)
 
-| Tipo de sección              | Nivel mínimo                                  |
-| ---------------------------- | --------------------------------------------- |
-| Hero                         | A (timeline complejo + split text + parallax) |
-| Sección "destacados" / cards | B (scroll trigger stagger + hover rich)       |
-| Sección de texto editorial   | C (reveal de texto al scroll)                 |
-| Sección de testimonios       | C                                             |
-| CTA final                    | B (con magnetic hover en CTA principal)       |
-| Footer                       | D (fade-in suave al entrar viewport)          |
-| Modal / drawer               | B (AnimatePresence + spring)                  |
-| Loading states               | C (Lottie o Rive, si se reinstalan)           |
+| Tipo de sección              | Techo                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| Hero / portada               | A (entrada del texto + manchas ligeras detrás del buscador)                      |
+| Sección "destacados" / cards | B (aparición al scroll + hover)                                                  |
+| Sección de texto editorial   | C (aparición del texto al scroll)                                                |
+| Sección de testimonios       | C                                                                                |
+| CTA final                    | B                                                                                |
+| Footer                       | D (sin animación o fade-in suave)                                                |
+| Modal / drawer               | B (AnimatePresence + spring)                                                     |
+| Resultados, ficha y reserva  | Lisas: solo respuestas a la interacción (hover, abrir/cerrar), sin fondo animado |
 
-Niveles A-D = complejidad descendente. NUNCA bajar de D.
+Niveles A-D = complejidad descendente. Una sección puede quedarse sin animación; lo que no se hace es pasar
+el techo ni gastar presupuesto de rendimiento en algo que no aporte.
 
 ---
 
-_Última actualización: 2026-05-05 · Versión: 1.0_
+_Última actualización: 2026-10-08 · Versión: 2.0 (rumbo portal, Fase 0A · sustituye la regla de mayo)_

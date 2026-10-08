@@ -5,6 +5,37 @@
 
 ---
 
+## 2026-10-08 · Fases 0A.6 y 0A.7 — Textos en un solo archivo y docs al rumbo nuevo
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**0A.6 — Textos (`9e613b5`):**
+
+- Nuevo `apps/web/src/textos/es.ts` (diccionario tipado; `Textos = typeof es`) y `apps/web/src/textos/t.ts` con `t('grupo.clave', { variable })` y `tLista()`. Las claves se validan al compilar: una clave que no existe en `es.ts` no pasa `type-check`. Sin librería de idiomas (solo español, preparado para inglés): para sumar inglés se crea `en.ts` con el tipo `Textos` y se elige el idioma en `t.ts`.
+- Movidos: metadatos y `lang` del layout, enlace «Ir al contenido», Navbar (enlaces, botones, `aria-label`), Footer (títulos, enlaces, contacto, derechos con `{year}`), `MobbitripsLogo` (`aria-label`), botón flotante de WhatsApp (etiqueta, `aria-label` y mensaje), página 404 y los textos del Hero (`HeroSection` y su selector de fechas `HeroDatePicker`, incluidos `aria-label` y el formato de fechas `es-MX`). Rutas (`href`) y URLs externas se quedan en el componente.
+- **Ningún texto visible cambió.** Comprobado comparando el HTML renderizado de `/` y de una ruta inexistente (404) antes y después sobre dos builds de producción: idéntico (sin contar scripts ni los marcadores internos de React).
+- Verificación: `pnpm lint`, `pnpm type-check` y `pnpm build` en verde.
+
+**0A.7 — Docs al rumbo nuevo:**
+
+- `docs/MOTION.md` (v2.0): la «Regla #1» de mayo («toda sección debe tener animación; una página estática es fallo») queda **sustituida** por la decisión de Emilio del 2-oct-2026: el rendimiento manda, Lighthouse móvil ≥ 90 para publicar, animación solo donde aporte. La tabla de niveles A-D pasa de «mínimo» a «techo»; la validación empieza por Lighthouse; se agregan a «lo que NO se hace» los fondos animados globales, el `filter: blur` grande animado, los bucles que miden el DOM por cuadro y Lenis.
+- `docs/REGLAS_INMUTABLES.md` (v2.0, commit aparte `chore(rules)` como pide el propio archivo): preflight y push contra `portal` y `wip/<tema>-<maquina>`; nunca `portal` ni `main` directo (worktree + rama + PR con CI verde); la vista previa de Vercel es lo que Emilio ve; decisiones visuales por maquetación en vivo con opciones.
+- `.claude/settings.json`: el recordatorio de inicio ya no manda a `design-director` ni a la animación obligatoria; repite las reglas de arriba.
+- Se retira `.claude/agents/design-director.md`; `CLAUDE.md` y `apps/web/CLAUDE.md` apuntan al agente `disenador` y a la maquetación en vivo con opciones (máximo 3 más «Hoy», selector TEMPORAL, nunca se publica con él).
+- `docs/SPRINT_ACTUAL.md` = Fase 0A. El sprint 1.5 (modelo de reservas directas, 7/10) se archivó sin completar en `docs/sprints/completados/sprint-1.5-archivado-por-pivote.md`.
+
+**Visto de paso (no se tocó):**
+
+- La vista previa de Vercel por rama no está confirmada: al 8-oct el repo tiene 0 despliegues de Vercel y el PR #1 solo muestra el CI `verificar` (tarea 0A.1 pendiente).
+- `docs/rendimiento/2026-10-0A.md` (medición «antes» de 0A.3) todavía no está en el repo.
+- El mensaje de WhatsApp del botón flotante dice «…propiedades vacacionales en Xalapa», y `app/page.tsx` repite título y descripción de la portada: se movieron/quedaron tal cual; revisarlos en 1A con el rumbo nacional.
+- `HeroSearchWidget.tsx` no lo importa nadie (código muerto con sus propios textos); no se movió.
+- El selector de fechas del Hero no le pasa `locale` a `react-day-picker`, así que los nombres de mes y día salen en inglés (su valor por defecto); es de antes y no se cambió.
+- Los dos enlaces legales del Footer siguen apuntando a `/(legal)/…` (404, ya anotado en 0A.4).
+- Cuando `es.ts` crezca, `t()` mete el diccionario completo al paquete del navegador de los componentes cliente: repartirlo por secciones antes de que pese (decisión 4).
+
+---
+
 ## 2026-10-08 · Fase 0A.5 — Manchas ligeras detrás del buscador
 
 **Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
