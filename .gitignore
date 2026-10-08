@@ -70,3 +70,8 @@ logs/
 *.bak
 *.backup
 .env*.local
+
+# Cualquier archivo de entorno (menos el ejemplo)
+.env*
+!.env.example
+!apps/web/.env.example
