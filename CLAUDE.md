@@ -1,6 +1,13 @@
+@AGENTS.md
+
 # 🏠 Mobbitrips — Contexto para Claude Code
 
 > Este archivo es tu GPS. Léelo al inicio de cada sesión. La visión completa vive en `docs/MASTER.md`.
+>
+> **Ramas y sesiones: manda `AGENTS.md`** (importado arriba). La rama principal es **`portal`**; `main` es el sitio
+> publicado y no se toca hasta la Fase 9. Cada sesión trabaja en su worktree + PR `[EN USO]`, y entra a `portal` solo
+> con CI verde. Donde este archivo hable de `main`, `design/*|content/*|fix/*` o de commitear en la rama actual,
+> lo que vale es `AGENTS.md`.
 
 ---
 
@@ -17,19 +24,19 @@
    **NUNCA** abrir `design/exports/*.html` con `file:///` como visualizador.
    **NUNCA** usar Live Server, http-server, serve, o cualquier otro preview.
 
-2. **Preflight obligatorio** al iniciar sesión (cualquier máquina):
+2. **Preflight obligatorio** al iniciar sesión (cualquier máquina), desde tu worktree (ver `AGENTS.md` §0 y §2):
 
    ```bash
-   git fetch --all && git status && git pull --rebase origin main && git log --oneline -5
+   git fetch --all --prune && git status && git pull --rebase origin portal && git log --oneline -5
    ```
 
-3. **Push obligatorio** al cerrar sesión (aunque sea WIP):
+3. **Push obligatorio** al cerrar sesión (aunque sea WIP), a tu rama `wip/<tema>-<maquina>`:
 
    ```bash
    git add -A && git commit -m "..." && git push -u origin <rama>
    ```
 
-4. **Nunca editar `main` directo.** Siempre rama: `design/*`, `content/*`, `fix/*`.
+4. **Nunca editar `portal` ni `main` directo.** Siempre una rama `wip/<tema>-<maquina>` en su worktree, y entra por PR con CI verde (`scripts/merge-si-verde.sh`).
 
 5. **División de herramientas:** Claude Design genera secciones → Claude Code pule detalles. No al revés.
 
@@ -61,7 +68,7 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 
 ### Al iniciar cualquier sesión
 
-1. **Ejecutar preflight** (ver REGLA 2 arriba): `git fetch && git status && git pull --rebase && git log --oneline -5`.
+1. **Ejecutar preflight** (ver REGLA 2 arriba) y revisar qué está EN USO: `scripts/mobbitrips-sesion.sh lista`.
 2. Lee este archivo (`CLAUDE.md`).
 3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
 4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
@@ -152,6 +159,7 @@ Detalle completo de diseño en `apps/web/CLAUDE.md`.
 ```
 mobbitrips/
 ├── CLAUDE.md                    ← este archivo
+├── AGENTS.md                    ← protocolo de sesiones (rama `portal`, worktree + PR, CI verde)
 ├── README.md                    ← para humanos que clonan el repo
 ├── docs/
 │   ├── MASTER.md                ← visión completa y arquitectura detallada
@@ -209,6 +217,12 @@ Detalle completo en `docs/MASTER.md` sección 3.
 ## 🧰 Comandos frecuentes
 
 ```bash
+# Sesiones (ver AGENTS.md)
+scripts/mobbitrips-sesion.sh nueva <tema>              # worktree + rama + PR draft [EN USO] hacia portal
+scripts/mobbitrips-sesion.sh listo <tema> "<título>"   # título conventional commit + quita Draft
+scripts/merge-si-verde.sh <pr> --delete-branch         # integra a portal SOLO con CI verde
+scripts/mobbitrips-sesion.sh cerrar <tema>             # borra el worktree
+
 # Desarrollo
 pnpm dev                           # todos los apps
 pnpm dev --filter=web              # solo web
@@ -219,7 +233,7 @@ pnpm lint
 pnpm type-check
 pnpm test
 
-# Build
+# Build (compila sin secretos; el CI corre lint + type-check + build)
 pnpm build
 
 # Base de datos
@@ -271,7 +285,8 @@ Detalle completo en `docs/MASTER.md` sección 18.
 - ❌ No hagas llamadas a APIs externas desde el cliente.
 - ❌ No uses colores fuera de la paleta de marca.
 - ❌ No uses tipografías fuera de Comfortaa/Inter.
-- ❌ No dejes `console.log` en commits que vayan a main.
+- ❌ No dejes `console.log` en commits que vayan a `portal`.
+- ❌ No hagas push directo a `portal` ni a `main`, ni integres un PR sin CI verde.
 - ❌ No toques workflows n8n de producción desde dev.
 - ❌ No generes CFDIs reales en sandbox.
 
