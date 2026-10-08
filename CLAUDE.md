@@ -1,6 +1,15 @@
+@AGENTS.md
+
 # 🏠 Mobbitrips — Contexto para Claude Code
 
 > Este archivo es tu GPS. Léelo al inicio de cada sesión. La visión completa vive en `docs/MASTER.md`.
+>
+> **Ramas y sesiones: manda `AGENTS.md`** (importado arriba). La rama principal es **`portal`**; `main` es el sitio
+> publicado y no se toca hasta la Fase 9. Cada sesión trabaja en su worktree + PR `[EN USO]`, y entra a `portal` solo
+> con CI verde. Donde este archivo hable de `main`, `design/*|content/*|fix/*` o de commitear en la rama actual,
+> lo que vale es `AGENTS.md`.
+>
+> **Rumbo vigente (oct-2026):** Mobbitrips es el escaparate de las casas de los anfitriones de Mobbilink (portal nacional, cero comisión, a los huéspedes los atiende cada anfitrión). Mandan `planeacion/proyectos/mobbitrips/00-PIVOTE.md` (decisiones) y `01-PLAN.md` (fases). Donde este archivo o `apps/web/CLAUDE.md` describan el modelo viejo (administradora en Xalapa, reservas propias, Hostex/Zoho/PayU, portada con casas y testimonios), manda el PIVOTE.
 
 ---
 
@@ -17,19 +26,19 @@
    **NUNCA** abrir `design/exports/*.html` con `file:///` como visualizador.
    **NUNCA** usar Live Server, http-server, serve, o cualquier otro preview.
 
-2. **Preflight obligatorio** al iniciar sesión (cualquier máquina):
+2. **Preflight obligatorio** al iniciar sesión (cualquier máquina), desde tu worktree (ver `AGENTS.md` §0 y §2):
 
    ```bash
-   git fetch --all && git status && git pull --rebase origin main && git log --oneline -5
+   git fetch --all --prune && git status && git pull --rebase origin portal && git log --oneline -5
    ```
 
-3. **Push obligatorio** al cerrar sesión (aunque sea WIP):
+3. **Push obligatorio** al cerrar sesión (aunque sea WIP), a tu rama `wip/<tema>-<maquina>`:
 
    ```bash
    git add -A && git commit -m "..." && git push -u origin <rama>
    ```
 
-4. **Nunca editar `main` directo.** Siempre rama: `design/*`, `content/*`, `fix/*`.
+4. **Nunca editar `portal` ni `main` directo.** Siempre una rama `wip/<tema>-<maquina>` en su worktree, y entra por PR con CI verde (`scripts/merge-si-verde.sh`).
 
 5. **División de herramientas:** Claude Design genera secciones → Claude Code pule detalles. No al revés.
 
@@ -61,12 +70,12 @@ Para el detalle completo de arquitectura, decisiones, flujos y plan de fases, co
 
 ### Al iniciar cualquier sesión
 
-1. **Ejecutar preflight** (ver REGLA 2 arriba): `git fetch && git status && git pull --rebase && git log --oneline -5`.
+1. **Ejecutar preflight** (ver REGLA 2 arriba) y revisar qué está EN USO: `scripts/mobbitrips-sesion.sh lista`.
 2. Lee este archivo (`CLAUDE.md`).
 3. Lee `docs/REGLAS_INMUTABLES.md` — reglas no negociables.
 4. Lee `docs/BITACORA.md` — ahí está el log de la última sesión y dónde quedamos.
 5. Lee `docs/SPRINT_ACTUAL.md` — ahí está qué toca hoy.
-6. Si la task involucra UI/secciones visuales, **INVOCA el agente `design-director`**. Lee `docs/MOTION.md` obligatoriamente antes de cualquier código de UI.
+6. Si la task involucra UI/secciones visuales, usa el agente **`disenador`** y lee `docs/MOTION.md` antes de cualquier código de UI: el rendimiento manda sobre la animación (Lighthouse móvil ≥ 90 para publicar). Las decisiones visuales se toman con **maquetación en vivo con opciones**: máximo 3 opciones más «Hoy» montadas en la página real con un selector flotante TEMPORAL; Emilio elige viéndolas en la vista previa de Vercel; la ganadora pasa a las reglas normales y se anota en `planeacion/aprendizajes-diseno/mobbitrips.md`, se borra todo lo temporal y nunca se publica con el selector. (Mientras no esté conectada la vista previa de Vercel, se enseña en el visor de siempre.)
 7. Saluda con un resumen en 3 líneas: último avance, próximo paso sugerido, bloqueos si hay.
 
 ### Durante la sesión
@@ -92,24 +101,24 @@ Actualiza `docs/BITACORA.md` con una entrada nueva al inicio del archivo que con
 
 ## 🧱 Stack técnico
 
-| Capa          | Tecnología                                                                               |
-| ------------- | ---------------------------------------------------------------------------------------- |
-| Framework     | Next.js 14 (App Router, Server Components)                                               |
-| Lenguaje      | TypeScript estricto                                                                      |
-| Estilos       | Tailwind CSS (sin CSS-in-JS)                                                             |
-| Animación     | GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive (ver `docs/MOTION.md`) |
-| Smooth scroll | Lenis                                                                                    |
-| Íconos        | Lucide React                                                                             |
-| HTTP          | Axios (clientes tipados en `packages/*-client/`)                                         |
-| Forms         | React Hook Form + Zod                                                                    |
-| Fechas        | date-fns + react-day-picker                                                              |
-| Fuentes       | next/font (Comfortaa + Inter)                                                            |
-| Pagos         | Stripe Elements + PayU Hosted Page                                                       |
-| DB            | Supabase (Postgres + Auth + Storage + pgvector)                                          |
-| Email         | Resend                                                                                   |
-| Deploy        | Vercel                                                                                   |
-| Monitoreo     | Sentry                                                                                   |
-| Monorepo      | Turborepo + pnpm workspaces                                                              |
+| Capa      | Tecnología                                                               |
+| --------- | ------------------------------------------------------------------------ |
+| Framework | Next.js 14 (App Router, Server Components)                               |
+| Lenguaje  | TypeScript estricto                                                      |
+| Estilos   | Tailwind CSS (sin CSS-in-JS)                                             |
+| Animación | GSAP + ScrollTrigger + Framer Motion + split-type (ver `docs/MOTION.md`) |
+| Scroll    | Nativo del navegador (Lenis, Lottie y Rive se quitaron en la 0A.4)       |
+| Íconos    | Lucide React                                                             |
+| HTTP      | Axios (clientes tipados en `packages/*-client/`)                         |
+| Forms     | React Hook Form + Zod                                                    |
+| Fechas    | date-fns + react-day-picker                                              |
+| Fuentes   | next/font (Comfortaa + Inter)                                            |
+| Pagos     | Stripe Elements + PayU Hosted Page                                       |
+| DB        | Supabase (Postgres + Auth + Storage + pgvector)                          |
+| Email     | Resend                                                                   |
+| Deploy    | Vercel                                                                   |
+| Monitoreo | Sentry                                                                   |
+| Monorepo  | Turborepo + pnpm workspaces                                              |
 
 ---
 
@@ -152,6 +161,7 @@ Detalle completo de diseño en `apps/web/CLAUDE.md`.
 ```
 mobbitrips/
 ├── CLAUDE.md                    ← este archivo
+├── AGENTS.md                    ← protocolo de sesiones (rama `portal`, worktree + PR, CI verde)
 ├── README.md                    ← para humanos que clonan el repo
 ├── docs/
 │   ├── MASTER.md                ← visión completa y arquitectura detallada
@@ -209,6 +219,12 @@ Detalle completo en `docs/MASTER.md` sección 3.
 ## 🧰 Comandos frecuentes
 
 ```bash
+# Sesiones (ver AGENTS.md)
+scripts/mobbitrips-sesion.sh nueva <tema>              # worktree + rama + PR draft [EN USO] hacia portal
+scripts/mobbitrips-sesion.sh listo <tema> "<título>"   # título conventional commit + quita Draft
+scripts/merge-si-verde.sh <pr> --delete-branch         # integra a portal SOLO con CI verde
+scripts/mobbitrips-sesion.sh cerrar <tema>             # borra el worktree
+
 # Desarrollo
 pnpm dev                           # todos los apps
 pnpm dev --filter=web              # solo web
@@ -219,7 +235,7 @@ pnpm lint
 pnpm type-check
 pnpm test
 
-# Build
+# Build (compila sin secretos; el CI corre lint + type-check + build)
 pnpm build
 
 # Base de datos
@@ -271,7 +287,8 @@ Detalle completo en `docs/MASTER.md` sección 18.
 - ❌ No hagas llamadas a APIs externas desde el cliente.
 - ❌ No uses colores fuera de la paleta de marca.
 - ❌ No uses tipografías fuera de Comfortaa/Inter.
-- ❌ No dejes `console.log` en commits que vayan a main.
+- ❌ No dejes `console.log` en commits que vayan a `portal`.
+- ❌ No hagas push directo a `portal` ni a `main`, ni integres un PR sin CI verde.
 - ❌ No toques workflows n8n de producción desde dev.
 - ❌ No generes CFDIs reales en sandbox.
 

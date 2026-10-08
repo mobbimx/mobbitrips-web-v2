@@ -1,126 +1,73 @@
-# 🚀 Sprint Actual — Sprint 1.5: SEO + Performance + Stripe Config
+# 🚀 Sprint Actual — Fase 0A: Base ligera
 
 > Este archivo muestra **solo el sprint activo**. Al cerrarlo, se archiva en `docs/sprints/completados/` y se crea uno nuevo.
+> El sprint anterior (1.5, del modelo de reservas directas) quedó archivado sin completar:
+> `docs/sprints/completados/sprint-1.5-archivado-por-pivote.md`.
 
 ---
 
 ## 📌 Info del sprint
 
-- **Sprint**: 1.5 — SEO + Performance + Stripe Config
-- **Fase**: 1 — MVP Web
-- **Fecha inicio**: 2026-04-22
-- **Fecha objetivo**: ~2026-05-06 (~15h/semana)
-- **Objetivo**: Cerrar los bloqueadores del flujo de pagos y emails. Llevar Lighthouse ≥ 90. Dejar el MVP listo para recibir reservas reales con confirmación automática.
+- **Fase**: 0A — Base ligera (primera del pivote del 2-oct-2026)
+- **Inicio**: 2026-10-07
+- **Rama / PR**: `wip/base-ligera-mac` → `portal` (PR #1, Draft = EN USO). Nunca a `main` (intocable hasta la Fase 9).
+- **Objetivo**: partir de un sitio más ligero y ordenado antes de rehacer las pantallas. Sin lámpara de lava ni scroll suave global, con manchas ligeras solo detrás del buscador, textos en un solo archivo (listo para sumar inglés) y las guías del repo alineadas al rumbo nuevo.
+- **Se ve al terminar**: la vista previa de `portal` en Vercel, más ligera, con la tabla antes/después de Lighthouse.
+- **Regla que manda** (`docs/MOTION.md`): el rendimiento manda sobre la animación; Lighthouse móvil ≥ 90 para publicar.
 
 ---
 
 ## 📊 Progreso
 
-**7 / 10 tasks completadas (70%)**
+**9 / 10 tareas listas** (0A.0, 0A.2 a 0A.9). Queda pendiente la vista previa de Vercel (0A.1: falta que Emilio apruebe el acceso); pasa a la siguiente fase.
 
 ---
 
-## ✅ Completadas
+## ✅ Hechas
 
-- [x] **S1.5-2** Configurar Resend + verificar dominio ✓
-  - DNS agregados en Hostinger (DKIM TXT + MX send + SPF TXT)
-  - Dominio `mobbitrips.com` verificado en Resend
-  - `RESEND_API_KEY` y `RESEND_FROM_EMAIL=reservas@mobbitrips.com` configurados en Vercel
-  - Redeploy completado
-
-- [x] **S1.5-3** `sitemap.xml` dinámico ✓
-  - `apps/web/src/app/sitemap.ts` — incluye rutas estáticas + propiedades dinámicas de Hostex
-  - Commit: `4617a9b`
-
-- [x] **S1.5-4** `robots.txt` ✓
-  - `apps/web/src/app/robots.ts` — bloquea `/api/*` y `/reserva/*`
-  - Commit: `4617a9b`
-
-- [x] **S1.5-5** Meta tags completos en todas las páginas ✓
-  - `openGraph` agregado a `/propiedades`, `/nosotros`, `/servicios`, `/contacto`
-  - Commit: `adde36c`
-
-- [x] **S1.5-6** Optimizaciones de performance ✓ (parcial)
-  - ISR `revalidate=3600` en Home (era `force-dynamic`)
-  - `priority` en primera imagen de FeaturedProperties (LCP)
-  - Commits: `a116c8f`
-
-- [x] **S1.5-8** Error 404 personalizado ✓
-  - `apps/web/src/app/not-found.tsx` — CTA dual (propiedades + inicio), aria attrs
-  - Commit: `4617a9b`
-
-- [x] **S1.5-9** Loading states globales ✓
-  - `apps/web/src/app/propiedades/loading.tsx` — skeleton grid 6 cards
-  - `apps/web/src/app/propiedades/[slug]/loading.tsx` — skeleton detalle
-  - Commit: `adde36c`
-
----
-
-## 🔄 En progreso
-
-_(nada activo ahora mismo)_
+- [x] **0A.0** Inventario de qué librería pesada usa cada archivo y qué sección muere en 1A.
+- [x] **0A.2** Rama `portal`, protocolo de sesiones (`AGENTS.md`), candado pre-push, `scripts/merge-si-verde.sh` y CI (`lint` + `type-check` + `build`) — `74fc60d`.
+- [x] **0A.3** Medición «antes» (build de producción local sobre `07b1687`, medianas de 3 corridas): Lighthouse móvil `/` **85** (LCP 4.2 s, TBT 110 ms) y `/propiedades` **86**; escritorio **99** en ambas. Tabla final en `docs/rendimiento/2026-10-0A.md`.
+- [x] **0A.4** Peso global fuera: `AmbientCanvas` y Lenis salen del layout y se borran; se desinstalan `lenis`, `@rive-app/react-canvas` y `@lottiefiles/dotlottie-react` — `b3a2d74`.
+- [x] **0A.5** Manchas ligeras solo detrás del buscador (`components/ambient/ManchasLigeras.tsx`) — `fdb5886`.
+- [x] **0A.6** Textos del cascarón (metadatos, Navbar, Footer, botón flotante, 404) y del Hero en `apps/web/src/textos/es.ts` con `t()` — `9e613b5`.
+- [x] **0A.7** Docs al rumbo nuevo: `docs/MOTION.md`, `docs/REGLAS_INMUTABLES.md`, hook de `.claude/settings.json`, `CLAUDE.md`, este archivo y la bitácora; se retira el agente `design-director` (ahora `disenador` + maquetación en vivo con opciones).
 
 ---
 
 ## 📋 Pendiente
 
-### 🔧 Cerrar bloqueadores (prioridad máxima)
-
-- [ ] **S1.5-1** Configurar Stripe webhook en producción `[1 pt]`
-  - En Stripe Dashboard → Developers → Webhooks → Add endpoint
-  - URL: `https://mobbitrips.com/api/webhooks/stripe`
-  - Evento: `checkout.session.completed`
-  - Copiar el signing secret (`whsec_...`)
-  - En Vercel → Settings → Environment Variables → agregar `STRIPE_WEBHOOK_SECRET`
-  - Redeploy y verificar
-  - **Criterio**: reserva creada con Stripe pasa a status `paid` automáticamente
-  - **Nota**: requiere cuenta Stripe nueva (la anterior fue comprometida por Lodgify)
-
-### ⚡ Performance
-
-- [ ] **S1.5-7** Optimizar imágenes en detalle de propiedad `[1 pt]`
-  - Agregar `priority` a la primera imagen del detalle (`/propiedades/[slug]`)
-  - Verificar `sizes` correcto en galería
-  - Lazy loading en imágenes de galería (no above-fold)
-
-### 🧪 Verificación
-
-- [ ] **S1.5-10** Verificar flujo completo end-to-end en producción `[1 pt]`
-  - Probar email: hacer reserva de prueba → verificar que llega a inbox del huésped
-  - Una vez Stripe configurado: crear reserva con tarjeta `4242 4242 4242 4242`
-  - Verificar: email llega → reserva en Supabase cambia a "paid" → evento en `events`
-  - Documentar resultado en BITACORA
+- [ ] **0A.1** Confirmar la **vista previa de Vercel por rama**: acceso de escritura al repo ya funciona (hay PR #1), pero al 2026-10-08 el repo muestra 0 despliegues de Vercel. Sin esto no hay «lo que Emilio ve».
+- [x] **0A.8** Medición «después» (local, alternando con «antes»; la primera corrida se descartó por método): compu 99 → 100, cel 85 → 87. Tabla en `docs/rendimiento/2026-10-0A.md`. Repetir sobre la vista previa cuando exista.
+- [ ] **0A.9** Cierre: escaneo de secretos antes del push, PR listo (`scripts/mobbitrips-sesion.sh listo`), CI verde, `scripts/merge-si-verde.sh` a `portal`, link de la vista previa + tabla para Emilio.
 
 ---
 
-## 🎯 Criterios de cierre del sprint
+## 🎯 Criterios de cierre de la fase
 
-- [ ] `STRIPE_WEBHOOK_SECRET` configurado y verificado en producción
-- [x] Emails de confirmación funcionando desde `reservas@mobbitrips.com`
-- [ ] Lighthouse ≥ 90/95/95/95 en home (pendiente auditoría)
-- [x] `sitemap.xml` y `robots.txt` accesibles en producción
-- [ ] Flujo end-to-end probado con tarjeta real de prueba
-- [x] `pnpm lint` y `pnpm type-check` pasan
+- [ ] Lighthouse móvil de la portada ≥ 90 (85 → 87; pasa a 1A: Hero con animaciones infinitas y vidrio esmerilado, LCP = texto del logo).
+- [ ] Vista previa de `portal` funcionando en Vercel.
+- [x] Tabla antes/después en `docs/rendimiento/`.
+- [x] Sin `AmbientCanvas` ni Lenis; manchas ligeras solo detrás del buscador.
+- [x] Textos del cascarón y del Hero fuera de los componentes (`apps/web/src/textos/es.ts`).
+- [x] `pnpm lint`, `pnpm type-check` y `pnpm build` pasan; CI verde.
 
 ---
 
 ## 🚨 Bloqueos activos
 
-- **S1.5-1**: Requiere cuenta Stripe nueva (sin Lodgify) + webhook + secret en Vercel
-- **S1.5-10**: Depende de S1.5-1 para la parte de pagos
+- **0A.1 / 0A.8**: la medición «después» y lo que Emilio ve dependen de la vista previa de Vercel.
 
 ---
 
-## 📝 Notas del sprint
+## 📝 Notas de la fase
 
-- S1.5-2 (Resend) **CERRADO** — dominio verificado, env vars configuradas
-- El email footer se corrigió: "Mobbitrips · México" (ya no dice "Xalapa, Ver.")
-- Home cambiada de `force-dynamic` a ISR `revalidate=3600` → mejora significativa de performance
-- La metadata de todas las páginas ya no menciona "Xalapa, Veracruz" — rebrand limpio
+- GSAP, split-type y Framer Motion **se quedan por ahora**: viven en secciones que 1A, 3A y 4A rehacen. 0A quita solo el peso global.
+- Hostex sigue hasta 3A (resultados con mapa).
+- Los textos de las demás secciones se mueven a `es.ts` cuando cada una se rehaga en su fase.
 
 ---
 
-## 🔗 Sprints
+## 🔗 Fases
 
-**Sprint anterior**: 1.3 + 1.4 — `docs/sprints/completados/sprint-1.3-1.4.md`
-**Próximo sprint previsto**: 2.1 — n8n + automatización de reservas
+**Siguiente**: 1A — portada nueva (la maqueta hecha real, con opciones en vivo para elegir acomodo y detalles).

@@ -6,6 +6,7 @@ import { DayPicker, type DateRange } from 'react-day-picker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { t } from '@/textos/t';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -38,7 +39,7 @@ function formatDisplay(iso: string): string {
   if (!iso) return '';
   const date = parseLocalDate(iso);
   if (!date) return '';
-  return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+  return date.toLocaleDateString(t('idioma.fechas'), { day: 'numeric', month: 'short' });
 }
 
 // ─── Animation variants ───────────────────────────────────────────────────────
@@ -124,7 +125,7 @@ function PanelContent({
     <div
       ref={panelRef}
       role="dialog"
-      aria-label="Selecciona fechas de llegada y salida"
+      aria-label={t('hero.fechas.dialogo')}
       style={{
         background: 'rgba(253, 240, 239, 0.90)',
         backdropFilter: 'blur(28px) saturate(180%)',
@@ -142,7 +143,7 @@ function PanelContent({
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         {(['checkin', 'checkout'] as const).map((field) => {
           const isActive = activeField === field;
-          const label = field === 'checkin' ? 'Llegada' : 'Salida';
+          const label = field === 'checkin' ? t('hero.fechas.llegada') : t('hero.fechas.salida');
           const value = field === 'checkin' ? checkin : checkout;
           return (
             <div
@@ -384,17 +385,19 @@ export function HeroDatePicker({
           className="hero-search-section"
           onClick={() => openFor('checkin')}
           aria-label={
-            checkin ? `Llegada: ${formatDisplay(checkin)}` : 'Seleccionar fecha de llegada'
+            checkin
+              ? t('hero.fechas.llegadaConFecha', { fecha: formatDisplay(checkin) })
+              : t('hero.fechas.seleccionarLlegada')
           }
           style={fieldActive('checkin')}
         >
           <span className="hero-search-label" style={labelColor('checkin')}>
-            Llegada
+            {t('hero.fechas.llegada')}
           </span>
           <span
             className={checkin ? 'hero-search-value' : 'hero-search-value hero-search-value--muted'}
           >
-            {checkin ? formatDisplay(checkin) : 'Agrega fecha'}
+            {checkin ? formatDisplay(checkin) : t('hero.fechas.agregarFecha')}
           </span>
         </button>
 
@@ -406,19 +409,21 @@ export function HeroDatePicker({
           className="hero-search-section"
           onClick={() => openFor('checkout')}
           aria-label={
-            checkout ? `Salida: ${formatDisplay(checkout)}` : 'Seleccionar fecha de salida'
+            checkout
+              ? t('hero.fechas.salidaConFecha', { fecha: formatDisplay(checkout) })
+              : t('hero.fechas.seleccionarSalida')
           }
           style={fieldActive('checkout')}
         >
           <span className="hero-search-label" style={labelColor('checkout')}>
-            Salida
+            {t('hero.fechas.salida')}
           </span>
           <span
             className={
               checkout ? 'hero-search-value' : 'hero-search-value hero-search-value--muted'
             }
           >
-            {checkout ? formatDisplay(checkout) : 'Agrega fecha'}
+            {checkout ? formatDisplay(checkout) : t('hero.fechas.agregarFecha')}
           </span>
         </button>
 

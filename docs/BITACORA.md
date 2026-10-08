@@ -5,6 +5,84 @@
 
 ---
 
+## 2026-10-08 — Cierre de la Fase 0A (base ligera)
+
+- **0A.2:** rama `portal` desde `07b1687`, protocolo de sesiones (`AGENTS.md`, `scripts/mobbitrips-sesion.sh`, `scripts/merge-si-verde.sh`, candado pre-push con gitleaks) y CI (`verificar`: lint, tipos, build). PR #1.
+- **0A.3 / 0A.8:** Lighthouse antes/después en local. Una primera corrida de «después» dio compu 84 y se descartó: el diagnóstico (debugger) infiere que se tomó con perfil móvil (sin los JSON crudos no es 100 % seguro). Tanda válida, alternando: compu 99 → 100, cel 85 → 87 (el +2 está dentro del ruido). LCP = texto del logo de la Navbar.
+- **0A.5:** manchas ligeras (4) solo en el Hero. CPU sumada medida: +21 cel / +39 compu; calibrada contra la referencia del 5-oct ≈ +13 / +23 (calibración declarada y opinable). El Hero de mayo ya gastaba ~120–145 % sin manchas (animaciones CSS infinitas + `backdrop-filter`): se ataca en 1A.
+- **Revisiones:** 0A.0 corregida por el coordinador (FeaturedProperties muere en 1A); 0A.4 reviewer + dependency-auditor; 0A.5 reviewer (aprobada, ajuste 884ba54); 0A.6 reviewer (aprobada); 0A.7 auditor (ajustes en 74bdaf3); 0A.3/0A.8 repetidas por debugger; 0A.2 revisada dentro del veredicto final del auditor (no tuvo revisor propio); 0A.9 secrets-scanner (limpio) + auditor (integrar con pendientes).
+- **Pendientes a la siguiente fase:** vista previa de Vercel (0A.1, falta OK de Emilio); Lighthouse cel ≥ 90 (1A); Next 14.2.35 con vulnerabilidades también en producción y axios (decisión de Emilio); enlaces legales 404; selector de fechas en inglés; repo público.
+
+## 2026-10-08 · Fases 0A.6 y 0A.7 — Textos en un solo archivo y docs al rumbo nuevo
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**0A.6 — Textos (`9e613b5`):**
+
+- Nuevo `apps/web/src/textos/es.ts` (diccionario tipado; `Textos = typeof es`) y `apps/web/src/textos/t.ts` con `t('grupo.clave', { variable })` y `tLista()`. Las claves se validan al compilar: una clave que no existe en `es.ts` no pasa `type-check`. Sin librería de idiomas (solo español, preparado para inglés): para sumar inglés se crea `en.ts` con el tipo `Textos` y se elige el idioma en `t.ts`.
+- Movidos: metadatos y `lang` del layout, enlace «Ir al contenido», Navbar (enlaces, botones, `aria-label`), Footer (títulos, enlaces, contacto, derechos con `{year}`), `MobbitripsLogo` (`aria-label`), botón flotante de WhatsApp (etiqueta, `aria-label` y mensaje), página 404 y los textos del Hero (`HeroSection` y su selector de fechas `HeroDatePicker`, incluidos `aria-label` y el formato de fechas `es-MX`). Rutas (`href`) y URLs externas se quedan en el componente.
+- **Ningún texto visible cambió.** Comprobado comparando el HTML renderizado de `/` y de una ruta inexistente (404) antes y después sobre dos builds de producción: idéntico (sin contar scripts ni los marcadores internos de React).
+- Verificación: `pnpm lint`, `pnpm type-check` y `pnpm build` en verde.
+
+**0A.7 — Docs al rumbo nuevo:**
+
+- `docs/MOTION.md` (v2.0): la «Regla #1» de mayo («toda sección debe tener animación; una página estática es fallo») queda **sustituida** por la decisión de Emilio del 2-oct-2026: el rendimiento manda, Lighthouse móvil ≥ 90 para publicar, animación solo donde aporte. La tabla de niveles A-D pasa de «mínimo» a «techo»; la validación empieza por Lighthouse; se agregan a «lo que NO se hace» los fondos animados globales, el `filter: blur` grande animado, los bucles que miden el DOM por cuadro y Lenis.
+- `docs/REGLAS_INMUTABLES.md` (v2.0, commit aparte `chore(rules)` como pide el propio archivo): preflight y push contra `portal` y `wip/<tema>-<maquina>`; nunca `portal` ni `main` directo (worktree + rama + PR con CI verde); la vista previa de Vercel es lo que Emilio ve; decisiones visuales por maquetación en vivo con opciones.
+- `.claude/settings.json`: el recordatorio de inicio ya no manda a `design-director` ni a la animación obligatoria; repite las reglas de arriba.
+- Se retira `.claude/agents/design-director.md`; `CLAUDE.md` y `apps/web/CLAUDE.md` apuntan al agente `disenador` y a la maquetación en vivo con opciones (máximo 3 más «Hoy», selector TEMPORAL, nunca se publica con él).
+- `docs/SPRINT_ACTUAL.md` = Fase 0A. El sprint 1.5 (modelo de reservas directas, 7/10) se archivó sin completar en `docs/sprints/completados/sprint-1.5-archivado-por-pivote.md`.
+
+**Visto de paso (no se tocó):**
+
+- La vista previa de Vercel por rama no está confirmada: al 8-oct el repo tiene 0 despliegues de Vercel y el PR #1 solo muestra el CI `verificar` (tarea 0A.1 pendiente).
+- `docs/rendimiento/2026-10-0A.md` ya está en el repo (tabla final antes/después).
+- El mensaje de WhatsApp del botón flotante dice «…propiedades vacacionales en Xalapa», y `app/page.tsx` repite título y descripción de la portada: se movieron/quedaron tal cual; revisarlos en 1A con el rumbo nacional.
+- `HeroSearchWidget.tsx` no lo importa nadie (código muerto con sus propios textos); no se movió.
+- El selector de fechas del Hero no le pasa `locale` a `react-day-picker`, así que los nombres de mes y día salen en inglés (su valor por defecto); es de antes y no se cambió.
+- Los dos enlaces legales del Footer siguen apuntando a `/(legal)/…` (404, ya anotado en 0A.4).
+- Cuando `es.ts` crezca, `t()` mete el diccionario completo al paquete del navegador de los componentes cliente: repartirlo por secciones antes de que pese (decisión 4).
+
+---
+
+## 2026-10-08 · Fase 0A.5 — Manchas ligeras detrás del buscador
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**Qué cambió:**
+
+- Nuevo `components/ambient/ManchasLigeras.tsx` (client component): 4 manchas coral / rosa / durazno sobre el crema de la marca, dibujadas en un `<canvas>` 8 veces más chico que el espacio que ocupa (no se multiplica por `devicePixelRatio` a propósito), a 20 cuadros por segundo. Se detiene solo cuando la franja sale de pantalla (`IntersectionObserver`) o la pestaña se oculta; con «reducir movimiento» pinta un solo cuadro. Sin seguir al mouse, sin `filter: blur`, sin librerías.
+- Ciclo de vida: al desmontar cancela el `requestAnimationFrame`, desconecta `ResizeObserver` e `IntersectionObserver` y quita los listeners de `visibilitychange` y de «reducir movimiento». Al cambiar de tamaño re-mide y repinta en el acto.
+- `HeroSection.tsx`: solo agrega `<ManchasLigeras />` como primer hijo de la sección (queda detrás del degradado y del contenido). El diseño del Hero no cambió; eso es 1A.
+
+**Verificación** (build de producción, Playwright, cel 390 y compu 1440): se ve; 20 cuadros/s; 0 dibujos al bajar fuera del Hero, con la pestaña oculta y al navegar a otra página (el lienzo sale del DOM); reanuda al volver; con «reducir movimiento» queda quieta; 0 errores o avisos de consola.
+
+**Costo medido** (CPU de todo el navegador, 10 s, mediana de 3): las manchas suman unos +21 puntos en cel y +39 en compu sobre el Hero con sus animaciones CSS en pausa. En esa misma sesión el visor de referencia daba 1.6 veces lo medido el 5-oct, así que calibrado queda en ≈ +13 / +23, dentro de la meta (15 / 28).
+
+**Visto de paso (no se tocó, es de 1A):**
+
+- El Hero, aun sin manchas, gasta mucho CPU por sus animaciones CSS infinitas (cel ≈ 120 %, compu ≈ 145 % en la medición de esta sesión frente a ≈ 8 % con ellas en pausa). Parte del costo de las manchas lo pone el `backdrop-filter: blur(28px)` del buscador, que se recalcula en cada cuadro: sin él, el incremento baja a la mitad en cel.
+
+---
+
+## 2026-10-08 · Fase 0A.4 — Quitar el peso global (lámpara y Lenis)
+
+**Rama**: `wip/base-ligera-mac` → `portal` · Máquina: Mac
+
+**Qué cambió:**
+
+- `layout.tsx` ya no monta `AmbientCanvas` (lámpara de lava, 10 manchas siguiendo el mouse en TODAS las páginas) ni `SmoothScrollProvider` (Lenis). Archivos borrados: `components/ambient/AmbientCanvas.tsx` y `components/providers/SmoothScrollProvider.tsx`. El fondo queda crema liso (`bg-brand-cream`, `#FAF8F5`); las manchas ligeras solo detrás del buscador son la tarea 0A.5.
+- La sincronización Lenis↔GSAP vivía dentro de `SmoothScrollProvider` (`lenis.on('scroll', ScrollTrigger.update)`, `gsap.ticker.add`, `lagSmoothing(0)`), no en `lib/gsap.ts`; se fue con el archivo. ScrollTrigger vuelve a escuchar el scroll nativo y el `lagSmoothing` regresa al valor por defecto de GSAP.
+- **Dependencias desinstaladas** (`apps/web`): `lenis`, `@rive-app/react-canvas`, `@lottiefiles/dotlottie-react` (las dos últimas sin ningún import).
+- **Se quedan, con nota:** `react-countup` solo lo usa `StoryBadges` (2 contadores; muere con la sección Story en 1A). `next-view-transitions` solo aparece como `<ViewTransitions>` en el layout; ningún `Link` ni `useTransitionRouter` de la librería se usa, así que hoy solo anima atrás/adelante del navegador. Se decide en 1A.
+
+**Verificación:** `pnpm lint`, `pnpm type-check` y `pnpm build` en verde. Recorrido con Playwright sobre el build de producción (compu 1440×900 y cel 390×844) en `/`, `/propiedades`, `/nosotros`, `/servicios`, `/contacto`, antes y después del cambio: 0 errores de JavaScript, 0 elementos con texto invisibles al terminar de bajar (sin bajar, la portada tiene 193 ocultos esperando su ScrollTrigger: el detector sí los ve). Bajar y volver a subir deja el Hero sin desenfoque.
+
+**Visto de paso (no se tocó):**
+
+- El Footer enlaza a `/(legal)/privacidad` y `/(legal)/terminos` (el grupo de rutas no va en la URL): 2 errores 404 en cada página, ya existían antes.
+
+---
+
 ## 2026-05-18 · Sesión 14 — WhyBookDirect elevada + carrusel infinito
 
 **Sprint**: chore/design-tooling · Trabajó con: Emilio · Máquina: escritorio

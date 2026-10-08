@@ -196,14 +196,14 @@ de verdad).
 
 **Resumen ejecutivo:**
 
-- Stack: GSAP + ScrollTrigger + Framer Motion + split-type + Lottie + Rive
-- Toda sección visible debe tener animación. Página estática = FALLO.
+- Stack: GSAP + ScrollTrigger + Framer Motion + split-type (Lottie y Rive se quitaron en la 0A.4)
+- El rendimiento manda sobre la animación: Lighthouse móvil ≥ 90 para publicar; animación solo donde aporte. Una sección sin animación no es un fallo.
 - Easings oficiales: `ease-out-expo` (reveals), `ease-out-back` (hovers),
   `ease-in-out-cubic` (transiciones)
 - `prefers-reduced-motion` respetado siempre
 - Importar GSAP desde `@/lib/gsap` (centralizado)
 - Usar `useGSAP` con scope para cleanup automático
-- Para implementar/mejorar secciones: invoca el agente `design-director`
+- Para implementar/mejorar secciones: usa el agente `disenador` y decide con maquetación en vivo con opciones (ver `CLAUDE.md` raíz)
 
 Patrones completos en `docs/MOTION.md`.
 
@@ -258,7 +258,6 @@ Cada uno tendrá especificación completa en la próxima versión de este docume
     "react": "18.x",
     "react-dom": "18.x",
     "framer-motion": "11.x",
-    "lenis": "1.x",
     "lucide-react": "latest",
     "axios": "1.x",
     "react-hook-form": "7.x",

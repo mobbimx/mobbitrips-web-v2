@@ -3,11 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
+import { t } from '@/textos/t';
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '5212282525244';
-const WA_MESSAGE = encodeURIComponent(
-  '¡Hola! Me interesa información sobre sus propiedades vacacionales en Xalapa.',
-);
+const WA_MESSAGE = encodeURIComponent(t('whatsapp.mensaje'));
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 
 export function WhatsAppFloatingButton() {
@@ -43,11 +42,11 @@ export function WhatsAppFloatingButton() {
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Abrir WhatsApp"
+            aria-label={t('whatsapp.aria')}
             className="group relative flex items-center gap-2.5 rounded-full bg-primary px-4 py-3 text-white shadow-lg transition-all duration-300 hover:bg-primary-dark hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-5"
           >
             <MessageCircle size={22} aria-hidden="true" />
-            <span className="hidden text-sm font-medium sm:inline">Escríbenos</span>
+            <span className="hidden text-sm font-medium sm:inline">{t('whatsapp.etiqueta')}</span>
           </a>
         </motion.div>
       )}

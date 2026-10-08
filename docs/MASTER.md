@@ -1,4 +1,5 @@
 # 🏗️ MOBBITRIPS — Prompt Maestro v2.1
+
 ## Ecosistema operativo completo — Web + PMS + CRM + Contabilidad + Pagos + IA
 
 > **Este documento es la fuente de verdad del proyecto completo.**
@@ -10,6 +11,7 @@
 ## 🆕 Changelog
 
 ### v2.1 (abril 2026) — Pagos + Zoho + MXN
+
 - **Estrategia dual de pagos**: Stripe (primario) + PayU (secundario para OXXO/SPEI).
 - **Zoho One confirmado como ERP único**. Brevo descartado por ahora (reevaluar en Fase 5 solo si Campaigns no rinde).
 - **Política MXN-only**: se cobra siempre en pesos. UX con conversión informativa a USD/EUR/CAD.
@@ -17,11 +19,13 @@
 - Nuevos workflows n8n (WF-04a/b), nuevas plantillas WhatsApp (OXXO pay reference), nuevas variables de entorno.
 
 ### v2.0 (abril 2026) — Ecosistema completo
+
 - Visión de 5 capas (captación, operación, negocio, orquestación, inteligencia).
 - Zoho One + n8n + Brindon + agentes Claude autohospedados.
 - Estructura de monorepo Turborepo.
 
 ### v1.0 (abril 2026) — Web como producto
+
 - Next.js 14 + Hostex + WhatsApp + Supabase.
 
 ---
@@ -151,45 +155,45 @@ Todos los eventos críticos se publican en un "bus" lógico (implementado como w
 
 **Eventos del sistema:**
 
-| Evento | Origen | Consumidores |
-|---|---|---|
-| `lead.created` | Web | n8n → Zoho CRM, Brindon (bienvenida), GA4, Meta CAPI |
-| `lead.qualified` | Brindon/Equipo | n8n → Zoho CRM (etapa), WhatsApp (plantilla) |
-| `reservation.requested` | Web | n8n → Hostex (disponibilidad), Zoho CRM (oportunidad), Resend |
-| `reservation.confirmed` | Hostex | n8n → Zoho Books (invoice), WhatsApp (confirmación + link pago), Brindon |
-| `reservation.cancelled` | Hostex | n8n → Zoho Books (credit note + CFDI de egreso), WhatsApp |
-| `payment.stripe.succeeded` | Stripe webhook | n8n → Hostex (marcar pagado), Zoho Books (emitir CFDI), WhatsApp (recibo) |
-| `payment.payu.succeeded` | PayU webhook | n8n → Hostex (marcar pagado), Zoho Books (CFDI), WhatsApp |
-| `payment.oxxo.pending` | PayU webhook | n8n → WhatsApp (enviar referencia OXXO con QR y vencimiento) |
-| `payment.oxxo.expired` | PayU webhook/cron | n8n → cancelar reserva, liberar fechas en Hostex |
-| `guest.checked_in` | Hostex / Manual | n8n → Brindon (concierge), Zoho CRM |
-| `guest.checked_out` | Hostex | n8n → WhatsApp (review), Campaign |
-| `owner_lead.created` | Web B2B | n8n → Zoho CRM (deal), WhatsApp, email comercial |
-| `property.created` | Hostex | n8n → Supabase (cache), web (revalidate) |
-| `review.received` | Hostex | n8n → Supabase, Zoho CRM (nota) |
+| Evento                     | Origen            | Consumidores                                                              |
+| -------------------------- | ----------------- | ------------------------------------------------------------------------- |
+| `lead.created`             | Web               | n8n → Zoho CRM, Brindon (bienvenida), GA4, Meta CAPI                      |
+| `lead.qualified`           | Brindon/Equipo    | n8n → Zoho CRM (etapa), WhatsApp (plantilla)                              |
+| `reservation.requested`    | Web               | n8n → Hostex (disponibilidad), Zoho CRM (oportunidad), Resend             |
+| `reservation.confirmed`    | Hostex            | n8n → Zoho Books (invoice), WhatsApp (confirmación + link pago), Brindon  |
+| `reservation.cancelled`    | Hostex            | n8n → Zoho Books (credit note + CFDI de egreso), WhatsApp                 |
+| `payment.stripe.succeeded` | Stripe webhook    | n8n → Hostex (marcar pagado), Zoho Books (emitir CFDI), WhatsApp (recibo) |
+| `payment.payu.succeeded`   | PayU webhook      | n8n → Hostex (marcar pagado), Zoho Books (CFDI), WhatsApp                 |
+| `payment.oxxo.pending`     | PayU webhook      | n8n → WhatsApp (enviar referencia OXXO con QR y vencimiento)              |
+| `payment.oxxo.expired`     | PayU webhook/cron | n8n → cancelar reserva, liberar fechas en Hostex                          |
+| `guest.checked_in`         | Hostex / Manual   | n8n → Brindon (concierge), Zoho CRM                                       |
+| `guest.checked_out`        | Hostex            | n8n → WhatsApp (review), Campaign                                         |
+| `owner_lead.created`       | Web B2B           | n8n → Zoho CRM (deal), WhatsApp, email comercial                          |
+| `property.created`         | Hostex            | n8n → Supabase (cache), web (revalidate)                                  |
+| `review.received`          | Hostex            | n8n → Supabase, Zoho CRM (nota)                                           |
 
 ---
 
 ## 4. Módulos del ecosistema
 
-| # | Módulo | Stack | Responsabilidad | Fase |
-|---|---|---|---|---|
-| 1 | **Web pública** | Next.js 14 + TS + Tailwind | Captación, reservas directas, blog, SEO | 1 |
-| 2 | **API de reservas** | Next.js API Routes | Orquestador inicial de leads | 1 |
-| 3 | **Supabase** | Postgres + Auth + Storage | DB operacional, logs, eventos | 1 |
-| 4 | **Hostex** | API v3 | Propiedades, disponibilidad, reservas, reviews | 1 |
-| 5 | **WhatsApp Business** | wa.me → Cloud API Meta | Canal conversacional principal | 1-2 |
-| 6 | **Stripe** | Stripe Checkout + API | Pasarela primaria (tarjetas, Apple/Google Pay) | 2 |
-| 7 | **PayU Mexico** | API REST + SDK | OXXO Pay + SPEI + tarjetas mexicanas | 2 |
-| 8 | **n8n** | Selfhosted Docker | Workflows de integración | 2 |
-| 9 | **Zoho CRM** | Zoho One | Pipeline de leads B2C y B2B | 2 |
-| 10 | **Zoho Books** | Zoho One + PAC | Facturación CFDI 4.0, ingresos, gastos | 2-3 |
-| 11 | **Brindon 2.0** | Claude API + n8n | Bot conversacional unificado | 3 |
-| 12 | **Zoho Desk** | Zoho One | Soporte post-venta | 3 |
-| 13 | **Zoho Campaigns** | Zoho One | Email marketing, newsletters | 3 |
-| 14 | **Agentes Claude Code** | Servidor propio + Claude API | Agentes operativos autónomos | 4 |
-| 15 | **Analytics stack** | GA4 + Meta Pixel + GTM + Hotjar + Zoho Analytics | Medición y reporting | 2 |
-| 16 | **Admin panel** | Next.js (ruta `/admin`) | Dashboard interno | 3 |
+| #   | Módulo                  | Stack                                            | Responsabilidad                                | Fase |
+| --- | ----------------------- | ------------------------------------------------ | ---------------------------------------------- | ---- |
+| 1   | **Web pública**         | Next.js 14 + TS + Tailwind                       | Captación, reservas directas, blog, SEO        | 1    |
+| 2   | **API de reservas**     | Next.js API Routes                               | Orquestador inicial de leads                   | 1    |
+| 3   | **Supabase**            | Postgres + Auth + Storage                        | DB operacional, logs, eventos                  | 1    |
+| 4   | **Hostex**              | API v3                                           | Propiedades, disponibilidad, reservas, reviews | 1    |
+| 5   | **WhatsApp Business**   | wa.me → Cloud API Meta                           | Canal conversacional principal                 | 1-2  |
+| 6   | **Stripe**              | Stripe Checkout + API                            | Pasarela primaria (tarjetas, Apple/Google Pay) | 2    |
+| 7   | **PayU Mexico**         | API REST + SDK                                   | OXXO Pay + SPEI + tarjetas mexicanas           | 2    |
+| 8   | **n8n**                 | Selfhosted Docker                                | Workflows de integración                       | 2    |
+| 9   | **Zoho CRM**            | Zoho One                                         | Pipeline de leads B2C y B2B                    | 2    |
+| 10  | **Zoho Books**          | Zoho One + PAC                                   | Facturación CFDI 4.0, ingresos, gastos         | 2-3  |
+| 11  | **Brindon 2.0**         | Claude API + n8n                                 | Bot conversacional unificado                   | 3    |
+| 12  | **Zoho Desk**           | Zoho One                                         | Soporte post-venta                             | 3    |
+| 13  | **Zoho Campaigns**      | Zoho One                                         | Email marketing, newsletters                   | 3    |
+| 14  | **Agentes Claude Code** | Servidor propio + Claude API                     | Agentes operativos autónomos                   | 4    |
+| 15  | **Analytics stack**     | GA4 + Meta Pixel + GTM + Hotjar + Zoho Analytics | Medición y reporting                           | 2    |
+| 16  | **Admin panel**         | Next.js (ruta `/admin`)                          | Dashboard interno                              | 3    |
 
 ---
 
@@ -205,27 +209,27 @@ Todos los eventos críticos se publican en un "bus" lógico (implementado como w
 
 ### Stack
 
-| Capa | Tecnología |
-|---|---|
-| Framework | Next.js 14 (App Router) |
-| Lenguaje | TypeScript estricto |
-| Estilos | Tailwind CSS |
-| Animación | Framer Motion |
-| Smooth scroll | Lenis |
-| Íconos | Lucide React |
-| HTTP | Axios (cliente tipado interno) |
-| Forms | React Hook Form + Zod |
-| Fechas | date-fns + react-day-picker |
-| Fuentes | next/font (Comfortaa + Inter) |
-| Imágenes | next/image (AVIF/WebP) |
-| Email | Resend |
-| Pagos cliente | Stripe Elements + PayU Hosted Page |
-| FX rates | Frankfurter API (free, sin key) |
-| Analytics | GTM (GA4, Meta Pixel, Hotjar) |
-| Error tracking | Sentry |
-| Deploy | Vercel (con preview deploys) |
-| CMS blog | MDX local → Sanity (Fase 5) |
-| Auth admin | Supabase Auth |
+| Capa           | Tecnología                                       |
+| -------------- | ------------------------------------------------ |
+| Framework      | Next.js 14 (App Router)                          |
+| Lenguaje       | TypeScript estricto                              |
+| Estilos        | Tailwind CSS                                     |
+| Animación      | Framer Motion                                    |
+| Scroll         | Nativo del navegador (Lenis se quitó en la 0A.4) |
+| Íconos         | Lucide React                                     |
+| HTTP           | Axios (cliente tipado interno)                   |
+| Forms          | React Hook Form + Zod                            |
+| Fechas         | date-fns + react-day-picker                      |
+| Fuentes        | next/font (Comfortaa + Inter)                    |
+| Imágenes       | next/image (AVIF/WebP)                           |
+| Email          | Resend                                           |
+| Pagos cliente  | Stripe Elements + PayU Hosted Page               |
+| FX rates       | Frankfurter API (free, sin key)                  |
+| Analytics      | GTM (GA4, Meta Pixel, Hotjar)                    |
+| Error tracking | Sentry                                           |
+| Deploy         | Vercel (con preview deploys)                     |
+| CMS blog       | MDX local → Sanity (Fase 5)                      |
+| Auth admin     | Supabase Auth                                    |
 
 ### Mapa de rutas
 
@@ -267,10 +271,10 @@ El ícono son **dos arcos orgánicos con círculos en la punta**: personas bajo 
 
 ### Paleta oficial
 
-| Color | HEX | Pantone | Uso |
-|---|---|---|---|
-| Coral primario | `#ED6864` | 7416 | CTAs, acentos, íconos |
-| Gris cálido | `#706F6F` | 404 | Texto secundario |
+| Color          | HEX       | Pantone | Uso                   |
+| -------------- | --------- | ------- | --------------------- |
+| Coral primario | `#ED6864` | 7416    | CTAs, acentos, íconos |
+| Gris cálido    | `#706F6F` | 404     | Texto secundario      |
 
 ### Paleta completa (Tailwind)
 
@@ -339,6 +343,7 @@ WCAG AA mínimo. Focus ring coral. Touch targets ≥ 44×44px. aria-labels corre
 ### Rol en el ecosistema
 
 **Hostex es el sistema de verdad** para:
+
 - Catálogo de propiedades.
 - Calendarios de disponibilidad.
 - Reservas formales.
@@ -355,16 +360,16 @@ La web y Supabase mantienen **cachés**, nunca la fuente primaria.
 
 ### Endpoints consumidos
 
-| Método | Endpoint | Uso | Cache (ISR) |
-|---|---|---|---|
-| GET | `/properties` | Listado de propiedades | 3600s |
-| GET | `/properties/{id}` | Detalle | 1800s |
-| GET | `/calendar` | Disponibilidad | 300s |
-| GET | `/listings/{id}/pricing` | Precio dinámico | 600s |
-| GET | `/reviews` | Reseñas | 86400s |
-| POST | `/reservations` | Crear reserva | no-cache |
-| GET | `/reservations/{id}` | Detalle reserva | no-cache |
-| PATCH | `/reservations/{id}` | Marcar pagada/cancelada | no-cache |
+| Método | Endpoint                 | Uso                     | Cache (ISR) |
+| ------ | ------------------------ | ----------------------- | ----------- |
+| GET    | `/properties`            | Listado de propiedades  | 3600s       |
+| GET    | `/properties/{id}`       | Detalle                 | 1800s       |
+| GET    | `/calendar`              | Disponibilidad          | 300s        |
+| GET    | `/listings/{id}/pricing` | Precio dinámico         | 600s        |
+| GET    | `/reviews`               | Reseñas                 | 86400s      |
+| POST   | `/reservations`          | Crear reserva           | no-cache    |
+| GET    | `/reservations/{id}`     | Detalle reserva         | no-cache    |
+| PATCH  | `/reservations/{id}`     | Marcar pagada/cancelada | no-cache    |
 
 ### Cliente `packages/hostex-client/`
 
@@ -395,6 +400,7 @@ packages/hostex-client/src/
 Endpoint: `https://n8n.mobbitrips.com/webhook/hostex` (firmado con secret).
 
 Eventos a procesar:
+
 - Reserva creada/modificada/cancelada.
 - Reseña recibida.
 - Calendario modificado.
@@ -419,19 +425,20 @@ Decisión tomada en v2.1 tras evaluación:
 
 ### Módulos utilizados
 
-| Módulo | Uso |
-|---|---|
-| **Zoho CRM** | Pipeline de leads (B2C y B2B), cuentas, contactos, deals, notas |
-| **Zoho Books** | Facturación CFDI 4.0, ingresos, gastos, conciliación Stripe+PayU, reportes fiscales |
-| **Zoho Desk** | Tickets de soporte de huéspedes y propietarios |
-| **Zoho Campaigns** | Email marketing, newsletters, automatizaciones |
-| **Zoho Analytics** | BI, dashboards consolidados (Hostex + Books + CRM + Pagos) |
-| **Zoho Sign** | Contratos digitales con propietarios |
-| **Zoho WorkDrive** | Documentos compartidos con propietarios |
+| Módulo             | Uso                                                                                 |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| **Zoho CRM**       | Pipeline de leads (B2C y B2B), cuentas, contactos, deals, notas                     |
+| **Zoho Books**     | Facturación CFDI 4.0, ingresos, gastos, conciliación Stripe+PayU, reportes fiscales |
+| **Zoho Desk**      | Tickets de soporte de huéspedes y propietarios                                      |
+| **Zoho Campaigns** | Email marketing, newsletters, automatizaciones                                      |
+| **Zoho Analytics** | BI, dashboards consolidados (Hostex + Books + CRM + Pagos)                          |
+| **Zoho Sign**      | Contratos digitales con propietarios                                                |
+| **Zoho WorkDrive** | Documentos compartidos con propietarios                                             |
 
 ### Estructura en Zoho CRM
 
 **Módulos personalizados:**
+
 - `Leads` — todos los contactos nuevos (B2C + B2B).
 - `Accounts` — cuentas de propietarios.
 - `Contacts` — personas físicas.
@@ -442,11 +449,13 @@ Decisión tomada en v2.1 tras evaluación:
 **Pipelines:**
 
 **Pipeline B2C (Reserva directa):**
+
 ```
 Nuevo → Contactado → En conversación → Pago pendiente → Pago confirmado → Completada / Perdida
 ```
 
 **Pipeline B2B (Propietario):**
+
 ```
 Nuevo → Calificado → Llamada agendada → Propuesta → Contrato enviado → Firmado / Perdido
 ```
@@ -456,6 +465,7 @@ Nuevo → Calificado → Llamada agendada → Propuesta → Contrato enviado →
 **Clientes** sincronizados desde Zoho CRM (huéspedes) y desde contratos B2B (propietarios).
 
 **Flujo de facturación B2C (en MXN):**
+
 1. Reserva confirmada en Hostex → n8n crea **Sales Order** en Books (moneda MXN).
 2. Al recibir pago (Stripe o PayU) → se emite **Invoice + CFDI 4.0 timbrado por PAC**.
 3. Si hay cancelación con reembolso → **Credit Note + CFDI de egreso**.
@@ -464,6 +474,7 @@ Nuevo → Calificado → Llamada agendada → Propuesta → Contrato enviado →
 6. Numeración: serie Mobbitrips + consecutivo anual.
 
 **Flujo de facturación B2B (propietarios, en MXN):**
+
 1. Mensualmente, n8n genera reporte de ingresos brutos por propiedad desde Hostex.
 2. Calcula comisión Mobbitrips (% negociado por contrato).
 3. Genera **Bill** o **Invoice** según modelo:
@@ -472,6 +483,7 @@ Nuevo → Calificado → Llamada agendada → Propuesta → Contrato enviado →
 4. Envía reporte PDF al propietario.
 
 **Gastos:**
+
 - Servicios (Internet, agua, luz) por propiedad → centro de costos.
 - Limpiezas → categoría operativa.
 - Mantenimiento → capitalizable o gasto.
@@ -489,6 +501,7 @@ Nuevo → Calificado → Llamada agendada → Propuesta → Contrato enviado →
 Zoho ofrece APIs REST completas. Todas las integraciones pasan por **n8n** (nodes oficiales de Zoho CRM, Zoho Books).
 
 **OAuth tokens**:
+
 - Generar refresh tokens largos.
 - Almacenar en n8n credentials (cifrado).
 - Rotar cada 90 días.
@@ -500,6 +513,7 @@ Zoho tiene **MCP server oficial** que se conecta directamente con agentes Claude
 **Esto simplifica radicalmente la arquitectura de agentes**: ya NO se construye `mcp-zoho` custom. Se usa el oficial.
 
 **Capacidades via MCP oficial:**
+
 - Leer/escribir CRM (leads, deals, contacts, accounts).
 - Leer/escribir Books (invoices, customers, expenses).
 - Consultar Analytics (dashboards, reports).
@@ -507,6 +521,7 @@ Zoho tiene **MCP server oficial** que se conecta directamente con agentes Claude
 - Ejecutar queries personalizadas.
 
 **Configuración**:
+
 - Activar MCP server en Zoho One admin panel.
 - Generar token MCP con permisos scoped.
 - Configurar en Claude Code (`~/.claude/mcp.json`).
@@ -515,6 +530,7 @@ Zoho tiene **MCP server oficial** que se conecta directamente con agentes Claude
 ### Zoho Analytics (BI)
 
 **Dashboards a construir:**
+
 1. **Dashboard Ejecutivo**: ocupación, ingreso mensual, nuevos leads, conversión.
 2. **Dashboard B2C**: funnel web → reserva, fuentes de tráfico, propiedades top.
 3. **Dashboard B2B**: propietarios activos, nuevos deals, retención.
@@ -532,12 +548,13 @@ Fuentes: Zoho CRM + Zoho Books + Supabase (vía conector) + Hostex (vía n8n exp
 
 Mobbitrips usa **dos pasarelas complementarias**, no redundantes:
 
-| Pasarela | Rol | Métodos cubiertos |
-|---|---|---|
-| **Stripe** | Primaria (default visible) | Visa, Mastercard, Amex, Apple Pay, Google Pay, Link |
+| Pasarela        | Rol                          | Métodos cubiertos                                           |
+| --------------- | ---------------------------- | ----------------------------------------------------------- |
+| **Stripe**      | Primaria (default visible)   | Visa, Mastercard, Amex, Apple Pay, Google Pay, Link         |
 | **PayU Mexico** | Secundaria (métodos locales) | OXXO Pay, SPEI (transferencia bancaria), tarjetas mexicanas |
 
 **Razón del combo:**
+
 - **Stripe**: DX superior, UX premium, mejor para huéspedes internacionales y tarjetas extranjeras.
 - **PayU**: cobertura local mexicana (OXXO es clave — muchos huéspedes mexicanos pagan en efectivo).
 
@@ -546,12 +563,14 @@ Mobbitrips usa **dos pasarelas complementarias**, no redundantes:
 **Decisión firme: todo se cobra en pesos mexicanos. Sin excepciones.**
 
 **Razones:**
+
 1. Cero riesgo cambiario para Mobbitrips.
 2. Contabilidad y CFDI limpios en MXN.
 3. Liquidación rápida a cuentas bancarias mexicanas.
 4. SAT compliance simplificado.
 
 **Para huéspedes extranjeros:**
+
 - El precio se muestra en MXN en todo el sitio.
 - En el checkout se muestra **conversión informativa** a USD, EUR, CAD (solo visual).
 - Disclaimer: "La conversión final la determina tu banco. Cobro realizado en MXN."
@@ -559,6 +578,7 @@ Mobbitrips usa **dos pasarelas complementarias**, no redundantes:
 - El banco del huésped aplica su propio FX rate + foreign transaction fee (esto lo absorbe el huésped, no Mobbitrips).
 
 **Implementación del hint de conversión:**
+
 - `packages/currency/src/converter.ts` — cliente de Frankfurter API (gratis, sin key).
 - Caché 1h en Supabase tabla `fx_rates_cache`.
 - Fallback a rate hardcoded si API cae.
@@ -595,17 +615,20 @@ Mobbitrips usa **dos pasarelas complementarias**, no redundantes:
 ### Integración Stripe
 
 **Stack:**
+
 - Stripe Node.js SDK (`stripe`).
 - Stripe Elements en frontend (PCI DSS compliant out-of-the-box).
 - Webhooks hacia n8n.
 
 **Configuración:**
+
 - Cuenta Stripe México.
 - Currency: `mxn` hardcoded en PaymentIntents.
 - Métodos habilitados: card, apple_pay, google_pay, link.
 - 3DS obligatorio (CNBV regulatorio para México).
 
 **Cliente `packages/stripe-client/`:**
+
 ```
 packages/stripe-client/src/
 ├── client.ts               # Stripe SDK instance
@@ -616,6 +639,7 @@ packages/stripe-client/src/
 ```
 
 **Flujo de pago Stripe:**
+
 1. `/reserva/[id]/pagar` crea PaymentIntent en backend con `amount` en centavos MXN.
 2. Frontend monta Stripe Elements.
 3. Usuario paga → 3DS → confirmación.
@@ -623,6 +647,7 @@ packages/stripe-client/src/
 5. n8n marca reserva en Hostex, crea CFDI en Zoho Books, manda WhatsApp con recibo.
 
 **Fees Stripe Mexico:**
+
 - Tarjeta nacional: 3.6% + $3 MXN.
 - Tarjeta internacional: 4.4% + $3 MXN.
 - Apple/Google Pay: mismo que tarjeta.
@@ -630,21 +655,25 @@ packages/stripe-client/src/
 ### Integración PayU Mexico
 
 **Stack:**
+
 - PayU API REST (no hay SDK oficial actualizado de Node).
 - Cliente custom en `packages/payu-client/`.
 - Hosted payment page (menos carga PCI que embedded).
 
 **Credenciales necesarias:**
+
 - `apiKey`, `apiLogin`, `merchantId`, `accountId` (específico MXN).
 - Sandbox y producción separados.
 - Signature MD5 por transacción.
 
 **Métodos soportados en Mobbitrips:**
+
 - **OXXO Pay**: genera referencia con QR, vigencia 48h.
 - **SPEI**: genera CLABE virtual para transferencia.
 - **Tarjetas**: fallback si Stripe rechaza.
 
 **Cliente `packages/payu-client/`:**
+
 ```
 packages/payu-client/src/
 ├── client.ts               # Axios instance con auth
@@ -656,6 +685,7 @@ packages/payu-client/src/
 ```
 
 **Flujo OXXO Pay:**
+
 1. Usuario selecciona "OXXO Pay" en `/reserva/[id]/pagar`.
 2. Backend llama PayU `PAYMENT_CREATION` con método `OXXO_PAY`.
 3. PayU responde con:
@@ -672,6 +702,7 @@ packages/payu-client/src/
 7. Si expira: cron job n8n cancela reserva, libera fechas.
 
 **Flujo SPEI:**
+
 1. Usuario selecciona "SPEI".
 2. Backend llama PayU con método `BANK_REFERENCED_PAYMENT`.
 3. PayU genera CLABE virtual única por transacción.
@@ -680,12 +711,14 @@ packages/payu-client/src/
 6. Webhook → procesamiento igual que OXXO.
 
 **Fees PayU Mexico:**
+
 - Contactar comercial (son dependientes de volumen).
 - Benchmark: ~3.49% + $0.30 USD promedio.
 
 ### Reconciliación en Zoho Books
 
 n8n corre diariamente WF-finanzas-conciliacion:
+
 1. Pull de Stripe Balance + payments del día.
 2. Pull de PayU transactions del día.
 3. Match contra Invoices en Zoho Books por `reservation_id`.
@@ -732,6 +765,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
 #### Fase 2 — workflows fundacionales
 
 **WF-01: Lead B2C recibido**
+
 - Trigger: webhook desde `/api/reservations/create`.
 - Pasos:
   1. Valida payload (respetando Zod schema).
@@ -744,6 +778,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
 - Retry: 3 intentos con backoff.
 
 **WF-02: Lead B2B (propietario) recibido**
+
 - Trigger: webhook desde `/api/leads/owner`.
 - Pasos:
   1. Valida.
@@ -754,6 +789,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   6. Notifica en Slack interno.
 
 **WF-03: Reserva confirmada en Hostex**
+
 - Trigger: webhook de Hostex.
 - Pasos:
   1. Actualiza Deal en Zoho CRM a etapa "Pago pendiente".
@@ -764,6 +800,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   6. Agenda en Google Calendar del equipo operativo.
 
 **WF-04a: Pago recibido vía Stripe**
+
 - Trigger: webhook Stripe `payment_intent.succeeded`.
 - Pasos:
   1. Verifica firma de Stripe.
@@ -776,6 +813,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   8. Registra evento `payment.stripe.succeeded`.
 
 **WF-04b: Pago recibido vía PayU**
+
 - Trigger: webhook PayU confirmation URL.
 - Pasos:
   1. Verifica firma MD5 de PayU.
@@ -783,6 +821,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   3. Si es OXXO, registra evento `payment.oxxo.paid`.
 
 **WF-04c: OXXO pendiente creado**
+
 - Trigger: webhook PayU `PAYMENT_CREATION` confirmation con estado `PENDING`.
 - Pasos:
   1. Guarda referencia OXXO en Supabase `payments`.
@@ -790,6 +829,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   3. Programa recordatorio a las 24h (cron).
 
 **WF-04d: OXXO expirado**
+
 - Trigger: cron cada hora.
 - Pasos:
   1. Busca pagos OXXO con `expires_at < now()` y status `pending`.
@@ -798,6 +838,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   4. Envía WhatsApp plantilla `oxxo_expired` con opción de reintento.
 
 **WF-05: Check-out completado**
+
 - Trigger: fecha check-out + 1h (cron).
 - Pasos:
   1. Marca reserva como completada en Hostex.
@@ -806,16 +847,18 @@ n8n corre diariamente WF-finanzas-conciliacion:
   4. Crea tarea de limpieza en ClickUp.
 
 **WF-06: Reporte mensual para propietario**
+
 - Trigger: día 1 de cada mes 9am (cron).
 - Pasos:
   1. Para cada propietario activo en Zoho CRM:
-    a. Obtener reservas del mes anterior en Hostex.
-    b. Calcular ingresos brutos y comisión.
-    c. Generar PDF con reporte.
-    d. Enviar por email y WhatsApp.
-    e. Crear Invoice o Bill en Books (según modelo).
+     a. Obtener reservas del mes anterior en Hostex.
+     b. Calcular ingresos brutos y comisión.
+     c. Generar PDF con reporte.
+     d. Enviar por email y WhatsApp.
+     e. Crear Invoice o Bill en Books (según modelo).
 
 **WF-07: Sync propiedades Hostex → Supabase**
+
 - Trigger: cada 6h (cron).
 - Pasos:
   1. Fetch `/properties` de Hostex.
@@ -823,6 +866,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   3. Dispara revalidación ISR en la web.
 
 **WF-08: WhatsApp entrante → Brindon → ¿humano?**
+
 - Trigger: webhook WhatsApp Business Cloud API.
 - Pasos:
   1. Identifica si es lead conocido (busca en Zoho CRM por teléfono).
@@ -833,6 +877,7 @@ n8n corre diariamente WF-finanzas-conciliacion:
   6. Log completo en Supabase `whatsapp_messages`.
 
 **WF-09: Newsletter signup**
+
 - Trigger: webhook desde `/api/newsletter`.
 - Pasos:
   1. Añade a lista en Zoho Campaigns.
@@ -840,12 +885,14 @@ n8n corre diariamente WF-finanzas-conciliacion:
   3. Agrega tag "newsletter" en Zoho CRM.
 
 **WF-10: Recordatorio pre check-in**
+
 - Trigger: cron diario + reserva con check-in en 48h.
 - Pasos:
   1. Envía WhatsApp plantilla con instrucciones de llegada.
   2. Incluye mapa, código de acceso, contacto emergencia.
 
 **WF-11: Conciliación diaria pagos**
+
 - Trigger: cron diario 7am.
 - Pasos:
   1. Pull Stripe Balance + payments del día anterior.
@@ -872,14 +919,14 @@ n8n corre diariamente WF-finanzas-conciliacion:
 
 ### Migración técnica
 
-| Aspecto | Brindon 1.0 (Gemini) | Brindon 2.0 (Claude) |
-|---|---|---|
-| Modelo | Gemini Pro | Claude Sonnet 4.6 (rutina) + Opus 4.7 (complejo) |
-| Orquestador | Script suelto | n8n + API Routes |
-| Memoria | Ninguna | Supabase + vector store (pgvector) |
-| Herramientas | Ninguna | Tool use con Hostex, Zoho, Calendar |
-| Prompt | Monolítico | Prompt system modular + skills |
-| Evaluación | Manual | Evals automatizados (Fase 4) |
+| Aspecto      | Brindon 1.0 (Gemini) | Brindon 2.0 (Claude)                             |
+| ------------ | -------------------- | ------------------------------------------------ |
+| Modelo       | Gemini Pro           | Claude Sonnet 4.6 (rutina) + Opus 4.7 (complejo) |
+| Orquestador  | Script suelto        | n8n + API Routes                                 |
+| Memoria      | Ninguna              | Supabase + vector store (pgvector)               |
+| Herramientas | Ninguna              | Tool use con Hostex, Zoho, Calendar              |
+| Prompt       | Monolítico           | Prompt system modular + skills                   |
+| Evaluación   | Manual               | Evals automatizados (Fase 4)                     |
 
 ### Arquitectura
 
@@ -904,6 +951,7 @@ Memoria conversacional (Supabase)
 ### Capacidades de Brindon 2.0
 
 **Para huéspedes:**
+
 - Responde preguntas sobre propiedades (specs, amenidades, ubicación).
 - Verifica disponibilidad en tiempo real.
 - Sugiere propiedades según necesidades.
@@ -912,12 +960,14 @@ Memoria conversacional (Supabase)
 - Responde preguntas de check-in, reglas, zona.
 
 **Para propietarios (autenticados):**
+
 - Muestra estado de ocupación.
 - Resumen de ingresos del mes.
 - Reporta incidencias.
 - Agenda llamadas con su ejecutivo.
 
 **Para equipo interno:**
+
 - Resumen de reservas del día.
 - Alertas de check-ins próximos.
 - Búsqueda en base de conocimiento interna.
@@ -929,18 +979,22 @@ Archivo `apps/brindon/prompts/system.md` (editable sin redeploy):
 
 ```markdown
 # Identidad
+
 Eres Brindon, asistente virtual de Mobbitrips, empresa de hospedaje vacacional en Xalapa, Veracruz.
 
 # Personalidad
+
 - Cálido, cercano, profesional sin ser distante.
 - Usas "tú", tono mexicano neutro.
 - Reflejas el tagline: "Descansa, vive y sueña como si estuvieras en casa."
 - Nunca corporativo. Siempre humano.
 
 # Capacidades
+
 - [listado de tools disponibles]
 
 # Reglas
+
 1. Si no sabes algo, dilo y escala a humano.
 2. Nunca inventes precios, fechas o propiedades.
 3. Siempre verifica disponibilidad con la tool antes de confirmar.
@@ -949,6 +1003,7 @@ Eres Brindon, asistente virtual de Mobbitrips, empresa de hospedaje vacacional e
 6. En emergencias (huésped sin acceso, problema urgente en propiedad), escala inmediato.
 
 # Ejemplos
+
 [few-shot examples...]
 ```
 
@@ -964,10 +1019,10 @@ Eres Brindon, asistente virtual de Mobbitrips, empresa de hospedaje vacacional e
 
 ### Dos niveles
 
-| Nivel | Tecnología | Fase |
-|---|---|---|
-| **Básico** | `wa.me` links con mensaje pre-rellenado | 1 (MVP) |
-| **Avanzado** | WhatsApp Business Cloud API (Meta) | 2 |
+| Nivel        | Tecnología                              | Fase    |
+| ------------ | --------------------------------------- | ------- |
+| **Básico**   | `wa.me` links con mensaje pre-rellenado | 1 (MVP) |
+| **Avanzado** | WhatsApp Business Cloud API (Meta)      | 2       |
 
 ### Número oficial
 
@@ -976,24 +1031,25 @@ Eres Brindon, asistente virtual de Mobbitrips, empresa de hospedaje vacacional e
 
 ### Plantillas a aprobar en Meta
 
-| Nombre | Categoría | Uso |
-|---|---|---|
-| `reservation_received` | UTILITY | "Recibimos tu solicitud, respondemos en 15min" |
-| `reservation_confirmed` | UTILITY | Confirmación con link de pago |
-| `payment_received` | UTILITY | Recibo + CFDI + instrucciones llegada |
-| `oxxo_payment_reference` | UTILITY | Voucher OXXO con referencia + vencimiento |
-| `oxxo_expired` | UTILITY | Pago OXXO venció, opción de reintento |
-| `spei_pending` | UTILITY | CLABE para transferencia SPEI |
-| `check_in_reminder` | UTILITY | 48h antes con detalles |
-| `welcome_guest` | UTILITY | Día de llegada |
-| `review_request` | MARKETING | Post-estancia |
-| `owner_lead_received` | UTILITY | Confirmación propietarios |
-| `monthly_report_owner` | UTILITY | Envío de reporte mensual |
-| `generic_offer` | MARKETING | Campañas estacionales |
+| Nombre                   | Categoría | Uso                                            |
+| ------------------------ | --------- | ---------------------------------------------- |
+| `reservation_received`   | UTILITY   | "Recibimos tu solicitud, respondemos en 15min" |
+| `reservation_confirmed`  | UTILITY   | Confirmación con link de pago                  |
+| `payment_received`       | UTILITY   | Recibo + CFDI + instrucciones llegada          |
+| `oxxo_payment_reference` | UTILITY   | Voucher OXXO con referencia + vencimiento      |
+| `oxxo_expired`           | UTILITY   | Pago OXXO venció, opción de reintento          |
+| `spei_pending`           | UTILITY   | CLABE para transferencia SPEI                  |
+| `check_in_reminder`      | UTILITY   | 48h antes con detalles                         |
+| `welcome_guest`          | UTILITY   | Día de llegada                                 |
+| `review_request`         | MARKETING | Post-estancia                                  |
+| `owner_lead_received`    | UTILITY   | Confirmación propietarios                      |
+| `monthly_report_owner`   | UTILITY   | Envío de reporte mensual                       |
+| `generic_offer`          | MARKETING | Campañas estacionales                          |
 
 ### Ventana de 24 horas
 
 Reglas de WhatsApp:
+
 - Fuera de ventana: solo plantillas aprobadas.
 - Dentro de ventana (usuario escribió en últimas 24h): mensajes libres.
 - n8n WF-08 lleva el estado de la sesión.
@@ -1012,6 +1068,7 @@ Reglas de WhatsApp:
 ### Rol
 
 Supabase **no es el CRM** (ese es Zoho). Supabase es la DB operacional del producto digital:
+
 - Cachés de Hostex.
 - Eventos del sistema (audit log).
 - Leads crudos antes de sincronizar a Zoho.
@@ -1328,15 +1385,15 @@ Mobbitrips planea un **servidor dedicado con Claude Code** corriendo agentes que
 
 ### Agentes planeados
 
-| Agente | Rol | Modelo |
-|---|---|---|
-| **Analista** | Reportes diarios de ocupación, ingresos, alertas | Opus 4.7 |
-| **Reviewer** | Responde reseñas nuevas (borradores para aprobación humana) | Sonnet 4.6 |
-| **Content** | Genera artículos de blog SEO + social posts | Sonnet 4.6 |
-| **Ops** | Monitorea workflows n8n, detecta anomalías | Opus 4.7 |
-| **Finanzas** | Conciliación diaria Stripe+PayU, detecta discrepancias | Opus 4.7 |
-| **Soporte L1** | Brindon (ya cubierto arriba) | Sonnet 4.6 |
-| **Developer** | Mantenimiento del repo (actualiza deps, escribe tests, PRs pequeños) | Opus 4.7 |
+| Agente         | Rol                                                                  | Modelo     |
+| -------------- | -------------------------------------------------------------------- | ---------- |
+| **Analista**   | Reportes diarios de ocupación, ingresos, alertas                     | Opus 4.7   |
+| **Reviewer**   | Responde reseñas nuevas (borradores para aprobación humana)          | Sonnet 4.6 |
+| **Content**    | Genera artículos de blog SEO + social posts                          | Sonnet 4.6 |
+| **Ops**        | Monitorea workflows n8n, detecta anomalías                           | Opus 4.7   |
+| **Finanzas**   | Conciliación diaria Stripe+PayU, detecta discrepancias               | Opus 4.7   |
+| **Soporte L1** | Brindon (ya cubierto arriba)                                         | Sonnet 4.6 |
+| **Developer**  | Mantenimiento del repo (actualiza deps, escribe tests, PRs pequeños) | Opus 4.7   |
 
 ### Arquitectura
 
@@ -1373,9 +1430,11 @@ Mobbitrips planea un **servidor dedicado con Claude Code** corriendo agentes que
 ### MCP Servers
 
 **Oficial (ya existe, solo configurar):**
+
 - `mcp-zoho` — MCP oficial de Zoho con Claude. Cubre CRM, Books, Desk, Analytics.
 
 **Custom a desarrollar:**
+
 - `mcp-hostex` — wrapper del cliente Hostex.
 - `mcp-supabase` — wrapper de Supabase.
 - `mcp-stripe` — wrapper de Stripe (con aprobación humana para refunds).
@@ -1644,13 +1703,13 @@ ADMIN_EMAILS=admin@mobbitrips.com,ops@mobbitrips.com
 
 ### 📅 Timeline general
 
-| Fase | Duración | Foco | Entregable |
-|---|---|---|---|
-| **Fase 1 — MVP Web** | 6 semanas | Web pública con reservas directas + WA básico | mobbitrips.com lanzado |
+| Fase                                | Duración  | Foco                                                | Entregable                       |
+| ----------------------------------- | --------- | --------------------------------------------------- | -------------------------------- |
+| **Fase 1 — MVP Web**                | 6 semanas | Web pública con reservas directas + WA básico       | mobbitrips.com lanzado           |
 | **Fase 2 — Automatización + Pagos** | 5 semanas | n8n + Zoho CRM + WhatsApp Cloud API + Stripe + PayU | Flujo lead→pago→CRM automatizado |
-| **Fase 3 — Contabilidad y Brindon** | 5 semanas | Zoho Books + CFDI + Brindon 2.0 + admin panel | Facturación automática + bot IA |
-| **Fase 4 — Agentes y portal** | 4 semanas | Agentes Claude + portal propietarios | Servidor propio operativo |
-| **Fase 5 — Optimización** | Continua | Analytics, SEO, iteración | Crecimiento medible |
+| **Fase 3 — Contabilidad y Brindon** | 5 semanas | Zoho Books + CFDI + Brindon 2.0 + admin panel       | Facturación automática + bot IA  |
+| **Fase 4 — Agentes y portal**       | 4 semanas | Agentes Claude + portal propietarios                | Servidor propio operativo        |
+| **Fase 5 — Optimización**           | Continua  | Analytics, SEO, iteración                           | Crecimiento medible              |
 
 **Nota**: Fase 2 creció de 4 a 5 semanas por integración dual Stripe+PayU.
 
@@ -1658,7 +1717,7 @@ ADMIN_EMAILS=admin@mobbitrips.com,ops@mobbitrips.com
 
 Sprint 1.0 Setup · Sprint 1.1 Design System · Sprint 1.2 Hostex+Propiedades · Sprint 1.3 Reservas B2C · Sprint 1.4 Páginas secundarias · Sprint 1.5 QA y lanzamiento.
 
-*(Detalle igual que v2.0 — sin cambios).*
+_(Detalle igual que v2.0 — sin cambios)._
 
 ### 🟦 FASE 2 — Automatización + Pagos (Semanas 7-11)
 
@@ -1872,7 +1931,7 @@ Space: MOBBITRIPS
 └── Folder: 📊 Marketing
 ```
 
-*(Resto de estructura PM igual que v2.0: campos personalizados, estados, recurrencias, integraciones ClickUp).*
+_(Resto de estructura PM igual que v2.0: campos personalizados, estados, recurrencias, integraciones ClickUp)._
 
 ---
 
@@ -1914,6 +1973,7 @@ Cada task debe cumplir antes de cerrarse:
 ### Flujo por sprint
 
 **Al iniciar**:
+
 ```
 Vamos a arrancar Sprint [X.Y]. Lee CLAUDE.md sección 18 Fase [X],
 revisa las tasks de ClickUp en la lista "Sprint [X.Y]",
@@ -1921,6 +1981,7 @@ propón el orden óptimo considerando dependencias.
 ```
 
 **Por task**:
+
 ```
 Implementa la task [ID]. Antes de escribir código:
 1. Plan en bullets.
@@ -2000,4 +2061,4 @@ stripe listen --forward-to localhost:3000/api/payments/stripe/webhook
 ---
 
 **Fin del documento v2.1.**
-*Documento vivo. Toda decisión arquitectónica actualiza la sección correspondiente y se registra en §23.*
+_Documento vivo. Toda decisión arquitectónica actualiza la sección correspondiente y se registra en §23._

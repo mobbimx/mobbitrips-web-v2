@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
+import { ManchasLigeras } from '@/components/ambient/ManchasLigeras';
+import { t } from '@/textos/t';
 import { HeroDatePicker } from './HeroDatePicker';
 
 function getDefaultCheckout(checkin: string) {
@@ -14,13 +16,13 @@ function getDefaultCheckout(checkin: string) {
 }
 
 const stagger = 50;
-const line1 = ['Descansa,', 'vive', 'y', 'sueña'];
-const line2 = ['como', 'si', 'estuvieras'];
 const line1Start = 100;
-const line2Start = line1Start + line1.length * stagger + 80;
-const scriptDelay = line2Start + line2.length * stagger + 200;
 
 export function HeroSection() {
+  const line1 = t('hero.titulo.linea1').split(' ');
+  const line2 = t('hero.titulo.linea2').split(' ');
+  const line2Start = line1Start + line1.length * stagger + 80;
+  const scriptDelay = line2Start + line2.length * stagger + 200;
   const contentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -72,13 +74,14 @@ export function HeroSection() {
   );
 
   return (
-    <section className="hero-section" aria-label="Bienvenida">
+    <section className="hero-section" aria-label={t('hero.aria')}>
+      <ManchasLigeras />
       <div className="hero-gradient" aria-hidden="true" />
 
       <div className="hero-content" ref={contentRef}>
         <span className="hero-eyebrow">
           <span className="hero-eyebrow-dot" aria-hidden="true" />
-          Casa en todas partes · Hospedaje humano
+          {t('hero.etiqueta')}
         </span>
 
         <h1 className="hero-headline">
@@ -109,7 +112,7 @@ export function HeroSection() {
             </span>{' '}
             <span className="hero-hl-script-wrap">
               <span className="hero-hl-script" style={{ animationDelay: `${scriptDelay}ms` }}>
-                en casa
+                {t('hero.titulo.destacado')}
                 <svg viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M 4 6 Q 50 2 100 5 T 196 4" strokeWidth="2.2" />
                 </svg>
@@ -118,15 +121,13 @@ export function HeroSection() {
           </span>
         </h1>
 
-        <p className="hero-lede">
-          Propiedades únicas en México. Curadas para sentirse como hogar, no como hotel.
-        </p>
+        <p className="hero-lede">{t('hero.subtitulo')}</p>
 
-        <form className="hero-search" onSubmit={handleSearch} aria-label="Buscar hospedajes">
+        <form className="hero-search" onSubmit={handleSearch} aria-label={t('hero.buscador.aria')}>
           {/* Destino */}
           <div className="hero-search-section">
-            <span className="hero-search-label">¿A dónde?</span>
-            <span className="hero-search-value">México</span>
+            <span className="hero-search-label">{t('hero.buscador.destinoEtiqueta')}</span>
+            <span className="hero-search-value">{t('hero.buscador.destinoValor')}</span>
           </div>
           <div className="hero-search-divider" aria-hidden="true" />
 
@@ -150,16 +151,18 @@ export function HeroSection() {
             style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
-              <span className="hero-search-label">Huéspedes</span>
+              <span className="hero-search-label">{t('hero.buscador.huespedesEtiqueta')}</span>
               <span className="hero-search-value">
-                {guests} {guests === 1 ? 'persona' : 'personas'}
+                {guests === 1
+                  ? t('hero.buscador.unaPersona', { n: guests })
+                  : t('hero.buscador.variasPersonas', { n: guests })}
               </span>
             </div>
             <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                aria-label="Reducir huéspedes"
+                aria-label={t('hero.buscador.reducirHuespedes')}
                 style={{
                   width: 24,
                   height: 24,
@@ -180,7 +183,7 @@ export function HeroSection() {
               <button
                 type="button"
                 onClick={() => setGuests((g) => Math.min(16, g + 1))}
-                aria-label="Aumentar huéspedes"
+                aria-label={t('hero.buscador.aumentarHuespedes')}
                 style={{
                   width: 24,
                   height: 24,
@@ -201,7 +204,11 @@ export function HeroSection() {
             </div>
           </div>
 
-          <button type="submit" className="hero-search-btn" aria-label="Buscar propiedades">
+          <button
+            type="submit"
+            className="hero-search-btn"
+            aria-label={t('hero.buscador.botonAria')}
+          >
             <svg
               width="16"
               height="16"
@@ -216,7 +223,7 @@ export function HeroSection() {
               <circle cx="11" cy="11" r="7" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <span>Buscar</span>
+            <span>{t('hero.buscador.boton')}</span>
           </button>
         </form>
 
@@ -226,21 +233,21 @@ export function HeroSection() {
             className="hero-cta hero-cta-primary"
             style={{ animationDelay: '1300ms' }}
           >
-            <span>Ver propiedades</span>
+            <span>{t('hero.cta.verPropiedades')}</span>
           </Link>
           <Link
             href="/nosotros"
             className="hero-cta hero-cta-secondary"
             style={{ animationDelay: '1400ms' }}
           >
-            <span>Conoce más</span>
+            <span>{t('hero.cta.conocerMas')}</span>
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
       </div>
 
-      <a href="#featured-properties" className="hero-scroll" aria-label="Descubre más">
-        <span className="hero-scroll-label">Descubre más</span>
+      <a href="#featured-properties" className="hero-scroll" aria-label={t('hero.descubreMas')}>
+        <span className="hero-scroll-label">{t('hero.descubreMas')}</span>
         <span className="hero-scroll-ind" aria-hidden="true" />
       </a>
     </section>

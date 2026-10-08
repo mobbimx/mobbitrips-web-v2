@@ -4,34 +4,27 @@ import {
   GoogleTagManagerScript,
   GoogleTagManagerNoscript,
 } from '@/components/analytics/GoogleTagManager';
-import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
-import { AmbientCanvas } from '@/components/ambient/AmbientCanvas';
 import { ViewTransitions } from 'next-view-transitions';
+import { t, tLista } from '@/textos/t';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mobbitrips — Descansa, vive y sueña como si estuvieras en casa',
-    template: '%s | Mobbitrips',
+    default: t('meta.tituloPorDefecto'),
+    template: t('meta.plantillaTitulo'),
   },
-  description: 'Propiedades vacacionales en México. Reserva directo y sin intermediarios.',
-  keywords: [
-    'rentas vacacionales',
-    'propiedades vacacionales',
-    'México',
-    'alojamiento',
-    'casas vacacionales',
-  ],
-  authors: [{ name: 'Mobbitrips' }],
-  creator: 'Mobbitrips',
+  description: t('meta.descripcion'),
+  keywords: [...tLista('meta.palabrasClave')],
+  authors: [{ name: t('meta.autor') }],
+  creator: t('meta.autor'),
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mobbitrips.com'),
   openGraph: {
     type: 'website',
-    locale: 'es_MX',
-    siteName: 'Mobbitrips',
+    locale: t('idioma.openGraph'),
+    siteName: t('marca.nombre'),
   },
   robots: { index: true, follow: true },
 };
@@ -41,7 +34,10 @@ const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ViewTransitions>
-      <html lang="es" className={`${comfortaa.variable} ${inter.variable} ${caveat.variable}`}>
+      <html
+        lang={t('idioma.html')}
+        className={`${comfortaa.variable} ${inter.variable} ${caveat.variable}`}
+      >
         <body className="bg-brand-cream text-brand-charcoal antialiased">
           {gtmId && <GoogleTagManagerScript gtmId={gtmId} />}
           {gtmId && <GoogleTagManagerNoscript gtmId={gtmId} />}
@@ -49,17 +45,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-xl focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
           >
-            Ir al contenido principal
+            {t('accesibilidad.irAlContenido')}
           </a>
-          <AmbientCanvas />
-          <SmoothScrollProvider>
-            <Navbar />
-            <main id="main-content" className="pt-[72px]">
-              {children}
-            </main>
-            <Footer />
-            <WhatsAppFloatingButton />
-          </SmoothScrollProvider>
+          <Navbar />
+          <main id="main-content" className="pt-[72px]">
+            {children}
+          </main>
+          <Footer />
+          <WhatsAppFloatingButton />
         </body>
       </html>
     </ViewTransitions>

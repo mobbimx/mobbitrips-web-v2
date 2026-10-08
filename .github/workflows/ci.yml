@@ -1,0 +1,35 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [portal]
+
+# En un PR, si llega un commit nuevo se cancela la corrida vieja del MISMO PR: solo verificaba algo
+# que ya cambió. En push a portal el grupo es único por corrida, así que ahí nunca se cancela nada.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HUSKY: '0' # en CI no hace falta instalar los ganchos de git (commitlint, lint-staged, candado pre-push)
+      NEXT_TELEMETRY_DISABLED: '1'
+      TURBO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v5
+      # La versión de pnpm sale de "packageManager" en package.json (no se repite aquí).
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm type-check
+      # El build NO lleva secretos: sin variables de entorno compila (las rutas de /api son force-dynamic y
+      # los clientes de Supabase, Stripe y Resend se inicializan perezosos). Si algún día pide una llave
+      # real para compilar, se quita este paso y se anota en AGENTS.md; nunca se meten secretos al CI para esto.
+      - run: pnpm build

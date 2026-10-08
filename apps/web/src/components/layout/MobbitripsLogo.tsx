@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { t } from '@/textos/t';
 
 interface Props {
   size?: number;
@@ -21,7 +22,7 @@ export function MobbitripsLogo({ size = 32, className }: Props) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
       whileHover={{ scale: 1.1 }}
-      aria-label="Mobbitrips"
+      aria-label={t('marca.nombre')}
       role="img"
     >
       {/* Dot 1 — top left */}
