@@ -92,7 +92,7 @@ interface PanelContentProps {
   activeField: ActiveField;
   from: Date | undefined;
   to: Date | undefined;
-  onSelect: (range: DateRange | undefined) => void;
+  onSelect: (range: DateRange | undefined, dia: Date) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   mobile?: boolean;
 }
@@ -145,7 +145,7 @@ function PanelContent({
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: isActive ? 'rgba(255,255,255,0.75)' : '#9A9999',
+                  color: isActive ? 'rgba(255,255,255,0.75)' : '#706F6F',
                   marginBottom: 2,
                   fontFamily: 'var(--font-inter, sans-serif)',
                 }}
@@ -300,19 +300,32 @@ export function HeroDatePicker({
   const from = parseLocalDate(checkin);
   const to = parseLocalDate(checkout);
 
-  function handleSelect(range: DateRange | undefined): void {
-    if (range?.from) {
-      onCheckinChange(toISO(range.from));
-    } else {
+  /**
+   * Decide con el día tocado y el campo activo (el rango que propone react-day-picker, con las dos
+   * fechas ya puestas, movía la salida aunque se estuviera cambiando la llegada).
+   * - «Llegada»: el día es la nueva llegada; si la salida quedó igual o antes, se borra. El panel
+   *   sigue abierto, ahora en «Salida».
+   * - «Salida»: un día después de la llegada es la salida y cierra; uno igual o antes (o sin llegada)
+   *   pasa a ser la llegada, igual que arriba.
+   * - Sin selección (se volvió a tocar la única fecha elegida): se borra todo y regresa a «Llegada».
+   */
+  function handleSelect(range: DateRange | undefined, dia: Date): void {
+    if (!range) {
       onCheckinChange('');
-    }
-    if (range?.to) {
-      onCheckoutChange(toISO(range.to));
-      cerrarYVolver('checkout');
-    } else {
       onCheckoutChange('');
-      setActiveField('checkout');
+      setActiveField('checkin');
+      return;
     }
+    const iso = toISO(dia);
+    // Fechas `AAAA-MM-DD`: compararlas como texto respeta el orden del calendario.
+    if (activeField === 'checkout' && checkin && iso > checkin) {
+      onCheckoutChange(iso);
+      cerrarYVolver('checkout');
+      return;
+    }
+    onCheckinChange(iso);
+    if (checkout && checkout <= iso) onCheckoutChange('');
+    setActiveField('checkout');
   }
 
   const anchorStyle: React.CSSProperties = isMobile
@@ -336,7 +349,7 @@ export function HeroDatePicker({
       : {};
 
   const labelColor = (field: ActiveField): React.CSSProperties =>
-    open && activeField === field ? { color: '#ED6864' } : {};
+    open && activeField === field ? { color: '#3D3D3D' } : {};
 
   return (
     <>
@@ -346,17 +359,18 @@ export function HeroDatePicker({
         .hdp-panel--movil { padding: 16px; min-width: 0; width: 100%; }
         @keyframes hdp-entrada { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
         .hdp-root { font-family: var(--font-inter, sans-serif); font-size: 14px; color: #3D3D3D; }
-        .hdp-months { display: flex; gap: 16px; }
+        .hdp-months { position: relative; display: flex; gap: 16px; }
         .hdp-month { width: 280px; }
-        .hdp-month-caption { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
+        .hdp-month-caption { display: flex; align-items: center; justify-content: space-between; min-height: 30px; margin-bottom: 12px; padding: 0 4px; }
         .hdp-caption-label { font-family: var(--font-comfortaa, sans-serif); font-weight: 700; font-size: 15px; color: #3D3D3D; letter-spacing: -0.01em; text-transform: capitalize; }
-        .hdp-nav { display: flex; gap: 4px; }
+        /* react-day-picker 9 pone la botonera como hermana del mes: se ancla arriba a la derecha del título. */
+        .hdp-nav { position: absolute; top: 0; right: 4px; display: flex; gap: 4px; }
         .hdp-btn-nav { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(237,104,100,0.18); background: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #ED6864; transition: background 200ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); }
         .hdp-btn-nav:hover { background: rgba(237,104,100,0.08); transform: scale(1.08); }
         .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid #ED6864; outline-offset: 2px; }
         .hdp-month-grid { width: 100%; border-collapse: collapse; }
         .hdp-weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
-        .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9A9999; padding: 4px 0; }
+        .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #706F6F; padding: 4px 0; }
         .hdp-week { display: grid; grid-template-columns: repeat(7,1fr); }
         .hdp-day { position: relative; display: flex; align-items: center; justify-content: center; }
         .hdp-day-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: transparent; font-family: var(--font-inter, sans-serif); font-size: 14px; color: #3D3D3D; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 180ms ease, color 180ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); position: relative; z-index: 1; }

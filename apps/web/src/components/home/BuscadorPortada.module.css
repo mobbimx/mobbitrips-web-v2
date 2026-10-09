@@ -206,11 +206,6 @@
   white-space: nowrap;
 }
 
-/* El selector pinta la etiqueta en coral al abrir; el coral claro no pasa AA como texto chico. */
-.fechas :global(.hero-search-section[aria-expanded='true']) :global(.hero-search-label) {
-  color: var(--tinta) !important;
-}
-
 .fechas :global(.hero-search-value) {
   font-family: var(--font-inter), sans-serif;
   font-size: 15px;
