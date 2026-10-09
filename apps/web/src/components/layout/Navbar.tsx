@@ -2,11 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { URL_MOBBILINK } from '@/config/enlaces';
 import { t } from '@/textos/t';
 import { MobbitripsLogo } from './MobbitripsLogo';
-
-/** Página pública de Mobbilink (canónica en su repo). La ruta exacta de planes queda por confirmar. */
-const URL_MOBBILINK = 'https://mobbilink.com';
 
 /** Alto fijo de la barra: `layout.tsx` (`pt-[72px]`) y el Hero (`globals.css`) dependen de él. */
 const ALTO = 72;
@@ -17,7 +15,7 @@ const UMBRAL = 6;
  * Barra de arriba: logo y «Anuncia tu casa». Fondo sólido (sin `backdrop-filter`).
  * Se esconde al bajar y reaparece al subir. El movimiento es solo CSS (`transform`); el listener
  * pasivo únicamente cambia dos atributos `data-` en el DOM, sin re-renderizar React.
- * Con el foco dentro (teclado) siempre se ve.
+ * Con el foco de teclado dentro (`:focus-visible`) siempre se ve; un clic con ratón no la deja fija.
  */
 export function Navbar() {
   const barra = useRef<HTMLElement>(null);
@@ -60,7 +58,7 @@ export function Navbar() {
       ref={barra}
       data-oculta="no"
       data-bajado="no"
-      className="fixed inset-x-0 top-0 z-40 h-[72px] border-b border-brand-border bg-white transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none data-[bajado=si]:shadow-sm [&[data-oculta=si]:not(:focus-within)]:-translate-y-full"
+      className="fixed inset-x-0 top-0 z-40 h-[72px] border-b border-brand-border bg-white transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none data-[bajado=si]:shadow-sm [&[data-oculta=si]:not(:has(:focus-visible))]:-translate-y-full"
     >
       <nav
         className="mx-auto flex h-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
@@ -84,7 +82,7 @@ export function Navbar() {
 
         <a
           href={URL_MOBBILINK}
-          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-4 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-5"
+          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-4 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-5"
         >
           {t('nav.anunciaTuCasa')}
         </a>

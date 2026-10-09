@@ -20,7 +20,7 @@ export function Footer() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="inline-flex min-h-[44px] items-center rounded-lg px-2 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="inline-flex min-h-[44px] items-center rounded-lg px-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   {t(texto)}
                 </Link>
