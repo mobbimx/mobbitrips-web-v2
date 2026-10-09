@@ -34,7 +34,7 @@ export default async function ExitoPage({ params, searchParams }: PageProps) {
   const waUrl = `https://wa.me/${WA}?text=${waMsg}`;
 
   return (
-    <main id="main-content" className="min-h-screen bg-brand-cream py-12">
+    <div className="min-h-screen bg-brand-cream py-12">
       <div className="mx-auto max-w-lg px-4">
         {/* Status banner */}
         <div className="mb-8 rounded-2xl bg-white p-8 text-center shadow-sm">
@@ -92,6 +92,6 @@ export default async function ExitoPage({ params, searchParams }: PageProps) {
         {/* Actions */}
         <ExitoActions reservationId={reservation.id} isPaid={isPaid} waUrl={waUrl} />
       </div>
-    </main>
+    </div>
   );
 }

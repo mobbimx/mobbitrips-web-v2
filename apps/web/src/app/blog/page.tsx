@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   return (
-    <main id="main-content">
+    <div>
       <h1>Blog — Mobbitrips</h1>
-    </main>
+    </div>
   );
 }
