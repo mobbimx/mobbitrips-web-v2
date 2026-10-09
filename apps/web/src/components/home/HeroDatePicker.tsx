@@ -367,7 +367,8 @@ export function HeroDatePicker({
         .hdp-nav { position: absolute; top: 0; right: 4px; display: flex; gap: 4px; }
         .hdp-btn-nav { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(237,104,100,0.18); background: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #ED6864; transition: background 200ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); }
         .hdp-btn-nav:hover { background: rgba(237,104,100,0.08); transform: scale(1.08); }
-        .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid #ED6864; outline-offset: 2px; }
+        /* Anillo de foco con el coral oscuro de la portada (el claro daba 2.85:1 sobre la franja del rango; WCAG pide 3:1). */
+        .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid var(--coral-950, #C14744); outline-offset: 2px; }
         .hdp-month-grid { width: 100%; border-collapse: collapse; }
         .hdp-weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
         .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #706F6F; padding: 4px 0; }
