@@ -1,0 +1,430 @@
+/*
+ * Buscador de la portada (opción A «Aire»): píldora en compu, tarjeta apilada en cel.
+ *
+ * - Fondo BLANCO SÓLIDO: sin backdrop-filter, sin blur (decisión de 1A: el rendimiento manda).
+ * - Solo transiciones cortas de hover/foco; ninguna animación en bucle. La entrada de una sola vez
+ *   la pone el contenedor (clase `animate-entra` de Tailwind, quieta con «reducir movimiento»).
+ * - Todo texto chico en gris/carbón con contraste AA sobre blanco. El coral de marca (#ED6864) solo
+ *   decora; lo que lleva texto o marca el foco usa `--coral-950` (#C14744, 4.9:1 con blanco).
+ * - `.fechas` viste el selector de fechas (`HeroDatePicker`) sin tocarlo: se apoya en las clases
+ *   `hero-search-*` que él trae. Este archivo las define COMPLETAS (no depende del `globals.css`),
+ *   así que al borrar el Hero viejo (1A.7) esas reglas de `globals.css` pueden irse sin afectar aquí.
+ */
+
+.buscador {
+  --campo-pad: 20px;
+  --tinta: #3d3d3d;
+  --tinta-suave: #706f6f; /* 5:1 sobre blanco */
+  --linea: rgba(61, 61, 61, 0.14);
+  --foco: var(--coral-950, #c14744);
+  --alto-campo: 60px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 960px;
+  margin-top: 32px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ede9e4;
+  border-radius: 28px;
+  box-shadow:
+    0 18px 48px rgba(61, 61, 61, 0.12),
+    0 2px 6px rgba(61, 61, 61, 0.06);
+  text-align: left;
+}
+
+/* En cel y tablet angosta, tarjeta apilada de 520 px; de 900 px en adelante, píldora de una fila. */
+@media (min-width: 640px) and (max-width: 899px) {
+  .buscador {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 900px) {
+  .buscador {
+    --alto-campo: 60px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 999px;
+  }
+}
+
+/* ── Campos ─────────────────────────────────────────────── */
+
+.campo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: var(--alto-campo);
+  padding: 8px var(--campo-pad);
+  border-radius: 20px;
+  transition: background-color 150ms ease;
+}
+
+.campo:hover {
+  background: #faf8f5;
+}
+
+@media (min-width: 900px) {
+  .campo {
+    border-radius: 999px;
+  }
+}
+
+.destino {
+  flex: 1.35 1 0;
+}
+
+.huespedes {
+  flex: 1.3 1 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.destino:focus-within {
+  background: #fdf0ef;
+  box-shadow: inset 0 0 0 2px var(--foco);
+}
+
+.etiqueta {
+  display: block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  white-space: nowrap;
+}
+
+.entrada {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--tinta);
+  text-overflow: ellipsis;
+}
+
+/* El indicador de foco lo dibuja el campo entero (`.destino:focus-within`); sin esto, el anillo global
+   de `globals.css` pinta además un rectángulo dentro de la píldora. */
+.entrada:focus,
+.entrada:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.entrada::placeholder {
+  color: var(--tinta-suave);
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* ── Divisores ──────────────────────────────────────────── */
+
+.sep {
+  flex: none;
+  display: block;
+  height: 1px;
+  margin: 2px var(--campo-pad);
+  background: var(--linea);
+}
+
+@media (min-width: 900px) {
+  .sep {
+    width: 1px;
+    height: 32px;
+    margin: 0 2px;
+  }
+}
+
+/* ── Fechas: viste a HeroDatePicker ─────────────────────── */
+
+.fechas {
+  display: flex;
+  flex: 2 1 0;
+  min-width: 0;
+}
+
+.fechas > div {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.fechas :global(.hero-search-section) {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: var(--alto-campo);
+  margin: 0;
+  padding: 8px var(--campo-pad);
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.fechas :global(.hero-search-section):hover {
+  background: #faf8f5;
+}
+
+.fechas :global(.hero-search-section):focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: -2px;
+  box-shadow: none;
+}
+
+.fechas :global(.hero-search-label) {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  white-space: nowrap;
+}
+
+/* El selector pinta la etiqueta en coral al abrir; el coral claro no pasa AA como texto chico. */
+.fechas :global(.hero-search-section[aria-expanded='true']) :global(.hero-search-label) {
+  color: var(--tinta) !important;
+}
+
+.fechas :global(.hero-search-value) {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--tinta);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fechas :global(.hero-search-value--muted) {
+  color: var(--tinta-suave);
+  font-weight: 400;
+}
+
+.fechas :global(.hero-search-divider) {
+  flex: none;
+  align-self: center;
+  width: 1px;
+  height: 32px;
+  margin: 0;
+  background: var(--linea);
+}
+
+@media (min-width: 900px) {
+  .fechas :global(.hero-search-section) {
+    border-radius: 999px;
+  }
+}
+
+/* ── Huéspedes ──────────────────────────────────────────── */
+
+.huespedesTexto {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 2px;
+  min-width: 0;
+}
+
+.valor {
+  display: block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--tinta);
+  white-space: nowrap;
+}
+
+.contador {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+.paso {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1.5px solid #8f8b88; /* 3.4:1 sobre blanco: el borde también identifica el control */
+  border-radius: 50%;
+  background: #fff;
+  color: var(--tinta);
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.paso:hover:not(:disabled) {
+  background: #fdf0ef;
+  border-color: var(--foco);
+}
+
+.paso:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.paso:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (min-width: 900px) {
+  .paso {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ── Botón Buscar ───────────────────────────────────────── */
+
+.boton {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  margin-top: 6px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--foco);
+  color: #fff;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.boton:hover {
+  background: #a93b38;
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+@media (min-width: 900px) {
+  .boton {
+    height: var(--alto-campo);
+    margin-top: 0;
+    margin-left: 6px;
+  }
+}
+
+/* ── Sugerencias de destino ─────────────────────────────── */
+
+.lista {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #ede9e4;
+  border-radius: 20px;
+  box-shadow:
+    0 18px 48px rgba(61, 61, 61, 0.16),
+    0 2px 6px rgba(61, 61, 61, 0.06);
+}
+
+@media (min-width: 900px) {
+  .lista {
+    right: auto;
+    width: 340px;
+  }
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--tinta);
+  cursor: pointer;
+}
+
+.opcion[aria-selected='true'],
+.opcion:hover {
+  background: #fdf0ef;
+}
+
+.opcionIcono {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fdf0ef;
+  color: var(--foco);
+}
+
+.opcion[aria-selected='true'] .opcionIcono,
+.opcion:hover .opcionIcono {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .campo,
+  .paso,
+  .boton,
+  .fechas :global(.hero-search-section) {
+    transition: none;
+  }
+
+  .boton:active {
+    transform: none;
+  }
+}

@@ -47,6 +47,17 @@ const config: Config = {
       backgroundImage: {
         'gradient-primary': 'linear-gradient(135deg, #ED6864 0%, #F4A09E 100%)',
       },
+      // Entrada de una sola vez (docs/MOTION.md: ≤ 800 ms, nada infinito). Úsese con `motion-safe:`
+      // para que «reducir movimiento» la quite; el retraso se pone con `[animation-delay:120ms]`.
+      keyframes: {
+        entra: {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+      },
+      animation: {
+        entra: 'entra 600ms cubic-bezier(0.19, 1, 0.22, 1) backwards',
+      },
     },
   },
   plugins: [],

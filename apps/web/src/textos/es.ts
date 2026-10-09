@@ -8,8 +8,9 @@
  * - Variables dentro del texto con llaves: `'© {year} Mobbitrips'` → `t('footer.derechos', { year })`.
  * - Para sumar inglés: crear `en.ts` con `export const en: Textos = { ... }` (el tipo obliga a que
  *   tenga exactamente las mismas claves) y elegir el idioma en `t.ts`.
- * - Aquí está el cascarón (metadatos, Navbar, Footer, páginas legales, 404), `/buscar` y el Hero. El
- *   resto de las secciones se mueve aquí cuando se rehaga en su fase.
+ * - Aquí está el cascarón (metadatos, Navbar, Footer, páginas legales, 404), la portada (`inicio`),
+ *   `/buscar` y el Hero viejo (`hero`, que se va en 1A.7; `hero.fechas` es del selector de fechas y se
+ *   queda). El resto de las secciones se mueve aquí cuando se rehaga en su fase.
  */
 export const es = {
   /** Configuración que depende del idioma (no es texto de pantalla, pero cambia con el idioma). */
@@ -24,6 +25,8 @@ export const es = {
     /** El logotipo se escribe en dos tonos: «mobbi» + «trips». */
     inicio: 'mobbi',
     fin: 'trips',
+    /** Va en la tira de confianza y en la franja «Anuncia tu casa» de la portada. */
+    servicioMobbilink: 'Un servicio de Mobbilink',
   },
 
   meta: {
@@ -55,6 +58,57 @@ export const es = {
     legalAria: 'Páginas legales',
     terminos: 'Términos',
     privacidad: 'Privacidad',
+  },
+
+  /** Portada (`/`): franja del buscador, confianza, destinos, «Anuncia tu casa» y búsquedas populares. */
+  inicio: {
+    meta: {
+      /** Rumbo nacional: Xalapa es un destino más, no el enfoque. */
+      titulo: 'Mobbitrips — Casas vacacionales de anfitriones en México',
+      descripcion:
+        'Casas vacacionales de anfitriones en México. Sin comisión: pagas directo al anfitrión.',
+    },
+    franja: {
+      titulo: {
+        linea1: 'Encuentra tu casa',
+        linea2: 'para descansar',
+      },
+      apoyo: 'Casas de anfitriones para tu próxima escapada.',
+    },
+    buscador: {
+      aria: 'Buscar casas',
+      destino: {
+        etiqueta: 'Destino',
+        placeholder: '¿A dónde vas?',
+        sugerencias: 'Destinos sugeridos',
+        unaSugerencia: '1 destino sugerido',
+        variasSugerencias: '{n} destinos sugeridos',
+        sinSugerencias: 'Sin sugerencias. Escribe tu destino y busca.',
+      },
+      huespedes: {
+        etiqueta: 'Huéspedes',
+        uno: '{n} huésped',
+        varios: '{n} huéspedes',
+        quitar: 'Quitar un huésped',
+        agregar: 'Agregar un huésped',
+      },
+      boton: 'Buscar',
+    },
+    confianza: {
+      aria: 'Lo que ofrece Mobbitrips',
+      sinComision: 'Sin comisión',
+      pagasDirecto: 'Pagas directo al anfitrión',
+    },
+    destinos: {
+      titulo: 'Destinos',
+    },
+    anuncia: {
+      titulo: '¿Tienes una casa vacacional?',
+    },
+    populares: {
+      titulo: 'Búsquedas populares',
+      enlace: 'Casas en {destino}',
+    },
   },
 
   legal: {
