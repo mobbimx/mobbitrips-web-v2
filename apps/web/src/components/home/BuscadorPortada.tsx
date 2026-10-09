@@ -13,7 +13,11 @@ const HUESPEDES_INICIALES = 2;
 
 /** Sin acentos y en minúsculas, para que «mexico» encuentre «Ciudad de México». */
 function plano(texto: string): string {
-  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
 }
 
 /** Destinos que coinciden con lo escrito; primero los que empiezan igual. Sin texto: todos. */
@@ -51,6 +55,8 @@ export function BuscadorPortada() {
   const [activo, setActivo] = useState(-1);
 
   const sugerencias = useMemo(() => sugerir(destino), [destino]);
+  const enMinimo = huespedes <= HUESPEDES_MIN;
+  const enMaximo = huespedes >= HUESPEDES_MAX;
   // Si lo escrito ya es, tal cual, la única sugerencia, la lista sobra (y taparía las fechas en cel).
   const yaEscrito = sugerencias.length === 1 && plano(sugerencias[0] ?? '') === plano(destino);
   const listaVisible = abierto && sugerencias.length > 0 && !yaEscrito;
@@ -150,7 +156,7 @@ export function BuscadorPortada() {
           type="text"
           role="combobox"
           aria-expanded={listaVisible}
-          aria-controls={idLista}
+          aria-controls={listaVisible ? idLista : undefined}
           aria-autocomplete="list"
           aria-activedescendant={listaVisible && activo >= 0 ? `${idLista}-${activo}` : undefined}
           autoComplete="off"
@@ -232,8 +238,11 @@ export function BuscadorPortada() {
           <button
             type="button"
             className={estilos.paso}
-            onClick={() => setHuespedes((n) => Math.max(HUESPEDES_MIN, n - 1))}
-            disabled={huespedes <= HUESPEDES_MIN}
+            // `aria-disabled` y no `disabled`: un botón deshabilitado con el foco lo manda a `body`.
+            onClick={() => {
+              if (!enMinimo) setHuespedes((n) => Math.max(HUESPEDES_MIN, n - 1));
+            }}
+            aria-disabled={enMinimo}
             aria-label={t('inicio.buscador.huespedes.quitar')}
           >
             <Minus size={16} aria-hidden="true" />
@@ -241,8 +250,10 @@ export function BuscadorPortada() {
           <button
             type="button"
             className={estilos.paso}
-            onClick={() => setHuespedes((n) => Math.min(HUESPEDES_MAX, n + 1))}
-            disabled={huespedes >= HUESPEDES_MAX}
+            onClick={() => {
+              if (!enMaximo) setHuespedes((n) => Math.min(HUESPEDES_MAX, n + 1));
+            }}
+            aria-disabled={enMaximo}
             aria-label={t('inicio.buscador.huespedes.agregar')}
           >
             <Plus size={16} aria-hidden="true" />
