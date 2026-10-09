@@ -9,7 +9,7 @@ import { es, type Textos } from './es';
  */
 const diccionario: Textos = es;
 
-/** Rutas con punto hacia los valores del diccionario cuyo tipo es `V`: `'nav.enlaces.inicio'`. */
+/** Rutas con punto hacia los valores del diccionario cuyo tipo es `V`: `'nav.anunciaTuCasa'`. */
 type Rutas<T, V, P extends string = ''> = {
   [K in keyof T & string]: T[K] extends V
     ? `${P}${K}`

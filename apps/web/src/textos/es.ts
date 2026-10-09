@@ -8,8 +8,8 @@
  * - Variables dentro del texto con llaves: `'© {year} Mobbitrips'` → `t('footer.derechos', { year })`.
  * - Para sumar inglés: crear `en.ts` con `export const en: Textos = { ... }` (el tipo obliga a que
  *   tenga exactamente las mismas claves) y elegir el idioma en `t.ts`.
- * - En 0A solo está el cascarón (metadatos, Navbar, Footer, botón flotante, 404) y el Hero. El resto
- *   de las secciones se mueve aquí cuando se rehaga en su fase.
+ * - Aquí está el cascarón (metadatos, Navbar, Footer, páginas legales, 404), `/buscar` y el Hero. El
+ *   resto de las secciones se mueve aquí cuando se rehaga en su fase.
  */
 export const es = {
   /** Configuración que depende del idioma (no es texto de pantalla, pero cambia con el idioma). */
@@ -46,57 +46,44 @@ export const es = {
 
   nav: {
     aria: 'Navegación principal',
-    enlaces: {
-      inicio: 'Inicio',
-      propiedades: 'Propiedades',
-      nosotros: 'Nosotros',
-      servicios: 'Servicios',
-      contacto: 'Contacto',
-    },
-    reservar: 'Reservar ahora',
-    abrirMenu: 'Abrir menú',
-    cerrarMenu: 'Cerrar menú',
-    menuMovil: 'Menú de navegación',
+    inicioAria: 'Mobbitrips: ir al inicio',
+    anunciaTuCasa: 'Anuncia tu casa',
   },
 
   footer: {
-    aria: 'Pie de página',
-    lema: 'Descansa, vive y sueña como si estuvieras en casa.',
-    alcance: 'Propiedades vacacionales en México.',
-    navegacion: {
-      titulo: 'Navegación',
-      inicio: 'Inicio',
-      propiedades: 'Propiedades',
-      nosotros: 'Nosotros',
-      blog: 'Blog',
-      experiencias: 'Experiencias',
+    derechos: '© {year} Mobbitrips · Un servicio de Mobbilink',
+    legalAria: 'Páginas legales',
+    terminos: 'Términos',
+    privacidad: 'Privacidad',
+  },
+
+  legal: {
+    terminos: {
+      titulo: 'Términos y condiciones',
+      encabezado: 'Términos y condiciones — Mobbitrips',
     },
-    servicios: {
-      titulo: 'Servicios',
-      propietarios: 'Para propietarios',
-      contacto: 'Contacto',
-      faq: 'Preguntas frecuentes',
-    },
-    contacto: {
-      titulo: 'Contacto',
-      whatsappAria: 'WhatsApp de Mobbitrips',
-      telefono: '+52 228 252 5244',
-      correo: 'hola@mobbitrips.com',
-      ubicacion: 'México',
-      instagramAria: 'Instagram de Mobbitrips',
-      facebookAria: 'Facebook de Mobbitrips',
-    },
-    derechos: '© {year} Mobbitrips. Todos los derechos reservados.',
-    legal: {
-      privacidad: 'Privacidad',
-      terminos: 'Términos',
+    privacidad: {
+      titulo: 'Aviso de privacidad',
+      encabezado: 'Aviso de privacidad — Mobbitrips',
     },
   },
 
-  whatsapp: {
-    aria: 'Abrir WhatsApp',
-    etiqueta: 'Escríbenos',
-    mensaje: '¡Hola! Me interesa información sobre sus propiedades vacacionales en Xalapa.',
+  /** `/buscar`: página lisa mínima que repite lo buscado mientras llegan los resultados (Fase 3A). */
+  buscar: {
+    meta: {
+      titulo: 'Buscar casas',
+    },
+    titulo: 'Pronto: casas en {destino}…',
+    tituloSinDestino: 'Pronto: casas para tu viaje…',
+    apoyo: 'Estamos preparando los resultados. Esto es lo que buscaste:',
+    destino: 'Destino',
+    llegada: 'Llegada',
+    salida: 'Salida',
+    huespedes: 'Huéspedes',
+    sinDato: 'Sin elegir',
+    unHuesped: '{n} huésped',
+    variosHuespedes: '{n} huéspedes',
+    volver: 'Volver al inicio',
   },
 
   noEncontrada: {

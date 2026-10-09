@@ -1,174 +1,94 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@mobbitrips/ui';
-import { cn } from '@mobbitrips/ui';
-import { t, type ClaveTexto } from '@/textos/t';
+import { t } from '@/textos/t';
 import { MobbitripsLogo } from './MobbitripsLogo';
 
-const links: { href: string; texto: ClaveTexto }[] = [
-  { href: '/', texto: 'nav.enlaces.inicio' },
-  { href: '/propiedades', texto: 'nav.enlaces.propiedades' },
-  { href: '/nosotros', texto: 'nav.enlaces.nosotros' },
-  { href: '/servicios', texto: 'nav.enlaces.servicios' },
-  { href: '/contacto', texto: 'nav.enlaces.contacto' },
-];
+/** Página pública de Mobbilink (canónica en su repo). La ruta exacta de planes queda por confirmar. */
+const URL_MOBBILINK = 'https://mobbilink.com';
 
+/** Alto fijo de la barra: `layout.tsx` (`pt-[72px]`) y el Hero (`globals.css`) dependen de él. */
+const ALTO = 72;
+/** Píxeles que hay que mover el scroll en un mismo sentido para esconder o enseñar la barra. */
+const UMBRAL = 6;
+
+/**
+ * Barra de arriba: logo y «Anuncia tu casa». Fondo sólido (sin `backdrop-filter`).
+ * Se esconde al bajar y reaparece al subir. El movimiento es solo CSS (`transform`); el listener
+ * pasivo únicamente cambia dos atributos `data-` en el DOM, sin re-renderizar React.
+ * Con el foco dentro (teclado) siempre se ve.
+ */
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const barra = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const el = barra.current;
+    if (!el) return;
+
+    let ultimo = window.scrollY;
+    let cuadro = 0;
+
+    const revisar = () => {
+      cuadro = 0;
+      const y = Math.max(0, window.scrollY);
+      const delta = y - ultimo;
+      el.dataset.bajado = y > 0 ? 'si' : 'no';
+      if (y <= ALTO) {
+        el.dataset.oculta = 'no';
+        ultimo = y;
+      } else if (Math.abs(delta) >= UMBRAL) {
+        el.dataset.oculta = delta > 0 ? 'si' : 'no';
+        ultimo = y;
+      }
+    };
+
+    const alMover = () => {
+      if (!cuadro) cuadro = requestAnimationFrame(revisar);
+    };
+
+    revisar();
+    window.addEventListener('scroll', alMover, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', alMover);
+      if (cuadro) cancelAnimationFrame(cuadro);
+    };
   }, []);
 
-  useEffect(() => {
-    if (open) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
-
   return (
-    <>
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
-          scrolled ? 'h-16 border-b border-white/50 shadow-sm' : 'h-[72px] bg-transparent',
-        )}
-        style={
-          scrolled
-            ? {
-                background: 'rgba(250,247,242,0.82)',
-                backdropFilter: 'blur(24px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              }
-            : undefined
-        }
+    <header
+      ref={barra}
+      data-oculta="no"
+      data-bajado="no"
+      className="fixed inset-x-0 top-0 z-40 h-[72px] border-b border-brand-border bg-white transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none data-[bajado=si]:shadow-sm [&[data-oculta=si]:not(:focus-within)]:-translate-y-full"
+    >
+      <nav
+        className="mx-auto flex h-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+        aria-label={t('nav.aria')}
       >
-        <nav
-          className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
-          aria-label={t('nav.aria')}
+        <Link
+          href="/"
+          aria-label={t('nav.inicioAria')}
+          className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
-          >
-            <MobbitripsLogo size={36} />
-            <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
-              {t('marca.inicio')}
-              <span className="text-primary">{t('marca.fin')}</span>
-            </span>
-          </Link>
+          <MobbitripsLogo
+            size={36}
+            decorativo
+            className="transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          />
+          <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
+            {t('marca.inicio')}
+            <span className="text-primary">{t('marca.fin')}</span>
+          </span>
+        </Link>
 
-          {/* Desktop links */}
-          <ul className="hidden items-center gap-1 md:flex" role="list">
-            {links.map(({ href, texto }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="px-3 py-2 text-sm font-medium text-brand-gray rounded-lg transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
-                >
-                  {t(texto)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:flex">
-            <Link href="/propiedades" tabIndex={-1}>
-              <Button size="sm">{t('nav.reservar')}</Button>
-            </Link>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className="flex items-center justify-center rounded-lg p-2 text-brand-charcoal transition-colors hover:bg-brand-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
-            onClick={() => setOpen(true)}
-            aria-label={t('nav.abrirMenu')}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-          >
-            <Menu size={22} />
-          </button>
-        </nav>
-      </header>
-
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              key="overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
-              onClick={() => setOpen(false)}
-              aria-hidden="true"
-            />
-            <motion.div
-              key="drawer"
-              id="mobile-menu"
-              role="dialog"
-              aria-modal="true"
-              aria-label={t('nav.menuMovil')}
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-              className="fixed right-0 top-0 z-50 flex h-full w-72 flex-col bg-white shadow-xl"
-            >
-              <div className="flex items-center justify-between border-b border-brand-border px-6 py-5">
-                <div className="flex items-center gap-2.5">
-                  <MobbitripsLogo size={32} />
-                  <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
-                    {t('marca.inicio')}
-                    <span className="text-primary">{t('marca.fin')}</span>
-                  </span>
-                </div>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg p-2 text-brand-gray hover:bg-brand-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label={t('nav.cerrarMenu')}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-6">
-                {links.map(({ href, texto }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-xl px-4 py-3 text-base font-medium text-brand-charcoal transition-colors hover:bg-brand-cream hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    {t(texto)}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="border-t border-brand-border p-6">
-                <Link href="/propiedades" onClick={() => setOpen(false)} tabIndex={-1}>
-                  <Button className="w-full" size="lg">
-                    {t('nav.reservar')}
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+        <a
+          href={URL_MOBBILINK}
+          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-4 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-5"
+        >
+          {t('nav.anunciaTuCasa')}
+        </a>
+      </nav>
+    </header>
   );
 }

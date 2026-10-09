@@ -6,7 +6,6 @@ import {
 } from '@/components/analytics/GoogleTagManager';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
 import { ViewTransitions } from 'next-view-transitions';
 import { t, tLista } from '@/textos/t';
 import './globals.css';
@@ -52,7 +51,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
-          <WhatsAppFloatingButton />
         </body>
       </html>
     </ViewTransitions>
