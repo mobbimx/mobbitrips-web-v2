@@ -4,13 +4,11 @@ import { useId, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } 
 import { useRouter } from 'next/navigation';
 import { MapPin, Minus, Plus, Search } from 'lucide-react';
 import { DESTINOS } from '@/config/destinos';
-import { rutaBuscar } from '@/lib/buscar';
+import { HUESPEDES_MAX, HUESPEDES_MIN, rutaBuscar } from '@/lib/buscar';
 import { t } from '@/textos/t';
 import { HeroDatePicker } from './HeroDatePicker';
 import estilos from './BuscadorPortada.module.css';
 
-const MIN_HUESPEDES = 1;
-const MAX_HUESPEDES = 16;
 const HUESPEDES_INICIALES = 2;
 
 /** Sin acentos y en minúsculas, para que «mexico» encuentre «Ciudad de México». */
@@ -234,8 +232,8 @@ export function BuscadorPortada() {
           <button
             type="button"
             className={estilos.paso}
-            onClick={() => setHuespedes((n) => Math.max(MIN_HUESPEDES, n - 1))}
-            disabled={huespedes <= MIN_HUESPEDES}
+            onClick={() => setHuespedes((n) => Math.max(HUESPEDES_MIN, n - 1))}
+            disabled={huespedes <= HUESPEDES_MIN}
             aria-label={t('inicio.buscador.huespedes.quitar')}
           >
             <Minus size={16} aria-hidden="true" />
@@ -243,8 +241,8 @@ export function BuscadorPortada() {
           <button
             type="button"
             className={estilos.paso}
-            onClick={() => setHuespedes((n) => Math.min(MAX_HUESPEDES, n + 1))}
-            disabled={huespedes >= MAX_HUESPEDES}
+            onClick={() => setHuespedes((n) => Math.min(HUESPEDES_MAX, n + 1))}
+            disabled={huespedes >= HUESPEDES_MAX}
             aria-label={t('inicio.buscador.huespedes.agregar')}
           >
             <Plus size={16} aria-hidden="true" />

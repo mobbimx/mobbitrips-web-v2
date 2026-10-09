@@ -3,6 +3,10 @@
  * `/buscar?destino=&llegada=AAAA-MM-DD&salida=AAAA-MM-DD&huespedes=N`.
  * Solo se mandan los datos que existen; `/buscar` trata un dato ausente como «sin elegir».
  */
+/** Huéspedes por búsqueda: el contador de la portada no sale de aquí y `/buscar` ignora lo de fuera. */
+export const HUESPEDES_MIN = 1;
+export const HUESPEDES_MAX = 16;
+
 export interface Busqueda {
   destino?: string;
   /** Fecha `AAAA-MM-DD`. */
