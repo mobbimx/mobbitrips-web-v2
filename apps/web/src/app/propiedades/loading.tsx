@@ -24,7 +24,7 @@ function CardSkeleton() {
 
 export default function PropiedadesLoading() {
   return (
-    <main id="main-content">
+    <div>
       <div className="border-b border-brand-border bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="h-3.5 w-36 animate-pulse rounded-lg bg-brand-border" />
@@ -41,6 +41,6 @@ export default function PropiedadesLoading() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

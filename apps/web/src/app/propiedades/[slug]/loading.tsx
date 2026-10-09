@@ -1,6 +1,6 @@
 export default function PropertyDetailLoading() {
   return (
-    <main id="main-content" className="min-h-screen bg-brand-cream pb-20">
+    <div className="min-h-screen bg-brand-cream pb-20">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2">
@@ -46,6 +46,6 @@ export default function PropertyDetailLoading() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

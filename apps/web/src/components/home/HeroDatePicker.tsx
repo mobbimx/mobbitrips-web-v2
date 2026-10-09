@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useId, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { DayPicker, type DateRange } from 'react-day-picker';
+import { es } from 'react-day-picker/locale/es';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { t } from '@/textos/t';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -42,30 +41,18 @@ function formatDisplay(iso: string): string {
   return date.toLocaleDateString(t('idioma.fechas'), { day: 'numeric', month: 'short' });
 }
 
-// ─── Animation variants ───────────────────────────────────────────────────────
-
-const variants = {
-  hidden: { opacity: 0, y: 8, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.28, ease: [0.19, 1, 0.22, 1] as number[] },
-  },
-  exit: {
-    opacity: 0,
-    y: 6,
-    scale: 0.98,
-    transition: { duration: 0.18, ease: [0.65, 0, 0.35, 1] as number[] },
-  },
-};
+/** Elementos del panel a los que llega el tabulador (los días usan «roving tabindex»: solo uno vale 0). */
+function enfocables(panel: HTMLElement): HTMLElement[] {
+  return Array.from(panel.querySelectorAll<HTMLElement>('button, [tabindex]')).filter(
+    (el) => el.tabIndex >= 0 && !el.hasAttribute('disabled'),
+  );
+}
 
 // Wraps the popup so it opens upward relative to the trigger
 const ABOVE_STYLE: React.CSSProperties = {
   position: 'fixed',
   zIndex: 9999,
   transform: 'translateY(calc(-100% - 12px))',
-  transformOrigin: 'bottom center',
 };
 
 // ─── DayPicker class names ────────────────────────────────────────────────────
@@ -98,17 +85,20 @@ const PICKER_CLASSES = {
 // ─── Panel content ────────────────────────────────────────────────────────────
 
 interface PanelContentProps {
+  id: string;
   panelRef: React.RefObject<HTMLDivElement>;
   checkin: string;
   checkout: string;
   activeField: ActiveField;
   from: Date | undefined;
   to: Date | undefined;
-  onSelect: (range: DateRange | undefined) => void;
+  onSelect: (range: DateRange | undefined, dia: Date) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   mobile?: boolean;
 }
 
 function PanelContent({
+  id,
   panelRef,
   checkin,
   checkout,
@@ -116,6 +106,7 @@ function PanelContent({
   from,
   to,
   onSelect,
+  onKeyDown,
   mobile,
 }: PanelContentProps) {
   const today = new Date();
@@ -123,21 +114,13 @@ function PanelContent({
 
   return (
     <div
+      id={id}
       ref={panelRef}
       role="dialog"
+      aria-modal="true"
       aria-label={t('hero.fechas.dialogo')}
-      style={{
-        background: 'rgba(253, 240, 239, 0.90)',
-        backdropFilter: 'blur(28px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-        border: '1px solid rgba(237, 104, 100, 0.18)',
-        boxShadow:
-          '0 24px 64px rgba(237,104,100,0.18), 0 4px 20px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.7)',
-        borderRadius: 20,
-        padding: mobile ? 16 : 20,
-        minWidth: mobile ? 0 : 320,
-        width: mobile ? '100%' : undefined,
-      }}
+      className={mobile ? 'hdp-panel hdp-panel--movil' : 'hdp-panel'}
+      onKeyDown={onKeyDown}
     >
       {/* Active field indicator — shows which date the user is picking */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
@@ -152,7 +135,7 @@ function PanelContent({
                 flex: 1,
                 padding: '8px 12px',
                 borderRadius: 10,
-                background: isActive ? '#ED6864' : 'rgba(237,104,100,0.07)',
+                background: isActive ? '#C14744' : 'rgba(237,104,100,0.07)',
                 transition: 'background 220ms ease',
               }}
             >
@@ -162,7 +145,7 @@ function PanelContent({
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: isActive ? 'rgba(255,255,255,0.75)' : '#9A9999',
+                  color: isActive ? '#fff' : '#706F6F',
                   marginBottom: 2,
                   fontFamily: 'var(--font-inter, sans-serif)',
                 }}
@@ -186,6 +169,11 @@ function PanelContent({
 
       <DayPicker
         mode="range"
+        // Mínimo una noche: con 0 (el valor por omisión) el primer día elegido cerraba el rango
+        // con llegada = salida y el panel se cerraba sin dejar escoger la salida.
+        min={1}
+        locale={es}
+        autoFocus
         selected={{ from, to }}
         onSelect={onSelect}
         disabled={{ before: today }}
@@ -207,6 +195,13 @@ function PanelContent({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
+/**
+ * Selector de fechas del buscador. Calendario en español (`react-day-picker/locale/es`).
+ * Teclado: al abrir, el foco entra al calendario (flechas, Re Pág/Av Pág, Inicio/Fin); el tabulador
+ * se queda dentro del panel; Escape cierra y regresa el foco al campo; al elegir la salida, el foco
+ * vuelve al campo «Salida». Entrada con CSS de una sola vez (sin librerías), quieta con
+ * «reducir movimiento».
+ */
 export function HeroDatePicker({
   checkin,
   checkout,
@@ -219,9 +214,11 @@ export function HeroDatePicker({
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const panelId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
-  const reduced = useReducedMotion();
+  const llegadaRef = useRef<HTMLButtonElement>(null);
+  const salidaRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -237,17 +234,22 @@ export function HeroDatePicker({
     setPos({ top: r.top, left: r.left });
   }, []);
 
+  const cerrarYVolver = useCallback((field: ActiveField) => {
+    setOpen(false);
+    (field === 'checkin' ? llegadaRef : salidaRef).current?.focus();
+  }, []);
+
   // Close on outside click or Escape
   useEffect(() => {
     if (!open) return;
     const onDown = (e: PointerEvent) => {
-      const t = e.target as Node;
-      if (!panelRef.current?.contains(t) && !containerRef.current?.contains(t)) {
+      const destino = e.target as Node;
+      if (!panelRef.current?.contains(destino) && !containerRef.current?.contains(destino)) {
         setOpen(false);
       }
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') cerrarYVolver(activeField);
     };
     document.addEventListener('pointerdown', onDown, { capture: true });
     document.addEventListener('keydown', onKey);
@@ -255,7 +257,7 @@ export function HeroDatePicker({
       document.removeEventListener('pointerdown', onDown, { capture: true });
       document.removeEventListener('keydown', onKey);
     };
-  }, [open]);
+  }, [open, activeField, cerrarYVolver]);
 
   // Keep position synced on scroll / resize
   useEffect(() => {
@@ -278,22 +280,52 @@ export function HeroDatePicker({
     setOpen(true);
   }
 
+  /** El panel vive en un portal al final de `body`: sin esto, el tabulador se iría fuera del sitio. */
+  function atraparTab(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== 'Tab' || !panelRef.current) return;
+    const lista = enfocables(panelRef.current);
+    const primero = lista[0];
+    const ultimo = lista[lista.length - 1];
+    if (!primero || !ultimo) return;
+    const actual = document.activeElement;
+    if (e.shiftKey && (actual === primero || !panelRef.current.contains(actual))) {
+      e.preventDefault();
+      ultimo.focus();
+    } else if (!e.shiftKey && (actual === ultimo || !panelRef.current.contains(actual))) {
+      e.preventDefault();
+      primero.focus();
+    }
+  }
+
   const from = parseLocalDate(checkin);
   const to = parseLocalDate(checkout);
 
-  function handleSelect(range: DateRange | undefined): void {
-    if (range?.from) {
-      onCheckinChange(toISO(range.from));
-    } else {
+  /**
+   * Decide con el día tocado y el campo activo (el rango que propone react-day-picker, con las dos
+   * fechas ya puestas, movía la salida aunque se estuviera cambiando la llegada).
+   * - «Llegada»: el día es la nueva llegada; si la salida quedó igual o antes, se borra. El panel
+   *   sigue abierto, ahora en «Salida».
+   * - «Salida»: un día después de la llegada es la salida y cierra; uno igual o antes (o sin llegada)
+   *   pasa a ser la llegada, igual que arriba.
+   * - Sin selección (se volvió a tocar la única fecha elegida): se borra todo y regresa a «Llegada».
+   */
+  function handleSelect(range: DateRange | undefined, dia: Date): void {
+    if (!range) {
       onCheckinChange('');
-    }
-    if (range?.to) {
-      onCheckoutChange(toISO(range.to));
-      setOpen(false);
-    } else {
       onCheckoutChange('');
-      setActiveField('checkout');
+      setActiveField('checkin');
+      return;
     }
+    const iso = toISO(dia);
+    // Fechas `AAAA-MM-DD`: compararlas como texto respeta el orden del calendario.
+    if (activeField === 'checkout' && checkin && iso > checkin) {
+      onCheckoutChange(iso);
+      cerrarYVolver('checkout');
+      return;
+    }
+    onCheckinChange(iso);
+    if (checkout && checkout <= iso) onCheckoutChange('');
+    setActiveField('checkout');
   }
 
   const anchorStyle: React.CSSProperties = isMobile
@@ -307,19 +339,6 @@ export function HeroDatePicker({
       }
     : { ...ABOVE_STYLE, top: pos.top, left: pos.left };
 
-  const panelContent = (
-    <PanelContent
-      panelRef={panelRef}
-      checkin={checkin}
-      checkout={checkout}
-      activeField={activeField}
-      from={from}
-      to={to}
-      onSelect={handleSelect}
-      mobile={isMobile}
-    />
-  );
-
   const fieldActive = (field: ActiveField) =>
     open && activeField === field
       ? ({
@@ -330,23 +349,29 @@ export function HeroDatePicker({
       : {};
 
   const labelColor = (field: ActiveField): React.CSSProperties =>
-    open && activeField === field ? { color: '#ED6864' } : {};
+    open && activeField === field ? { color: '#3D3D3D' } : {};
 
   return (
     <>
       {/* DayPicker custom styles */}
       <style>{`
+        .hdp-panel { background: #fff; border: 1px solid rgba(237,104,100,0.18); box-shadow: 0 24px 64px rgba(237,104,100,0.18), 0 4px 20px rgba(0,0,0,0.06); border-radius: 20px; padding: 20px; min-width: 320px; animation: hdp-entrada 240ms cubic-bezier(0.19,1,0.22,1) both; }
+        .hdp-panel--movil { padding: 16px; min-width: 0; width: 100%; }
+        @keyframes hdp-entrada { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
         .hdp-root { font-family: var(--font-inter, sans-serif); font-size: 14px; color: #3D3D3D; }
-        .hdp-months { display: flex; gap: 16px; }
+        .hdp-months { position: relative; display: flex; gap: 16px; }
         .hdp-month { width: 280px; }
-        .hdp-month-caption { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 4px; }
-        .hdp-caption-label { font-family: var(--font-comfortaa, sans-serif); font-weight: 700; font-size: 15px; color: #3D3D3D; letter-spacing: -0.01em; }
-        .hdp-nav { display: flex; gap: 4px; }
+        .hdp-month-caption { display: flex; align-items: center; justify-content: space-between; min-height: 30px; margin-bottom: 12px; padding: 0 4px; }
+        .hdp-caption-label { font-family: var(--font-comfortaa, sans-serif); font-weight: 700; font-size: 15px; color: #3D3D3D; letter-spacing: -0.01em; text-transform: capitalize; }
+        /* react-day-picker 9 pone la botonera como hermana del mes: se ancla arriba a la derecha del título. */
+        .hdp-nav { position: absolute; top: 0; right: 4px; display: flex; gap: 4px; }
         .hdp-btn-nav { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(237,104,100,0.18); background: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #ED6864; transition: background 200ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); }
         .hdp-btn-nav:hover { background: rgba(237,104,100,0.08); transform: scale(1.08); }
+        /* Anillo de foco con el coral oscuro de la portada (el claro daba 2.85:1 sobre la franja del rango; WCAG pide 3:1). */
+        .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid var(--coral-950, #C14744); outline-offset: 2px; }
         .hdp-month-grid { width: 100%; border-collapse: collapse; }
         .hdp-weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
-        .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9A9999; padding: 4px 0; }
+        .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #706F6F; padding: 4px 0; }
         .hdp-week { display: grid; grid-template-columns: repeat(7,1fr); }
         .hdp-day { position: relative; display: flex; align-items: center; justify-content: center; }
         .hdp-day-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: transparent; font-family: var(--font-inter, sans-serif); font-size: 14px; color: #3D3D3D; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 180ms ease, color 180ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); position: relative; z-index: 1; }
@@ -358,8 +383,8 @@ export function HeroDatePicker({
         .hdp-range-start { border-radius: 50% 0 0 50%; }
         .hdp-range-end   { border-radius: 0 50% 50% 0; }
         .hdp-range-start.hdp-range-end { border-radius: 50%; }
-        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: #ED6864; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
-        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: #D4504C; transform: scale(1.08); }
+        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: #C14744; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
+        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: #A93B38; transform: scale(1.08); }
         .hdp-outside .hdp-day-btn { opacity: 0; pointer-events: none; }
         .hdp-disabled .hdp-day-btn { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
         .hdp-hidden { visibility: hidden; }
@@ -369,6 +394,7 @@ export function HeroDatePicker({
           .hdp-weekday { font-size: 10px; }
         }
         @media (prefers-reduced-motion: reduce) {
+          .hdp-panel { animation: none; }
           .hdp-day-btn, .hdp-btn-nav { transition: none !important; transform: none !important; }
         }
       `}</style>
@@ -376,14 +402,16 @@ export function HeroDatePicker({
       <div
         ref={containerRef}
         style={{ position: 'relative', display: 'flex', alignItems: 'stretch', flex: '2 2 0' }}
-        aria-haspopup="dialog"
-        aria-expanded={open}
       >
         {/* Llegada */}
         <button
+          ref={llegadaRef}
           type="button"
           className="hero-search-section"
           onClick={() => openFor('checkin')}
+          aria-haspopup="dialog"
+          aria-expanded={open && activeField === 'checkin'}
+          aria-controls={open ? panelId : undefined}
           aria-label={
             checkin
               ? t('hero.fechas.llegadaConFecha', { fecha: formatDisplay(checkin) })
@@ -405,9 +433,13 @@ export function HeroDatePicker({
 
         {/* Salida */}
         <button
+          ref={salidaRef}
           type="button"
           className="hero-search-section"
           onClick={() => openFor('checkout')}
+          aria-haspopup="dialog"
+          aria-expanded={open && activeField === 'checkout'}
+          aria-controls={open ? panelId : undefined}
           aria-label={
             checkout
               ? t('hero.fechas.salidaConFecha', { fecha: formatDisplay(checkout) })
@@ -429,40 +461,22 @@ export function HeroDatePicker({
 
         {/* Portal — escapes overflow:hidden of .hero-section */}
         {mounted &&
+          open &&
           createPortal(
-            reduced ? (
-              open && <div style={anchorStyle}>{panelContent}</div>
-            ) : (
-              <AnimatePresence>
-                {open && (
-                  <div key="hdp-anchor" style={anchorStyle}>
-                    <motion.div
-                      variants={
-                        isMobile
-                          ? {
-                              hidden: { opacity: 0, scale: 0.97 },
-                              visible: {
-                                opacity: 1,
-                                scale: 1,
-                                transition: {
-                                  duration: 0.22,
-                                  ease: [0.19, 1, 0.22, 1] as number[],
-                                },
-                              },
-                              exit: { opacity: 0, scale: 0.97, transition: { duration: 0.15 } },
-                            }
-                          : variants
-                      }
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                    >
-                      {panelContent}
-                    </motion.div>
-                  </div>
-                )}
-              </AnimatePresence>
-            ),
+            <div style={anchorStyle}>
+              <PanelContent
+                id={panelId}
+                panelRef={panelRef}
+                checkin={checkin}
+                checkout={checkout}
+                activeField={activeField}
+                from={from}
+                to={to}
+                onSelect={handleSelect}
+                onKeyDown={atraparTab}
+                mobile={isMobile}
+              />
+            </div>,
             document.body,
           )}
       </div>
