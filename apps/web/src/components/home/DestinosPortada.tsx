@@ -39,7 +39,7 @@ export function DestinosPortada() {
                 <MapPin size={20} />
               </span>
               <span className="flex items-end justify-between gap-2">
-                <span className="font-comfortaa text-lg font-bold leading-tight text-brand-charcoal">
+                <span className="font-comfortaa text-base font-bold leading-tight text-brand-charcoal min-[360px]:text-lg">
                   {nombre}
                 </span>
                 <ArrowRight

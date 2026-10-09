@@ -12,7 +12,8 @@ const ALTO = 72;
 const UMBRAL = 6;
 
 /**
- * Barra de arriba: logo y «Anuncia tu casa». Fondo sólido (sin `backdrop-filter`).
+ * Barra de arriba: logo y «Anuncia tu casa». Fondo sólido (sin `backdrop-filter`). Por debajo de
+ * 360 px se aprietan letra, hueco y relleno para que el botón quepa entero en 320 px.
  * Se esconde al bajar y reaparece al subir. El movimiento es solo CSS (`transform`); el listener
  * pasivo únicamente cambia dos atributos `data-` en el DOM, sin re-renderizar React.
  * Con el foco de teclado dentro (`:focus-visible`) siempre se ve; un clic con ratón no la deja fija.
@@ -61,7 +62,7 @@ export function Navbar() {
       className="fixed inset-x-0 top-0 z-40 h-[72px] border-b border-brand-border bg-white transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none data-[bajado=si]:shadow-sm [&[data-oculta=si]:not(:has(:focus-visible))]:-translate-y-full"
     >
       <nav
-        className="mx-auto flex h-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+        className="mx-auto flex h-full max-w-7xl items-center justify-between gap-2 px-4 min-[360px]:gap-3 sm:px-6 lg:px-8"
         aria-label={t('nav.aria')}
       >
         <Link
@@ -74,7 +75,7 @@ export function Navbar() {
             decorativo
             className="transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
-          <span className="font-comfortaa text-xl font-bold text-brand-charcoal">
+          <span className="font-comfortaa text-base font-bold text-brand-charcoal min-[360px]:text-xl">
             {t('marca.inicio')}
             <span className="text-primary">{t('marca.fin')}</span>
           </span>
@@ -82,7 +83,7 @@ export function Navbar() {
 
         <a
           href={URL_MOBBILINK}
-          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-4 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-5"
+          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-3 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-[360px]:px-4 sm:px-5"
         >
           {t('nav.anunciaTuCasa')}
         </a>
