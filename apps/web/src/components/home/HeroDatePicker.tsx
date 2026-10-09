@@ -135,7 +135,7 @@ function PanelContent({
                 flex: 1,
                 padding: '8px 12px',
                 borderRadius: 10,
-                background: isActive ? '#ED6864' : 'rgba(237,104,100,0.07)',
+                background: isActive ? '#C14744' : 'rgba(237,104,100,0.07)',
                 transition: 'background 220ms ease',
               }}
             >
@@ -145,7 +145,7 @@ function PanelContent({
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: isActive ? 'rgba(255,255,255,0.75)' : '#706F6F',
+                  color: isActive ? '#fff' : '#706F6F',
                   marginBottom: 2,
                   fontFamily: 'var(--font-inter, sans-serif)',
                 }}
@@ -382,8 +382,8 @@ export function HeroDatePicker({
         .hdp-range-start { border-radius: 50% 0 0 50%; }
         .hdp-range-end   { border-radius: 0 50% 50% 0; }
         .hdp-range-start.hdp-range-end { border-radius: 50%; }
-        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: #ED6864; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
-        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: #D4504C; transform: scale(1.08); }
+        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: #C14744; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
+        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: #A93B38; transform: scale(1.08); }
         .hdp-outside .hdp-day-btn { opacity: 0; pointer-events: none; }
         .hdp-disabled .hdp-day-btn { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
         .hdp-hidden { visibility: hidden; }
