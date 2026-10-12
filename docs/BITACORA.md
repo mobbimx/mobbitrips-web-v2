@@ -5,6 +5,16 @@
 
 ---
 
+## 2026-10-12 · Fase 1A.8 — Accesibilidad y metadatos de la portada
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Qué:** axe (`@axe-core/playwright`) en `/` y `/buscar`, cel (390) y compu (1440), también con el calendario abierto: 0 violaciones en todas (crítica/seria/moderada/leve). Lighthouse Accesibilidad 100 (cel y compu). Contraste medido sobre el fondo real: 30 textos, 0 fallas (menor: «Buscar» 4.94:1). Teclado completo en destino, calendario y contador de huéspedes; foco visible; reduce-motion deja las manchas quietas y sin animaciones al cargar. `lang="es"`, fechas `es-MX`, título/descripción de `/` en `es.ts` al rumbo nacional.
+- **Síntoma hallado:** con la página scrolleada más de ~117 px (compu), el calendario (abre hacia arriba) quedaba fuera de pantalla. **Arreglo:** `HeroDatePicker` abre arriba si cabe, abajo si no, y pegado al borde superior como último recurso. **Verificación:** scroll 0/11/100/300 sin salto de scroll; axe 0 con el calendario abierto.
+- **Por confirmar:** imagen OG (no existe ninguna en el repo). Reporte, capturas y script en `planeacion/proyectos/mobbitrips/fases/salidas/1A8/`.
+
+---
+
 ## 2026-10-12 · Fase 1A.7 — Limpieza de la portada de mayo
 
 **Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac

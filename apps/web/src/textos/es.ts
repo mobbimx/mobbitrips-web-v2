@@ -9,8 +9,7 @@
  * - Para sumar inglés: crear `en.ts` con `export const en: Textos = { ... }` (el tipo obliga a que
  *   tenga exactamente las mismas claves) y elegir el idioma en `t.ts`.
  * - Aquí está el cascarón (metadatos, Navbar, Footer, páginas legales, 404), la portada (`inicio`),
- *   `/buscar` y el Hero viejo (`hero`, que se va en 1A.7; `hero.fechas` es del selector de fechas y se
- *   queda). El resto de las secciones se mueve aquí cuando se rehaga en su fase.
+ *   `/buscar` y los textos del selector de fechas (`hero.fechas`). El resto de las secciones se mueve aquí cuando se rehaga en su fase.
  */
 export const es = {
   /** Configuración que depende del idioma (no es texto de pantalla, pero cambia con el idioma). */

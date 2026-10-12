@@ -51,12 +51,9 @@ function enfocables(panel: HTMLElement): HTMLElement[] {
   );
 }
 
-// Wraps the popup so it opens upward relative to the trigger
-const ABOVE_STYLE: React.CSSProperties = {
-  position: 'fixed',
-  zIndex: 9999,
-  transform: 'translateY(calc(-100% - 12px))',
-};
+/** Alto aproximado del panel en compu (px): decide si cabe arriba o abajo del campo. */
+const ALTO_PANEL = 400;
+const SEPARACION = 12;
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -75,7 +72,7 @@ export function HeroDatePicker({
 }: HeroDatePickerProps) {
   const [open, setOpen] = useState(false);
   const [activeField, setActiveField] = useState<ActiveField>('checkin');
-  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const [pos, setPos] = useState({ top: 0, bottom: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -96,7 +93,7 @@ export function HeroDatePicker({
   const updatePos = useCallback(() => {
     if (!containerRef.current) return;
     const r = containerRef.current.getBoundingClientRect();
-    setPos({ top: r.top, left: r.left });
+    setPos({ top: r.top, bottom: r.bottom, left: r.left });
   }, []);
 
   const cerrarYVolver = useCallback((field: ActiveField) => {
@@ -193,6 +190,22 @@ export function HeroDatePicker({
     setActiveField('checkout');
   }
 
+  // Arriba del campo si cabe; si la página está scrolleada y arriba no cabe, abajo; si tampoco, pegado
+  // al borde superior. Un panel fuera de pantalla hacía que el foco del calendario empujara el scroll.
+  const cabeArriba = pos.top - ALTO_PANEL - SEPARACION >= 8;
+  const cabeAbajo =
+    typeof window !== 'undefined' && window.innerHeight - pos.bottom - SEPARACION >= ALTO_PANEL;
+  const anchorCompu: React.CSSProperties = {
+    position: 'fixed',
+    zIndex: 9999,
+    left: pos.left,
+    ...(cabeArriba
+      ? { top: pos.top, transform: `translateY(calc(-100% - ${SEPARACION}px))` }
+      : cabeAbajo
+        ? { top: pos.bottom + SEPARACION }
+        : { top: 8 }),
+  };
+
   const anchorStyle: React.CSSProperties = isMobile
     ? {
         position: 'fixed',
@@ -202,7 +215,7 @@ export function HeroDatePicker({
         right: 8,
         transform: 'none',
       }
-    : { ...ABOVE_STYLE, top: pos.top, left: pos.left };
+    : anchorCompu;
 
   const fieldActive = (field: ActiveField) =>
     open && activeField === field
