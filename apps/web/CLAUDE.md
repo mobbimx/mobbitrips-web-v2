@@ -235,7 +235,7 @@ _(Esta sección se expandirá con detalles cuando arranquemos Sprint 1.1. Por ah
 
 **Home (apps/web/src/components/home):**
 
-- HeroSection, FeaturedProperties, WhyBookDirect, StorySection, AmenitiesSection, TestimonialsSection, OwnerTeaser, NewsletterCTA, FinalCTA.
+- Portada vigente (1A, opción A «Aire», sin casas ni testimonios): PortadaFranja (con BuscadorPortada + HeroDatePicker/PanelFechas), TiraConfianza, DestinosPortada, AnunciaTuCasa, BusquedasPopulares. Las secciones de mayo (HeroSection, FeaturedProperties, WhyBookDirect, Story\*, TestimonialsSection, OwnerTeaser, NewsletterCTA, FinalCTA) se borraron en 1A.7.
 
 **Properties:**
 

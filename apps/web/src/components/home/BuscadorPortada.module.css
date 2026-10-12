@@ -7,8 +7,7 @@
  * - Todo texto chico en gris/carbón con contraste AA sobre blanco. El coral de marca (#ED6864) solo
  *   decora; lo que lleva texto o marca el foco usa `--coral-950` (#C14744, 4.9:1 con blanco).
  * - `.fechas` viste el selector de fechas (`HeroDatePicker`) sin tocarlo: se apoya en las clases
- *   `hero-search-*` que él trae. Este archivo las define COMPLETAS (no depende del `globals.css`),
- *   así que al borrar el Hero viejo (1A.7) esas reglas de `globals.css` pueden irse sin afectar aquí.
+ *   `fecha-*` que él trae. Este archivo las define completas (no depende del `globals.css`).
  */
 
 .buscador {
@@ -16,7 +15,7 @@
   --tinta: #3d3d3d;
   --tinta-suave: #706f6f; /* 5:1 sobre blanco */
   --linea: rgba(61, 61, 61, 0.14);
-  --foco: var(--coral-950, #c14744);
+  --foco: var(--coral-950);
   --alto-campo: 60px;
 
   position: relative;
@@ -167,7 +166,7 @@
   min-width: 0;
 }
 
-.fechas :global(.hero-search-section) {
+.fechas :global(.fecha-casilla) {
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -186,17 +185,17 @@
   transition: background-color 150ms ease;
 }
 
-.fechas :global(.hero-search-section):hover {
+.fechas :global(.fecha-casilla):hover {
   background: #faf8f5;
 }
 
-.fechas :global(.hero-search-section):focus-visible {
+.fechas :global(.fecha-casilla):focus-visible {
   outline: 2px solid var(--foco);
   outline-offset: -2px;
   box-shadow: none;
 }
 
-.fechas :global(.hero-search-label) {
+.fechas :global(.fecha-etiqueta) {
   font-family: var(--font-inter), sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -207,7 +206,7 @@
   white-space: nowrap;
 }
 
-.fechas :global(.hero-search-value) {
+.fechas :global(.fecha-valor) {
   font-family: var(--font-inter), sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -218,12 +217,12 @@
   text-overflow: ellipsis;
 }
 
-.fechas :global(.hero-search-value--muted) {
+.fechas :global(.fecha-valor--vacio) {
   color: var(--tinta-suave);
   font-weight: 400;
 }
 
-.fechas :global(.hero-search-divider) {
+.fechas :global(.fecha-divisor) {
   flex: none;
   align-self: center;
   width: 1px;
@@ -233,7 +232,7 @@
 }
 
 @media (min-width: 1024px) {
-  .fechas :global(.hero-search-section) {
+  .fechas :global(.fecha-casilla) {
     border-radius: 999px;
   }
 }
@@ -330,7 +329,7 @@
 }
 
 .boton:hover {
-  background: #a93b38;
+  background: var(--coral-950-hover);
 }
 
 .boton:active {
@@ -417,7 +416,7 @@
   .campo,
   .paso,
   .boton,
-  .fechas :global(.hero-search-section) {
+  .fechas :global(.fecha-casilla) {
     transition: none;
   }
 

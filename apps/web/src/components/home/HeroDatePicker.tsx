@@ -2,10 +2,13 @@
 
 import { useEffect, useId, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { DayPicker, type DateRange } from 'react-day-picker';
-import { es } from 'react-day-picker/locale/es';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import type { DateRange } from 'react-day-picker';
 import { t } from '@/textos/t';
+
+/** El calendario se descarga al acercarse al campo o abrirlo (sale del primer JS de la portada). */
+const cargarPanel = () => import('./PanelFechas');
+const PanelContent = dynamic(cargarPanel, { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -54,144 +57,6 @@ const ABOVE_STYLE: React.CSSProperties = {
   zIndex: 9999,
   transform: 'translateY(calc(-100% - 12px))',
 };
-
-// ─── DayPicker class names ────────────────────────────────────────────────────
-
-const PICKER_CLASSES = {
-  root: 'hdp-root',
-  months: 'hdp-months',
-  month: 'hdp-month',
-  month_caption: 'hdp-month-caption',
-  caption_label: 'hdp-caption-label',
-  nav: 'hdp-nav',
-  button_previous: 'hdp-btn-nav hdp-btn-prev',
-  button_next: 'hdp-btn-nav hdp-btn-next',
-  month_grid: 'hdp-month-grid',
-  weekdays: 'hdp-weekdays',
-  weekday: 'hdp-weekday',
-  week: 'hdp-week',
-  day: 'hdp-day',
-  day_button: 'hdp-day-btn',
-  today: 'hdp-today',
-  selected: 'hdp-selected',
-  range_start: 'hdp-range-start',
-  range_end: 'hdp-range-end',
-  range_middle: 'hdp-range-middle',
-  outside: 'hdp-outside',
-  disabled: 'hdp-disabled',
-  hidden: 'hdp-hidden',
-};
-
-// ─── Panel content ────────────────────────────────────────────────────────────
-
-interface PanelContentProps {
-  id: string;
-  panelRef: React.RefObject<HTMLDivElement>;
-  checkin: string;
-  checkout: string;
-  activeField: ActiveField;
-  from: Date | undefined;
-  to: Date | undefined;
-  onSelect: (range: DateRange | undefined, dia: Date) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
-  mobile?: boolean;
-}
-
-function PanelContent({
-  id,
-  panelRef,
-  checkin,
-  checkout,
-  activeField,
-  from,
-  to,
-  onSelect,
-  onKeyDown,
-  mobile,
-}: PanelContentProps) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return (
-    <div
-      id={id}
-      ref={panelRef}
-      role="dialog"
-      aria-modal="true"
-      aria-label={t('hero.fechas.dialogo')}
-      className={mobile ? 'hdp-panel hdp-panel--movil' : 'hdp-panel'}
-      onKeyDown={onKeyDown}
-    >
-      {/* Active field indicator — shows which date the user is picking */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        {(['checkin', 'checkout'] as const).map((field) => {
-          const isActive = activeField === field;
-          const label = field === 'checkin' ? t('hero.fechas.llegada') : t('hero.fechas.salida');
-          const value = field === 'checkin' ? checkin : checkout;
-          return (
-            <div
-              key={field}
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                borderRadius: 10,
-                background: isActive ? '#C14744' : 'rgba(237,104,100,0.07)',
-                transition: 'background 220ms ease',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: isActive ? '#fff' : '#706F6F',
-                  marginBottom: 2,
-                  fontFamily: 'var(--font-inter, sans-serif)',
-                }}
-              >
-                {label}
-              </p>
-              <p
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: isActive ? '#fff' : '#3D3D3D',
-                  fontFamily: 'var(--font-inter, sans-serif)',
-                }}
-              >
-                {value ? formatDisplay(value) : '—'}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      <DayPicker
-        mode="range"
-        // Mínimo una noche: con 0 (el valor por omisión) el primer día elegido cerraba el rango
-        // con llegada = salida y el panel se cerraba sin dejar escoger la salida.
-        min={1}
-        locale={es}
-        autoFocus
-        selected={{ from, to }}
-        onSelect={onSelect}
-        disabled={{ before: today }}
-        numberOfMonths={1}
-        showOutsideDays={false}
-        components={{
-          Chevron: ({ orientation }) =>
-            orientation === 'left' ? (
-              <ChevronLeft size={16} color="#ED6864" aria-hidden="true" />
-            ) : (
-              <ChevronRight size={16} color="#ED6864" aria-hidden="true" />
-            ),
-        }}
-        classNames={PICKER_CLASSES}
-      />
-    </div>
-  );
-}
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -368,7 +233,7 @@ export function HeroDatePicker({
         .hdp-btn-nav { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(237,104,100,0.18); background: rgba(255,255,255,0.7); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #ED6864; transition: background 200ms ease, transform 200ms cubic-bezier(0.34,1.56,0.64,1); }
         .hdp-btn-nav:hover { background: rgba(237,104,100,0.08); transform: scale(1.08); }
         /* Anillo de foco con el coral oscuro de la portada (el claro daba 2.85:1 sobre la franja del rango; WCAG pide 3:1). */
-        .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid var(--coral-950, #C14744); outline-offset: 2px; }
+        .hdp-btn-nav:focus-visible, .hdp-day-btn:focus-visible { outline: 2px solid var(--coral-950); outline-offset: 2px; }
         .hdp-month-grid { width: 100%; border-collapse: collapse; }
         .hdp-weekdays { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
         .hdp-weekday { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #706F6F; padding: 4px 0; }
@@ -383,8 +248,8 @@ export function HeroDatePicker({
         .hdp-range-start { border-radius: 50% 0 0 50%; }
         .hdp-range-end   { border-radius: 0 50% 50% 0; }
         .hdp-range-start.hdp-range-end { border-radius: 50%; }
-        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: #C14744; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
-        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: #A93B38; transform: scale(1.08); }
+        .hdp-range-start .hdp-day-btn, .hdp-range-end .hdp-day-btn { background: var(--coral-950); color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(237,104,100,0.35); }
+        .hdp-range-start .hdp-day-btn:hover, .hdp-range-end .hdp-day-btn:hover { background: var(--coral-950-hover); transform: scale(1.08); }
         .hdp-outside .hdp-day-btn { opacity: 0; pointer-events: none; }
         .hdp-disabled .hdp-day-btn { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
         .hdp-hidden { visibility: hidden; }
@@ -407,8 +272,10 @@ export function HeroDatePicker({
         <button
           ref={llegadaRef}
           type="button"
-          className="hero-search-section"
+          className="fecha-casilla"
           onClick={() => openFor('checkin')}
+          onPointerEnter={cargarPanel}
+          onFocus={cargarPanel}
           aria-haspopup="dialog"
           aria-expanded={open && activeField === 'checkin'}
           aria-controls={open ? panelId : undefined}
@@ -419,24 +286,24 @@ export function HeroDatePicker({
           }
           style={fieldActive('checkin')}
         >
-          <span className="hero-search-label" style={labelColor('checkin')}>
+          <span className="fecha-etiqueta" style={labelColor('checkin')}>
             {t('hero.fechas.llegada')}
           </span>
-          <span
-            className={checkin ? 'hero-search-value' : 'hero-search-value hero-search-value--muted'}
-          >
+          <span className={checkin ? 'fecha-valor' : 'fecha-valor fecha-valor--vacio'}>
             {checkin ? formatDisplay(checkin) : t('hero.fechas.agregarFecha')}
           </span>
         </button>
 
-        <div className="hero-search-divider" aria-hidden="true" />
+        <div className="fecha-divisor" aria-hidden="true" />
 
         {/* Salida */}
         <button
           ref={salidaRef}
           type="button"
-          className="hero-search-section"
+          className="fecha-casilla"
           onClick={() => openFor('checkout')}
+          onPointerEnter={cargarPanel}
+          onFocus={cargarPanel}
           aria-haspopup="dialog"
           aria-expanded={open && activeField === 'checkout'}
           aria-controls={open ? panelId : undefined}
@@ -447,19 +314,15 @@ export function HeroDatePicker({
           }
           style={fieldActive('checkout')}
         >
-          <span className="hero-search-label" style={labelColor('checkout')}>
+          <span className="fecha-etiqueta" style={labelColor('checkout')}>
             {t('hero.fechas.salida')}
           </span>
-          <span
-            className={
-              checkout ? 'hero-search-value' : 'hero-search-value hero-search-value--muted'
-            }
-          >
+          <span className={checkout ? 'fecha-valor' : 'fecha-valor fecha-valor--vacio'}>
             {checkout ? formatDisplay(checkout) : t('hero.fechas.agregarFecha')}
           </span>
         </button>
 
-        {/* Portal — escapes overflow:hidden of .hero-section */}
+        {/* Portal — escapes overflow:hidden of the search bar */}
         {mounted &&
           open &&
           createPortal(

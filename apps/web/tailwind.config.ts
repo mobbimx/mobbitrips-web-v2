@@ -15,6 +15,9 @@ const config: Config = {
           dark: '#D4504C',
           light: '#F4A09E',
           soft: '#FDF0EF',
+          // Coral oscuro de botones/foco: el valor vive en `globals.css` (`--coral-950`).
+          action: 'var(--coral-950)',
+          'action-hover': 'var(--coral-950-hover)',
         },
         brand: {
           charcoal: '#3D3D3D',

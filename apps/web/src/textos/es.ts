@@ -151,27 +151,6 @@ export const es = {
   },
 
   hero: {
-    aria: 'Bienvenida',
-    etiqueta: 'Casa en todas partes · Hospedaje humano',
-    titulo: {
-      /** Cada línea se anima palabra por palabra (se separa por espacios). */
-      linea1: 'Descansa, vive y sueña',
-      linea2: 'como si estuvieras',
-      destacado: 'en casa',
-    },
-    subtitulo: 'Propiedades únicas en México. Curadas para sentirse como hogar, no como hotel.',
-    buscador: {
-      aria: 'Buscar hospedajes',
-      destinoEtiqueta: '¿A dónde?',
-      destinoValor: 'México',
-      huespedesEtiqueta: 'Huéspedes',
-      unaPersona: '{n} persona',
-      variasPersonas: '{n} personas',
-      reducirHuespedes: 'Reducir huéspedes',
-      aumentarHuespedes: 'Aumentar huéspedes',
-      boton: 'Buscar',
-      botonAria: 'Buscar propiedades',
-    },
     fechas: {
       llegada: 'Llegada',
       salida: 'Salida',
@@ -182,11 +161,6 @@ export const es = {
       salidaConFecha: 'Salida: {fecha}',
       dialogo: 'Selecciona fechas de llegada y salida',
     },
-    cta: {
-      verPropiedades: 'Ver propiedades',
-      conocerMas: 'Conoce más',
-    },
-    descubreMas: 'Descubre más',
   },
 };
 

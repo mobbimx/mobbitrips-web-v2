@@ -5,6 +5,18 @@
 
 ---
 
+## 2026-10-12 · Fase 1A.7 — Limpieza de la portada de mayo
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Síntoma:** `/` cargaba ~132 kB de JS y `globals.css` (3 464 líneas) traía ~2 400 líneas de secciones que ya no se montan, con 8 `infinite` y 12 `backdrop-filter` sin uso.
+- **Qué:** borrados `HeroSection`, `HeroSearchWidget`, `FeaturedProperties`, `WhyBookDirect`, `Story*` (4), `TestimonialsSection`, `OwnerTeaser`, `NewsletterCTA`, `FinalCTA`, `lib/mocks.ts`, `/api/newsletter`, `scripts/migrate-newsletter.mjs` y `react-countup` (la tabla de newsletter en Supabase NO se tocó). `globals.css` queda en ~1 085 líneas: se quitó el CSS del Hero y de las secciones borradas; se quedan `skeleton-shimmer`, `propsFloat` (por indicación), `.script-inline`, `vt-fade` y el de Servicios/Nosotros/Contacto. Las 5 clases `hero-search-*` que usaba el selector de fechas pasaron a `fecha-*` (el módulo del buscador ya las definía completas). `export const revalidate` fuera de `page.tsx` (la portada no hace fetch). Textos del Hero viejo fuera de `es.ts`.
+- **Token:** coral oscuro de botones `#C14744` / hover `#A93B38` = `--coral-950` / `--coral-950-hover` (`globals.css`) y `primary.action` / `primary.action-hover` en Tailwind; sin hex sueltos en `HeroDatePicker` ni `BuscadorPortada.module.css`.
+- **Pendiente 1A.5 #7:** el calendario (`react-day-picker` + `date-fns`) pasó a `PanelFechas.tsx` con `next/dynamic` (se precarga al acercarse o enfocar «Llegada/Salida»).
+- **Verificación:** `pnpm lint`, `pnpm type-check`, `pnpm build` en verde (por `turno`); First Load JS de `/`: 105 kB. grep: ninguna clase quitada se usa en otro archivo; quedan 4 `backdrop-filter` (Servicios, Nosotros, Contacto) y 0 `infinite`.
+
+---
+
 ## 2026-10-08 — Cierre de la Fase 0A (base ligera)
 
 - **0A.2:** rama `portal` desde `07b1687`, protocolo de sesiones (`AGENTS.md`, `scripts/mobbitrips-sesion.sh`, `scripts/merge-si-verde.sh`, candado pre-push con gitleaks) y CI (`verificar`: lint, tipos, build). PR #1.

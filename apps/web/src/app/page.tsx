@@ -6,8 +6,6 @@ import { AnunciaTuCasa } from '@/components/home/AnunciaTuCasa';
 import { BusquedasPopulares } from '@/components/home/BusquedasPopulares';
 import { t } from '@/textos/t';
 
-export const revalidate = 3600;
-
 export const metadata: Metadata = {
   // `absolute`: la plantilla del layout («%s | Mobbitrips») repetiría la marca.
   title: { absolute: t('inicio.meta.titulo') },
