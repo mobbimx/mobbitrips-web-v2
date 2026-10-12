@@ -18,10 +18,6 @@ function formatDisplay(iso: string): string {
   });
 }
 
-/**
- * Panel del calendario. Vive aparte para que `react-day-picker` + `date-fns` no entren al primer
- * JS de la portada: `HeroDatePicker` lo trae con `next/dynamic` al acercarse al campo o abrirlo.
- */
 // ─── DayPicker class names ────────────────────────────────────────────────────
 
 const PICKER_CLASSES = {
@@ -51,6 +47,10 @@ const PICKER_CLASSES = {
 
 // ─── Panel content ────────────────────────────────────────────────────────────
 
+/**
+ * Panel del calendario. Vive aparte para que `react-day-picker` + `date-fns` no entren al primer
+ * JS de la portada: `HeroDatePicker` lo trae con `next/dynamic` al acercarse al campo o abrirlo.
+ */
 interface PanelFechasProps {
   id: string;
   panelRef: React.RefObject<HTMLDivElement>;
