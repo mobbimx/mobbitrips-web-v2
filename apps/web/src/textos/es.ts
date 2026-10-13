@@ -100,6 +100,11 @@ export const es = {
     },
     destinos: {
       titulo: 'Destinos',
+      creditos: {
+        titulo: 'Créditos de las fotos',
+        /** Las licencias piden avisar si la foto se modificó: en las tarjetas se ven recortadas. */
+        nota: 'Vía Wikimedia Commons; recortadas en las tarjetas.',
+      },
     },
     anuncia: {
       titulo: '¿Tienes una casa vacacional?',

@@ -8,10 +8,13 @@ export interface Destino {
   nombre: string;
 }
 
-export const DESTINOS: readonly Destino[] = [
+export const DESTINOS = [
   { nombre: 'Xalapa' },
   { nombre: 'Coatepec' },
   { nombre: 'Veracruz' },
   { nombre: 'Xico' },
   { nombre: 'Ciudad de México' },
-];
+] as const satisfies readonly Destino[];
+
+/** Nombre de un destino de la lista: si se suma uno, el compilador pide su foto (`fotosDestinos.ts`). */
+export type NombreDestino = (typeof DESTINOS)[number]['nombre'];
