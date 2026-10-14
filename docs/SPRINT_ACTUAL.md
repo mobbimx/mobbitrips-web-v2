@@ -28,7 +28,7 @@
 
 ## ⏸️ Pendiente fuera de la fase
 
-- Frase bajo el título y «Búsquedas populares»: en pausa, la ve Emilio con Javier (decisión 31). Se cambian en `textos/es.ts`.
+- Frase bajo el título y «Búsquedas populares»: en pausa, la revisa Emilio (decisión 31). Se cambian en `textos/es.ts`.
 - Páginas del modelo viejo (`/contacto`, `/nosotros`, `/servicios`, `/propiedades`, `blog`, `experiencias`): textos y `openGraph` sin imagen; se rehacen en su fase.
 - Título por omisión del layout (el viejo) y `NEXT_PUBLIC_SITE_URL` en producción por confirmar.
 - Logo «trips» (`#ED6864` sobre blanco) da 3.1:1 en 320 px (los logos están exentos de WCAG; anotado).
