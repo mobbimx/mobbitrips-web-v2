@@ -32,6 +32,8 @@ export const es = {
     tituloPorDefecto: 'Mobbitrips — Descansa, vive y sueña como si estuvieras en casa',
     plantillaTitulo: '%s | Mobbitrips',
     descripcion: 'Propiedades vacacionales en México. Reserva directo y sin intermediarios.',
+    /** Texto alternativo de la imagen que sale al compartir el link. */
+    imagenCompartir: 'Logo de Mobbitrips',
     palabrasClave: [
       'rentas vacacionales',
       'propiedades vacacionales',

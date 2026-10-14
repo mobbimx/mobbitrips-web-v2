@@ -4,13 +4,14 @@ import { TiraConfianza } from '@/components/home/TiraConfianza';
 import { DestinosPortada } from '@/components/home/DestinosPortada';
 import { AnunciaTuCasa } from '@/components/home/AnunciaTuCasa';
 import { BusquedasPopulares } from '@/components/home/BusquedasPopulares';
+import { IMAGEN_COMPARTIR } from '@/config/compartir';
 import { t } from '@/textos/t';
 
 export const metadata: Metadata = {
   // `absolute`: la plantilla del layout («%s | Mobbitrips») repetiría la marca.
   title: { absolute: t('inicio.meta.titulo') },
   description: t('inicio.meta.descripcion'),
-  // El `openGraph` de la página reemplaza al del layout (no se mezclan), por eso se repiten tipo, idioma y sitio.
+  // El `openGraph` de la página reemplaza al del layout (no se mezclan), por eso se repiten tipo, idioma, sitio e imagen.
   openGraph: {
     type: 'website',
     locale: t('idioma.openGraph'),
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
     title: t('inicio.meta.titulo'),
     description: t('inicio.meta.descripcion'),
     url: '/',
+    images: [IMAGEN_COMPARTIR],
   },
 };
 

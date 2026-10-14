@@ -7,6 +7,7 @@ import {
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ViewTransitions } from 'next-view-transitions';
+import { IMAGEN_COMPARTIR } from '@/config/compartir';
 import { t, tLista } from '@/textos/t';
 import './globals.css';
 
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: t('idioma.openGraph'),
     siteName: t('marca.nombre'),
+    images: [IMAGEN_COMPARTIR],
   },
   robots: { index: true, follow: true },
 };
