@@ -22,7 +22,7 @@ export function PortadaFranja() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-brand-cream"
       />
 
-      <div className="relative mx-auto flex max-w-5xl md:min-h-[clamp(520px,calc(100svh-184px),760px)] flex-col items-center justify-center px-4 py-14 text-center sm:px-6 sm:py-16">
+      <div className="relative mx-auto flex max-w-5xl flex-col items-center justify-center px-4 py-14 text-center sm:px-6 sm:py-16 md:pb-24 md:pt-28">
         <h1
           id="portada-titulo"
           className="text-balance font-comfortaa text-[clamp(1.875rem,4vw+0.9rem,3.75rem)] font-bold leading-[1.12] tracking-[-0.01em] text-brand-charcoal"
