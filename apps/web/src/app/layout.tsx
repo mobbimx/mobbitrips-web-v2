@@ -6,8 +6,8 @@ import {
 } from '@/components/analytics/GoogleTagManager';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
 import { ViewTransitions } from 'next-view-transitions';
+import { IMAGEN_COMPARTIR } from '@/config/compartir';
 import { t, tLista } from '@/textos/t';
 import './globals.css';
 
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: t('idioma.openGraph'),
     siteName: t('marca.nombre'),
+    images: [IMAGEN_COMPARTIR],
   },
   robots: { index: true, follow: true },
 };
@@ -43,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {gtmId && <GoogleTagManagerNoscript gtmId={gtmId} />}
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-xl focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-xl focus:bg-brand-charcoal focus:px-4 focus:py-2 focus:text-white"
           >
             {t('accesibilidad.irAlContenido')}
           </a>
@@ -52,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
-          <WhatsAppFloatingButton />
         </body>
       </html>
     </ViewTransitions>

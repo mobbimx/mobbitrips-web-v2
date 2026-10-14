@@ -35,7 +35,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const images = property.coverImageUrl ? [property.coverImageUrl] : [];
 
   return (
-    <main id="main-content" className="bg-brand-cream min-h-screen pb-20">
+    <div className="bg-brand-cream min-h-screen pb-20">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav aria-label="Ruta de navegación" className="mb-6 flex items-center gap-1.5 text-sm">
@@ -140,6 +140,6 @@ export default async function PropertyPage({ params }: PageProps) {
           </aside>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

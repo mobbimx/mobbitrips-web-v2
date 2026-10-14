@@ -5,6 +5,40 @@
 
 ---
 
+## 2026-10-13/14 · Fase 1A.6 a 1A.11 — Detalles de Emilio y cierre de la portada
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Detalles (elegidos por Emilio en el visor):** botón «Buscar» en coral de marca con etiqueta de 19 px negrita para pasar AA (`1a98b04`, decisión 30) · tarjetas de Destinos con foto (`258e32e`, decisión 32): 5 fotos libres de Wikimedia Commons (autor y licencia verificados con su API), créditos plegados bajo las tarjetas, nombre en blanco sobre velo de carbón medido ≥ 4.6:1 · imagen al compartir crema con el logo oficial del Drive (`ea97560`, decisión 33): `og:image` y `twitter:card summary_large_image` en `/` y `/buscar`. La frase bajo el título queda en pausa (decisión 31).
+- **Verificación:** axe sin violaciones nuevas en 320/390/1280 (la única es el logo «trips» en 320 px, ya existía); Lighthouse en vista previa, mediana de 3: cel 93 (lisas 94), compu 100 (adenda en `docs/rendimiento/2026-10-1A.md`); lint y tipos en verde.
+- **Vista previa:** https://mobbitrips-k5n6hbe7f-mobbitrips.vercel.app
+- **Anotado fuera de 1A:** páginas del modelo viejo con `openGraph` propio sin imagen; título por omisión del layout; `NEXT_PUBLIC_SITE_URL` en producción.
+- **Siguiente:** 3A, que necesita 2B (Mobbilink, espera OK de José).
+
+---
+
+## 2026-10-12 · Fase 1A.8 — Accesibilidad y metadatos de la portada
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Qué:** axe (`@axe-core/playwright`) en `/` y `/buscar`, cel (390) y compu (1440), también con el calendario abierto: 0 violaciones en todas (crítica/seria/moderada/leve). Lighthouse Accesibilidad 100 (cel y compu). Contraste medido sobre el fondo real: 30 textos, 0 fallas (menor: «Buscar» 4.94:1). Teclado completo en destino, calendario y contador de huéspedes; foco visible; reduce-motion deja las manchas quietas y sin animaciones al cargar. `lang="es"`, fechas `es-MX`, título/descripción de `/` en `es.ts` al rumbo nacional.
+- **Síntoma hallado:** con la página scrolleada más de ~117 px (compu), el calendario (abre hacia arriba) quedaba fuera de pantalla. **Arreglo:** `HeroDatePicker` abre arriba si cabe, abajo si no, y pegado al borde superior como último recurso. **Verificación:** scroll 0/11/100/300 sin salto de scroll; axe 0 con el calendario abierto.
+- **Por confirmar:** imagen OG (no existe ninguna en el repo). Reporte, capturas y script en `planeacion/proyectos/mobbitrips/fases/salidas/1A8/`.
+
+---
+
+## 2026-10-12 · Fase 1A.7 — Limpieza de la portada de mayo
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Síntoma:** `/` cargaba ~132 kB de JS y `globals.css` (3 464 líneas) traía ~2 400 líneas de secciones que ya no se montan, con 8 `infinite` y 12 `backdrop-filter` sin uso.
+- **Qué:** borrados `HeroSection`, `HeroSearchWidget`, `FeaturedProperties`, `WhyBookDirect`, `Story*` (4), `TestimonialsSection`, `OwnerTeaser`, `NewsletterCTA`, `FinalCTA`, `lib/mocks.ts`, `/api/newsletter`, `scripts/migrate-newsletter.mjs` y `react-countup` (la tabla de newsletter en Supabase NO se tocó). `globals.css` queda en ~1 085 líneas: se quitó el CSS del Hero y de las secciones borradas; se quedan `skeleton-shimmer`, `propsFloat` (por indicación), `.script-inline`, `vt-fade` y el de Servicios/Nosotros/Contacto. Las 5 clases `hero-search-*` que usaba el selector de fechas pasaron a `fecha-*` (el módulo del buscador ya las definía completas). `export const revalidate` fuera de `page.tsx` (la portada no hace fetch). Textos del Hero viejo fuera de `es.ts`.
+- **Token:** coral oscuro de botones `#C14744` / hover `#A93B38` = `--coral-950` / `--coral-950-hover` (`globals.css`) y `primary.action` / `primary.action-hover` en Tailwind; sin hex sueltos en `HeroDatePicker` ni `BuscadorPortada.module.css`.
+- **Pendiente 1A.5 #7:** el calendario (`react-day-picker` + `date-fns`) pasó a `PanelFechas.tsx` con `next/dynamic` (se precarga al acercarse o enfocar «Llegada/Salida»).
+- **Verificación:** `pnpm lint`, `pnpm type-check`, `pnpm build` en verde (por `turno`); First Load JS de `/`: 105 kB. grep: ninguna clase quitada se usa en otro archivo; quedan 4 `backdrop-filter` (Servicios, Nosotros, Contacto) y 0 `infinite`.
+
+---
+
 ## 2026-10-08 — Cierre de la Fase 0A (base ligera)
 
 - **0A.2:** rama `portal` desde `07b1687`, protocolo de sesiones (`AGENTS.md`, `scripts/mobbitrips-sesion.sh`, `scripts/merge-si-verde.sh`, candado pre-push con gitleaks) y CI (`verificar`: lint, tipos, build). PR #1.

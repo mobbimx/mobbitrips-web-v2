@@ -31,7 +31,7 @@ export default async function ReservaNuevaPage({ searchParams }: PageProps) {
   const pricingData = await calculateTotalPrice(property.id, from, to, guests).catch(() => null);
 
   return (
-    <main id="main-content" className="min-h-screen bg-brand-cream py-12">
+    <div className="min-h-screen bg-brand-cream py-12">
       <div className="mx-auto max-w-2xl px-4">
         <h1 className="mb-2 font-comfortaa text-3xl font-bold text-brand-charcoal">
           Solicitar reserva
@@ -97,6 +97,6 @@ export default async function ReservaNuevaPage({ searchParams }: PageProps) {
           totalMxn={pricingData?.total ?? 0}
         />
       </div>
-    </main>
+    </div>
   );
 }

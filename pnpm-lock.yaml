@@ -86,9 +86,6 @@ importers:
       react:
         specifier: ^18.3.0
         version: 18.3.1
-      react-countup:
-        specifier: ^6.5.3
-        version: 6.5.3(react@18.3.1)
       react-day-picker:
         specifier: ^9.1.0
         version: 9.14.0(react@18.3.1)
@@ -956,9 +953,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  countup.js@2.10.0:
-    resolution: {integrity: sha512-QQpZx7oYxsR+OeITlZe46fY/OQjV11oBqjY8wgIXzLU2jIz8GzOrbMhqKLysGY8bWI3T1ZNrYkwGzKb4JNgyzg==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -2106,11 +2100,6 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
-
-  react-countup@6.5.3:
-    resolution: {integrity: sha512-udnqVQitxC7QWADSPDOxVWULkLvKUWrDapn5i53HE4DPRVgs+Y5rr4bo25qEl8jSh+0l2cToJgGMx+clxPM3+w==}
-    peerDependencies:
-      react: '>= 16.3.0'
 
   react-day-picker@9.14.0:
     resolution: {integrity: sha512-tBaoDWjPwe0M5pGrum4H0SR6Lyk+BO9oHnp9JbKpGKW2mlraNPgP9BMfsg5pWpwrssARmeqk7YBl2oXutZTaHA==}
@@ -3421,8 +3410,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  countup.js@2.10.0: {}
-
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -4657,11 +4644,6 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
-
-  react-countup@6.5.3(react@18.3.1):
-    dependencies:
-      countup.js: 2.10.0
-      react: 18.3.1
 
   react-day-picker@9.14.0(react@18.3.1):
     dependencies:

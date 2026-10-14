@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   return (
-    <main id="main-content">
+    <div>
       <h1>Preguntas frecuentes — Mobbitrips</h1>
-    </main>
+    </div>
   );
 }

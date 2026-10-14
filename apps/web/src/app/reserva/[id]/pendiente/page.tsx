@@ -11,8 +11,8 @@ interface PageProps {
 
 export default function PendientePage({ params }: PageProps) {
   return (
-    <main id="main-content">
+    <div>
       <h1>Pago pendiente — reserva: {params.id}</h1>
-    </main>
+    </div>
   );
 }

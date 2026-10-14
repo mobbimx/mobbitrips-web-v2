@@ -10,10 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main
-      id="main-content"
-      className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center"
-    >
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
       <p className="font-comfortaa text-8xl font-bold text-primary/20" aria-hidden="true">
         {t('noEncontrada.codigo')}
       </p>
@@ -37,6 +34,6 @@ export default function NotFound() {
           {t('noEncontrada.irAlInicio')}
         </Link>
       </div>
-    </main>
+    </div>
   );
 }

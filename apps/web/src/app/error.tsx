@@ -13,10 +13,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <main
-      id="main-content"
-      className="flex min-h-screen flex-col items-center justify-center gap-6 px-4"
-    >
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
       <h1 className="text-2xl font-comfortaa text-brand-charcoal">Algo salió mal</h1>
       <p className="text-brand-gray">
         Por favor intenta de nuevo. Si el problema persiste, contáctanos.
@@ -27,6 +24,6 @@ export default function Error({ error, reset }: ErrorProps) {
       >
         Intentar de nuevo
       </button>
-    </main>
+    </div>
   );
 }
