@@ -5,6 +5,18 @@
 
 ---
 
+## 2026-10-13/14 · Fase 1A.6 a 1A.11 — Detalles de Emilio y cierre de la portada
+
+**Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
+
+- **Detalles (elegidos por Emilio en el visor):** botón «Buscar» en coral de marca con etiqueta de 19 px negrita para pasar AA (`1a98b04`, decisión 30) · tarjetas de Destinos con foto (`258e32e`, decisión 32): 5 fotos libres de Wikimedia Commons (autor y licencia verificados con su API), créditos plegados bajo las tarjetas, nombre en blanco sobre velo de carbón medido ≥ 4.6:1 · imagen al compartir crema con el logo oficial del Drive (`ea97560`, decisión 33): `og:image` y `twitter:card summary_large_image` en `/` y `/buscar`. La frase bajo el título queda en pausa (decisión 31).
+- **Verificación:** axe sin violaciones nuevas en 320/390/1280 (la única es el logo «trips» en 320 px, ya existía); Lighthouse en vista previa, mediana de 3: cel 93 (lisas 94), compu 100 (adenda en `docs/rendimiento/2026-10-1A.md`); lint y tipos en verde.
+- **Vista previa:** https://mobbitrips-k5n6hbe7f-mobbitrips.vercel.app
+- **Anotado fuera de 1A:** páginas del modelo viejo con `openGraph` propio sin imagen; título por omisión del layout; `NEXT_PUBLIC_SITE_URL` en producción.
+- **Siguiente:** 3A, que necesita 2B (Mobbilink, espera OK de José).
+
+---
+
 ## 2026-10-12 · Fase 1A.8 — Accesibilidad y metadatos de la portada
 
 **Rama**: `wip/portada-mac` (PR #3 → `portal`) · Máquina: Mac
