@@ -1,6 +1,7 @@
 import { ManchasLigeras } from '@/components/ambient/ManchasLigeras';
 import { t } from '@/textos/t';
 import { BuscadorPortada } from './BuscadorPortada';
+import { ChipsConfianza } from '@/components/temporal/ChipsConfianza';
 
 /**
  * Franja alta de la portada (opción A «Aire»): título de 2 líneas, una línea de apoyo y el buscador
@@ -38,6 +39,9 @@ export function PortadaFranja() {
         <div className="flex w-full justify-center motion-safe:animate-entra motion-safe:[animation-delay:120ms]">
           <BuscadorPortada />
         </div>
+
+        {/* TEMPORAL (opciones en vivo 14-oct) */}
+        <ChipsConfianza />
       </div>
     </section>
   );

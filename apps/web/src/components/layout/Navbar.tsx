@@ -1,10 +1,14 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { HousePlus } from 'lucide-react';
 import { URL_MOBBILINK } from '@/config/enlaces';
 import { t } from '@/textos/t';
 import { MobbitripsLogo } from './MobbitripsLogo';
+// TEMPORAL (opciones en vivo 14-oct): logo oficial del manual de identidad.
+import logoOficial from '@/assets/marca/logo-oficial.png';
 
 /** Alto fijo de la barra: `layout.tsx` (`pt-[72px]`) y el Hero (`globals.css`) dependen de él. */
 const ALTO = 72;
@@ -70,21 +74,27 @@ export function Navbar() {
           aria-label={t('nav.inicioAria')}
           className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
-          <MobbitripsLogo
-            size={36}
-            decorativo
-            className="transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-          />
-          <span className="font-comfortaa text-base font-bold text-brand-charcoal min-[360px]:text-xl">
-            {t('marca.inicio')}
-            <span className="text-primary">{t('marca.fin')}</span>
+          <span className="op-logo-hoy flex items-center gap-2.5">
+            <MobbitripsLogo
+              size={36}
+              decorativo
+              className="transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+            />
+            <span className="font-comfortaa text-base font-bold text-brand-charcoal min-[360px]:text-xl">
+              {t('marca.inicio')}
+              <span className="text-primary">{t('marca.fin')}</span>
+            </span>
           </span>
+          {/* TEMPORAL (opciones en vivo 14-oct) */}
+          <Image src={logoOficial} alt="" priority className="op-logo-oficial hidden w-auto" />
         </Link>
 
         <a
           href={URL_MOBBILINK}
-          className="inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-3 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-[360px]:px-4 sm:px-5"
+          className="op-anuncia inline-flex h-11 shrink-0 items-center rounded-full border border-brand-border bg-white px-3 text-sm font-semibold text-brand-charcoal transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 min-[360px]:px-4 sm:px-5"
         >
+          {/* TEMPORAL (opciones en vivo 14-oct) */}
+          <HousePlus aria-hidden="true" size={18} strokeWidth={1.75} className="op-casa hidden" />
           {t('nav.anunciaTuCasa')}
         </a>
       </nav>
