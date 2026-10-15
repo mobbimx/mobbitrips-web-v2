@@ -1,11 +1,11 @@
 import { ManchasLigeras } from '@/components/ambient/ManchasLigeras';
 import { t } from '@/textos/t';
 import { BuscadorPortada } from './BuscadorPortada';
-import { ChipsConfianza } from '@/components/temporal/ChipsConfianza';
+import { TiraConfianza } from './TiraConfianza';
 
 /**
- * Franja alta de la portada (opción A «Aire»): título de 2 líneas, una línea de apoyo y el buscador
- * en píldora al centro, con las manchas ligeras detrás.
+ * Franja alta de la portada (opción A «Aire»): título de 2 líneas, una línea de apoyo, el buscador
+ * en píldora al centro y debajo las pastillas de confianza, con las manchas ligeras detrás.
  *
  * - El título (h1) NO se anima: es el elemento más grande y de él depende el LCP.
  * - Entrada de una sola vez (600 ms, retraso ≤ 200 ms) solo en el apoyo y el buscador; quieta con
@@ -40,8 +40,9 @@ export function PortadaFranja() {
           <BuscadorPortada />
         </div>
 
-        {/* TEMPORAL (opciones en vivo 14-oct) */}
-        <ChipsConfianza />
+        <div className="motion-safe:animate-entra motion-safe:[animation-delay:200ms]">
+          <TiraConfianza />
+        </div>
       </div>
     </section>
   );

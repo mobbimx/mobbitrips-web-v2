@@ -6,8 +6,6 @@ import {
 } from '@/components/analytics/GoogleTagManager';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-// TEMPORAL (opciones en vivo 14-oct)
-import { SelectorOpciones } from '@/components/temporal/SelectorOpciones';
 import { ViewTransitions } from 'next-view-transitions';
 import { IMAGEN_COMPARTIR } from '@/config/compartir';
 import { t, tLista } from '@/textos/t';
@@ -55,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
-          <SelectorOpciones />
         </body>
       </html>
     </ViewTransitions>
