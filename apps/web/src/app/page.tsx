@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { PortadaFranja } from '@/components/home/PortadaFranja';
-import { TiraConfianza } from '@/components/home/TiraConfianza';
 import { DestinosPortada } from '@/components/home/DestinosPortada';
 import { AnunciaTuCasa } from '@/components/home/AnunciaTuCasa';
 import { BusquedasPopulares } from '@/components/home/BusquedasPopulares';
@@ -23,12 +22,11 @@ export const metadata: Metadata = {
   },
 };
 
-/** Portada nueva (1A, opción A «Aire»): sin casas; franja del buscador, confianza, destinos y «Anuncia tu casa». */
+/** Portada nueva (1A, opción A «Aire»): sin casas; franja del buscador (con las pastillas de confianza), destinos y «Anuncia tu casa». */
 export default function HomePage() {
   return (
     <>
       <PortadaFranja />
-      <TiraConfianza />
       <DestinosPortada />
       <AnunciaTuCasa />
       <BusquedasPopulares />
